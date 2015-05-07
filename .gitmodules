@@ -1,0 +1,3 @@
+[submodule "Assets/AssetStore"]
+	path = Assets/AssetStore
+	url = git@gitlab.com:lucidtaz/tazfly-store-assets.git
