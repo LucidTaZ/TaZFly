@@ -7,9 +7,6 @@ public class Boundary {
 
 public class ShipController : MonoBehaviour {
 
-	protected int StartHitpoints;
-	public int Hitpoints;
-
 	public float MinSpeed;
 	public float MaxSpeed;
 	public float SlowHeight; // Height at which MinSpeed is achieved
@@ -31,10 +28,6 @@ public class ShipController : MonoBehaviour {
 		FieldBoundary = boundary;
 	}
 
-	void Start () {
-		StartHitpoints = Hitpoints; // Take over setting from editor.
-	}
-
 	void FixedUpdate () {
 		float speed = computeSpeed(transform.position.y);
 		float speedPerc = (speed - MinSpeed) / (MaxSpeed - MinSpeed);
@@ -48,32 +41,6 @@ public class ShipController : MonoBehaviour {
 		animatePropeller(speedPerc);
 
 		adjustExhaust();
-	}
-
-	void OnCollisionEnter (Collision collision) {
-		if (collision.collider.GetComponents<CollisionExplosion>().Length == 0) {
-			// Is otherwise already handled in its CollisionExplosion script
-			DecreaseHitpoints((int)collision.relativeVelocity.magnitude);
-		}
-	}
-	
-	public void DecreaseHitpoints (int delta = 1) {
-		//Debug.Log("Taking " + delta + " damage.");
-		Hitpoints -= delta;
-
-		if (!IsAlive() && GetComponents<PlayerController>().Length == 0) {
-			// AI player died
-			Debug.Log("AI Player died.");
-			Destroy(gameObject);
-		}
-	}
-
-	public float GetRelativeHitpoints () {
-		return (float)Hitpoints / StartHitpoints;
-	}
-
-	public bool IsAlive () {
-		return Hitpoints > 0;
 	}
 
 	float computeSpeed (float height) {
@@ -113,9 +80,11 @@ public class ShipController : MonoBehaviour {
 	}
 
 	void adjustExhaust () {
-		float damage = Mathf.Clamp (1.0f - GetRelativeHitpoints(), 0.0f, 1.0f);
-		Exhaust.emissionRate = damage * 10;
-		Exhaust.startLifetime = damage * 4.5f + 0.5f;
-		Exhaust.startColor = Color.Lerp(Color.white, Color.black, damage);
+		if (GetComponent<Hitpoints>()) {
+			float damage = GetComponent<Hitpoints>().GetDamage();
+			Exhaust.emissionRate = damage * 10;
+			Exhaust.startLifetime = damage * 4.5f + 0.5f;
+			Exhaust.startColor = Color.Lerp(Color.white, Color.black, damage);
+		}
 	}
 }

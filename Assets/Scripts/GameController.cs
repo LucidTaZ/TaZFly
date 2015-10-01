@@ -8,7 +8,7 @@ public class GameController : MonoBehaviour {
 
 	public GameObject ShipTemplate;
 	protected GameObject InstantiatedPlayerShip;
-	protected ShipController InstantiatedPlayerShipController;
+	protected Hitpoints InstantiatedPlayerHitpoints;
 
 	public float MinY;
 	public float MaxY;
@@ -64,12 +64,12 @@ public class GameController : MonoBehaviour {
 		}
 
 		if (levelActive) {
-			if (!InstantiatedPlayerShipController.IsAlive()) {
+			if (!InstantiatedPlayerHitpoints.IsAlive()) {
 				//Debug.Log("Player dead.");
 				Application.Quit();
 			}
 
-			HitpointText.text = System.String.Format("Hitpoints: {0:P0}", Mathf.Max(0, InstantiatedPlayerShipController.GetRelativeHitpoints()));
+			HitpointText.text = System.String.Format("Hitpoints: {0:P0}", Mathf.Max(0, InstantiatedPlayerHitpoints.GetRelativeHitpoints()));
 			SpeedText.text = System.String.Format("Speed: {0:N2}", InstantiatedPlayerShip.GetComponent<Rigidbody>().velocity.z);
 		}
 	}
@@ -164,7 +164,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	void attachPlayer (GameObject ship) {
-		InstantiatedPlayerShipController = ship.GetComponent<ShipController>();
+		InstantiatedPlayerHitpoints = ship.GetComponent<Hitpoints>();
 
 		ShipSteeringController sc = ship.AddComponent<PlayerController>();
 		sc.HorizontalMoveRate = 8;
