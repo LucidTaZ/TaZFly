@@ -12,8 +12,9 @@ GameObject:
   - 135: {fileID: 13500000}
   - 23: {fileID: 2300000}
   - 54: {fileID: 5400000}
-  - 114: {fileID: 11400000}
   - 82: {fileID: 8200000}
+  - 114: {fileID: 11400054}
+  - 114: {fileID: 11400000}
   m_Layer: 0
   m_Name: Cannonball
   m_TagString: Cannonball
@@ -94,6 +95,7 @@ AudioSource:
   m_Pitch: 1
   Loop: 0
   Mute: 0
+  Spatialize: 0
   Priority: 128
   DopplerLevel: 1
   MinDistance: 13.1000004
@@ -159,6 +161,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dcff7de68cd50348bd62078a25f6950, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &11400054
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 987c2eca757f4484e8e02eebd0ba9247, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Damage: 80
 --- !u!135 &13500000
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -177,7 +191,11 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: Damage
+      value: 80
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 100000}

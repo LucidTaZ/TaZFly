@@ -7,14 +7,6 @@ public class Boundary {
 
 public class ShipController : MonoBehaviour {
 
-	protected int StartHitpoints;
-	public int Hitpoints;
-
-	public float MinSpeed;
-	public float MaxSpeed;
-	public float SlowHeight; // Height at which MinSpeed is achieved
-	public float SpeedyHeight; // Height at which MaxSpeed is achieved
-
 	protected Boundary FieldBoundary;
 
 	public float BankElevator;
@@ -31,56 +23,14 @@ public class ShipController : MonoBehaviour {
 		FieldBoundary = boundary;
 	}
 
-	void Start () {
-		StartHitpoints = Hitpoints; // Take over setting from editor.
-	}
-
 	void FixedUpdate () {
-		float speed = computeSpeed(transform.position.y);
-		float speedPerc = (speed - MinSpeed) / (MaxSpeed - MinSpeed);
-
-		GetComponent<Rigidbody>().velocity = new Vector3(GetComponent<Rigidbody>().velocity.x, GetComponent<Rigidbody>().velocity.y, speed);
-
 		bankPlane(GetComponent<Rigidbody>().velocity);
 
 		transform.position = clampPosition(transform.position, FieldBoundary);
 
-		animatePropeller(speedPerc);
+		animatePropeller();
 
 		adjustExhaust();
-	}
-
-	void OnCollisionEnter (Collision collision) {
-		if (collision.collider.GetComponents<CollisionExplosion>().Length == 0) {
-			// Is otherwise already handled in its CollisionExplosion script
-			DecreaseHitpoints((int)collision.relativeVelocity.magnitude);
-		}
-	}
-	
-	public void DecreaseHitpoints (int delta = 1) {
-		//Debug.Log("Taking " + delta + " damage.");
-		Hitpoints -= delta;
-
-		if (!IsAlive() && GetComponents<PlayerController>().Length == 0) {
-			// AI player died
-			Debug.Log("AI Player died.");
-			Destroy(gameObject);
-		}
-	}
-
-	public float GetRelativeHitpoints () {
-		return (float)Hitpoints / StartHitpoints;
-	}
-
-	public bool IsAlive () {
-		return Hitpoints > 0;
-	}
-
-	float computeSpeed (float height) {
-		// TODO: Experiment a bit with nonlinear speed relation. Quadratic maybe? We really want flying low to be rewarding but also dangerous!
-		height = Mathf.Clamp(height, SpeedyHeight, SlowHeight);
-		float perc = (height - SlowHeight) / (SpeedyHeight - SlowHeight);
-		return MinSpeed + perc * (MaxSpeed - MinSpeed);
 	}
 
 	void bankPlane (Vector3 velocity) {
@@ -107,15 +57,24 @@ public class ShipController : MonoBehaviour {
 		);
 	}
 
-	void animatePropeller (float speedPerc) {
+	void animatePropeller () {
 		// Control propeller animation speed:
-		PropellerAnimator.SetFloat("Speed", speedPerc); // This Animator wants a value from 0 to 1.
+		if (GetComponent<AutomaticSpeed>()) {
+			PropellerAnimator.SetFloat("Speed", GetComponent<AutomaticSpeed>().GetRelativeSpeed()); // This Animator wants a value from 0 to 1.
+		} else {
+			Debug.LogWarning("Trying to animate propeller without expected component.");
+			PropellerAnimator.SetFloat("Speed", 1);
+		}
 	}
 
 	void adjustExhaust () {
-		float damage = Mathf.Clamp (1.0f - GetRelativeHitpoints(), 0.0f, 1.0f);
-		Exhaust.emissionRate = damage * 10;
-		Exhaust.startLifetime = damage * 4.5f + 0.5f;
-		Exhaust.startColor = Color.Lerp(Color.white, Color.black, damage);
+		if (GetComponent<Hitpoints>()) {
+			float damage = GetComponent<Hitpoints>().GetDamage(); // 0 to 1
+			Exhaust.emissionRate = damage * 10;
+			Exhaust.startLifetime = damage * 4.5f + 0.5f;
+			Exhaust.startColor = Color.Lerp(Color.white, Color.black, damage);
+		} else {
+			Debug.LogWarning("Trying to adjust exhaust without expected component.");
+		}
 	}
 }

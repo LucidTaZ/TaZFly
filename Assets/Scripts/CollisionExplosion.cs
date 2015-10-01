@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class CollisionExplosion : MonoBehaviour {
 
@@ -10,12 +9,6 @@ public class CollisionExplosion : MonoBehaviour {
 	}
 
 	void OnCollisionEnter (Collision collision) {
-
-		// Damage the player
-		if (collision.gameObject.CompareTag("Ship")) {
-			collision.gameObject.GetComponent<ShipController>().DecreaseHitpoints(80);
-		}
-
 		if (!soundPlayed) {
 			gameObject.GetComponent<AudioSource>().Play();
 			soundPlayed = true;
