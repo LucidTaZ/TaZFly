@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Linq; // For Contains() method
 
 public class FinishController : MonoBehaviour {
