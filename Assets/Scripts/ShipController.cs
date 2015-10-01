@@ -7,11 +7,6 @@ public class Boundary {
 
 public class ShipController : MonoBehaviour {
 
-	public float MinSpeed;
-	public float MaxSpeed;
-	public float SlowHeight; // Height at which MinSpeed is achieved
-	public float SpeedyHeight; // Height at which MaxSpeed is achieved
-
 	protected Boundary FieldBoundary;
 
 	public float BankElevator;
@@ -29,25 +24,13 @@ public class ShipController : MonoBehaviour {
 	}
 
 	void FixedUpdate () {
-		float speed = computeSpeed(transform.position.y);
-		float speedPerc = (speed - MinSpeed) / (MaxSpeed - MinSpeed);
-
-		GetComponent<Rigidbody>().velocity = new Vector3(GetComponent<Rigidbody>().velocity.x, GetComponent<Rigidbody>().velocity.y, speed);
-
 		bankPlane(GetComponent<Rigidbody>().velocity);
 
 		transform.position = clampPosition(transform.position, FieldBoundary);
 
-		animatePropeller(speedPerc);
+		animatePropeller();
 
 		adjustExhaust();
-	}
-
-	float computeSpeed (float height) {
-		// TODO: Experiment a bit with nonlinear speed relation. Quadratic maybe? We really want flying low to be rewarding but also dangerous!
-		height = Mathf.Clamp(height, SpeedyHeight, SlowHeight);
-		float perc = (height - SlowHeight) / (SpeedyHeight - SlowHeight);
-		return MinSpeed + perc * (MaxSpeed - MinSpeed);
 	}
 
 	void bankPlane (Vector3 velocity) {
@@ -74,17 +57,24 @@ public class ShipController : MonoBehaviour {
 		);
 	}
 
-	void animatePropeller (float speedPerc) {
+	void animatePropeller () {
 		// Control propeller animation speed:
-		PropellerAnimator.SetFloat("Speed", speedPerc); // This Animator wants a value from 0 to 1.
+		if (GetComponent<AutomaticSpeed>()) {
+			PropellerAnimator.SetFloat("Speed", GetComponent<AutomaticSpeed>().GetRelativeSpeed()); // This Animator wants a value from 0 to 1.
+		} else {
+			Debug.LogWarning("Trying to animate propeller without expected component.");
+			PropellerAnimator.SetFloat("Speed", 1);
+		}
 	}
 
 	void adjustExhaust () {
 		if (GetComponent<Hitpoints>()) {
-			float damage = GetComponent<Hitpoints>().GetDamage();
+			float damage = GetComponent<Hitpoints>().GetDamage(); // 0 to 1
 			Exhaust.emissionRate = damage * 10;
 			Exhaust.startLifetime = damage * 4.5f + 0.5f;
 			Exhaust.startColor = Color.Lerp(Color.white, Color.black, damage);
+		} else {
+			Debug.LogWarning("Trying to adjust exhaust without expected component.");
 		}
 	}
 }
