@@ -11,7 +11,9 @@ GameObject:
   - 54: {fileID: 5400000}
   - 136: {fileID: 13600002}
   - 136: {fileID: 13600000}
+  - 114: {fileID: 11416586}
   - 114: {fileID: 11400002}
+  - 114: {fileID: 11455688}
   m_Layer: 0
   m_Name: Ship
   m_TagString: Ship
@@ -227,17 +229,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f66fe6e1996142e48a30a99493f72a97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Hitpoints: 100
-  MinSpeed: 5
-  MaxSpeed: 15
-  SlowHeight: 15
-  SpeedyHeight: 3
   BankElevator: 5
   BankAileron: 5
   BankRudder: 2
   BankConvergeSpeed: .5
   PropellerAnimator: {fileID: 9500000}
   Exhaust: {fileID: 19800000}
+--- !u!114 &11416586
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d73a4f09f43ed744c8b8f246d6039f4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MinSpeed: 5
+  MaxSpeed: 15
+  SlowHeight: 15
+  SpeedyHeight: 3
+--- !u!114 &11455688
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7957fc5a9efa8c9428fbba083f138ae9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HitpointsValue: 100
 --- !u!136 &13600000
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -1359,7 +1383,27 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: HitpointsValue
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: MinSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: MaxSpeed
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: SlowHeight
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: SpeedyHeight
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 100000}
