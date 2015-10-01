@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 [System.Serializable]
 public class Boundary {
@@ -52,7 +51,6 @@ public class ShipController : MonoBehaviour {
 	}
 
 	void OnCollisionEnter (Collision collision) {
-		// TODO: Figure out some sort of penetration distance or relative velocity as a form of damage?
 		if (collision.collider.GetComponents<CollisionExplosion>().Length == 0) {
 			// Is otherwise already handled in its CollisionExplosion script
 			DecreaseHitpoints((int)collision.relativeVelocity.magnitude);
@@ -79,6 +77,7 @@ public class ShipController : MonoBehaviour {
 	}
 
 	float computeSpeed (float height) {
+		// TODO: Experiment a bit with nonlinear speed relation. Quadratic maybe? We really want flying low to be rewarding but also dangerous!
 		height = Mathf.Clamp(height, SpeedyHeight, SlowHeight);
 		float perc = (height - SlowHeight) / (SpeedyHeight - SlowHeight);
 		return MinSpeed + perc * (MaxSpeed - MinSpeed);
