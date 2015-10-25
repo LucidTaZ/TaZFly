@@ -1998,6 +1998,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Projectile: {fileID: 100000, guid: 91cb6f294a813654c934a1bfd2855c51, type: 2}
+  EjectionPoint: {fileID: 496958}
   ProjectileSpeed: 20
   ShotInterval: 3
 --- !u!154 &15400000

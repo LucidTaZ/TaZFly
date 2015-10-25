@@ -1713,6 +1713,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Projectile: {fileID: 100000, guid: 91cb6f294a813654c934a1bfd2855c51, type: 2}
+  EjectionPoint: {fileID: 445566}
   ProjectileSpeed: 20
   ShotInterval: 3
 --- !u!114 &11403632
@@ -1727,6 +1728,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Projectile: {fileID: 100000, guid: 91cb6f294a813654c934a1bfd2855c51, type: 2}
+  EjectionPoint: {fileID: 455144}
   ProjectileSpeed: 20
   ShotInterval: 3
 --- !u!114 &11441036
@@ -1741,6 +1743,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Projectile: {fileID: 100000, guid: 91cb6f294a813654c934a1bfd2855c51, type: 2}
+  EjectionPoint: {fileID: 472310}
   ProjectileSpeed: 20
   ShotInterval: 3
 --- !u!114 &11442372
@@ -1766,6 +1769,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Projectile: {fileID: 100000, guid: 91cb6f294a813654c934a1bfd2855c51, type: 2}
+  EjectionPoint: {fileID: 407950}
   ProjectileSpeed: 20
   ShotInterval: 3
 --- !u!114 &11466776
@@ -1780,6 +1784,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Projectile: {fileID: 100000, guid: 91cb6f294a813654c934a1bfd2855c51, type: 2}
+  EjectionPoint: {fileID: 452726}
   ProjectileSpeed: 20
   ShotInterval: 3
 --- !u!154 &15400000
