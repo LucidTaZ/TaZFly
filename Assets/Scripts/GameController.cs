@@ -34,10 +34,18 @@ public class GameController : MonoBehaviour {
 		}
 
 		if (currentLevelIndex >= Levels.Length) {
-			throw new UnityException("Out of levels.");
+			// See if we can generate a new one
+			if (GameObject.FindWithTag("LevelGenerator")) {
+				LevelGenerator generator = GameObject.FindWithTag("LevelGenerator").GetComponent<LevelGenerator>();
+				GameObject level = generator.Generate();
+				currentLevel = loadLevel(level);
+			} else {
+				throw new UnityException("Out of levels.");
+			}
+		} else {
+			currentLevel = loadLevel(Instantiate(Levels[currentLevelIndex])); // currentLevel becomes a reference to the instantiation
 		}
 
-		currentLevel = loadLevel(Levels[currentLevelIndex]); // currentLevel becomes a reference to the instantiation
 		levelActive = true;
 	}
 
@@ -94,9 +102,7 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-	GameObject loadLevel (GameObject levelTemplate) {
-		GameObject level = Instantiate(levelTemplate) as GameObject;
-		
+	GameObject loadLevel (GameObject level) {
 		// Have origin
 
 		if (GameObject.FindGameObjectsWithTag("Spawn").Length != 1) {
