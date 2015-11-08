@@ -434,6 +434,7 @@ GameObject:
   - 114: {fileID: 986803827}
   - 114: {fileID: 986803829}
   - 114: {fileID: 986803830}
+  - 114: {fileID: 986803831}
   m_Layer: 0
   m_Name: LevelGenerator Holder
   m_TagString: LevelGenerator
@@ -506,6 +507,17 @@ MonoBehaviour:
   - {fileID: 100000, guid: a32d1918824c42a42be32d77238dd884, type: 2}
   NStructures: 10
   NDynamics: 10
+--- !u!114 &986803831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 986803826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e12a5da60560b24f88cc080b0a0adb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1015826478
 GameObject:
   m_ObjectHideFlags: 0

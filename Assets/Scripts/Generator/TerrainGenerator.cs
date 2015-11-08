@@ -11,6 +11,12 @@ public class TerrainGenerator : MonoBehaviour {
 	public Texture2D FlatTexture;
 	public Texture2D SteepTexture;
 
+	protected INoise2D TerrainNoise;
+
+	public void Start () {
+		TerrainNoise = GetComponent<INoise2D>();
+	}
+
 	public GameObject Generate (float width, float length) {
 		TerrainData terrainData = new TerrainData();
 		terrainData.heightmapResolution = MapResolution;
@@ -72,28 +78,17 @@ public class TerrainGenerator : MonoBehaviour {
 	 * 
 	 * The width and height parameters are to know the shape of the (not necessarily square) terrain.
 	 */
-	static float[,] generateHeightmap (int resolution, float width, float height) {
+	float[,] generateHeightmap (int resolution, float width, float height) {
 		float[,] heightmap = new float[resolution, resolution];
 		
 		for (int y = 0; y < resolution; y++) {
 			float yCoordinate = y * height / resolution;
 			for (int x = 0; x < resolution; x++) {
 				float xCoordinate = x * width / resolution;
-				heightmap[y, x] = generateHeightAtPoint(new Vector2(xCoordinate, yCoordinate));
+				heightmap[y, x] = TerrainNoise.Sample(new Vector2(xCoordinate, yCoordinate));
 			}
 		}
 		
 		return heightmap;
-	}
-	
-	/**
-	 * Generate heightmap pixel
-	 * 
-	 * The output lies between 0 and 1
-	 * 
-	 * The coordinates are in world space.
-	 */
-	static float generateHeightAtPoint (Vector2 point) {
-		return (Mathf.Sin(point.x / 10) * Mathf.Sin(point.y / 15) + 1) / 2;
 	}
 }
