@@ -107,7 +107,7 @@ AudioSource:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 136774113}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 258e311ecdad0499f84da6b125e6177c, type: 3}
@@ -630,7 +630,4 @@ MonoBehaviour:
   ShipTemplate: {fileID: 100000, guid: 1b755fba83643734da848502acd2ab31, type: 2}
   MinY: 0
   MaxY: 15
-  Levels:
-  - {fileID: 100040, guid: 042ca49f20818d0448ff1e604723b52f, type: 2}
-  - {fileID: 100060, guid: 636c43ffe57b4884a9593482c461e28a, type: 2}
-  - {fileID: 100058, guid: 00782b6d4a41f104cb82bab38141c871, type: 2}
+  Levels: []
