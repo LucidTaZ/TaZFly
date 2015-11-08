@@ -17,6 +17,9 @@ public class LevelGenerator : MonoBehaviour {
 	public GameObject BoundaryPrefab;
 	public GameObject FinishPrefab;
 
+	public Vector3 PlayerSpawnPosition;
+	public Vector3 EnemySpawnPosition;
+
 	public GameObject Generate () {
 		GameObject result = new GameObject("Generated Level");
 
@@ -50,12 +53,12 @@ public class LevelGenerator : MonoBehaviour {
 
 		GameObject playerSpawn = new GameObject("Spawn");
 		playerSpawn.tag = "Spawn";
-		playerSpawn.transform.position = new Vector3(6f, 10f, 0f);
+		playerSpawn.transform.position = PlayerSpawnPosition;
 		playerSpawn.transform.parent = result.transform;
 		
 		GameObject enemy1Spawn = new GameObject("Enemy Spawn 1");
 		enemy1Spawn.tag = "EnemySpawn";
-		enemy1Spawn.transform.position = new Vector3(8f, 10f, 0f);
+		enemy1Spawn.transform.position = EnemySpawnPosition;
 		enemy1Spawn.transform.parent = result.transform;
 
 		GameObject boundary = new GameObject("Boundary");

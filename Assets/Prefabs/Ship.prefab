@@ -246,9 +246,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d73a4f09f43ed744c8b8f246d6039f4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MinSpeed: 5
-  MaxSpeed: 15
-  SlowHeight: 15
+  MinSpeed: 10
+  MaxSpeed: 25
+  SlowHeight: 25
   SpeedyHeight: 3
 --- !u!114 &11455688
 MonoBehaviour:
@@ -1390,15 +1390,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: MinSpeed
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: MaxSpeed
-      value: 15
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: SlowHeight
-      value: 15
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: SpeedyHeight

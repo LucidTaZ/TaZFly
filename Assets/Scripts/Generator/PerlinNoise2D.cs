@@ -3,6 +3,9 @@
 public class PerlinNoise2D : MonoBehaviour, INoise2D
 {
 
+	public int FrequencyScale = 15;
+	public float BaselineImportance = 0.6f;
+
 	/**
 	 * Generate heightmap pixel
 	 * 
@@ -12,7 +15,12 @@ public class PerlinNoise2D : MonoBehaviour, INoise2D
 	 */
 	public float Sample(Vector2 point)
 	{
-		return 0.0f; // TODO: Implement
+		float baselineHeight = Mathf.PerlinNoise(point.y / FrequencyScale / 5 + 9999, 0f);
+		float detailHeight = Mathf.PerlinNoise(point.x / FrequencyScale, point.y / FrequencyScale);
+		if (detailHeight > 0.95) {
+			Debug.Log("baselineHeight: " + baselineHeight + ", detailHeight: " + detailHeight);
+		}
+		return Mathf.Lerp(detailHeight, baselineHeight, BaselineImportance);
 	}
 
 }

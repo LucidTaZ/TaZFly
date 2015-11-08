@@ -172,8 +172,8 @@ public class GameController : MonoBehaviour {
 		InstantiatedPlayerHitpoints = ship.GetComponent<Hitpoints>();
 
 		ShipSteeringController sc = ship.AddComponent<PlayerController>();
-		sc.HorizontalMoveRate = 8;
-		sc.VerticalMoveRate = 8;
+		sc.HorizontalMoveRate = 10;
+		sc.VerticalMoveRate = 10;
 
 		// Give player reference to cameras, so they know who to follow
 		

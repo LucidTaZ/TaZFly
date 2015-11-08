@@ -457,6 +457,8 @@ MonoBehaviour:
   Length: 150
   BoundaryPrefab: {fileID: 194632, guid: e70f786866219c64689a2a0ef21a186c, type: 2}
   FinishPrefab: {fileID: 154870, guid: 00d9120d0ceb1144789ceebcf971fc8f, type: 2}
+  PlayerSpawnPosition: {x: 6, y: 20, z: 0}
+  EnemySpawnPosition: {x: 8, y: 20, z: 0}
 --- !u!4 &986803828
 Transform:
   m_ObjectHideFlags: 0
@@ -482,7 +484,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MapResolution: 128
   MinimumHeight: 0
-  MaximumHeight: 10
+  MaximumHeight: 20
   FlatTexture: {fileID: 2800000, guid: f0a8168310b10da4faedc474bb26c20f, type: 3}
   SteepTexture: {fileID: 2800000, guid: 3787ecf31b318914f908bb48537ebf10, type: 3}
 --- !u!114 &986803830
@@ -515,9 +517,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 986803826}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e12a5da60560b24f88cc080b0a0adb1, type: 3}
+  m_Script: {fileID: 11500000, guid: c50f185fad09083419f03eac2f179fa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FrequencyScale: 15
+  BaselineImportance: .600000024
 --- !u!1 &1015826478
 GameObject:
   m_ObjectHideFlags: 0
@@ -641,5 +645,5 @@ MonoBehaviour:
   SpeedText: {fileID: 456775764}
   ShipTemplate: {fileID: 100000, guid: 1b755fba83643734da848502acd2ab31, type: 2}
   MinY: 0
-  MaxY: 15
+  MaxY: 25
   Levels: []
