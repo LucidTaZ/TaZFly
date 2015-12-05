@@ -13,7 +13,8 @@ public class LevelGenerator : MonoBehaviour {
 
 	public float Width = 50f;
 	public float Length = 150f;
-
+	const float Height = 5f; // Of the boundary
+	
 	public GameObject BoundaryPrefab;
 	public GameObject FinishPrefab;
 
@@ -68,21 +69,24 @@ public class LevelGenerator : MonoBehaviour {
 		boundaryLeft.tag = "BoundaryLeft";
 		boundaryLeft.transform.position = new Vector3(-Width / 2f, 10f, Length / 2f);
 		boundaryLeft.transform.rotation = Quaternion.Euler(0f, 0f, -90f);
-		boundaryLeft.transform.localScale = new Vector3(Width / 10f, 1f, Length / 10f); // Divide by 10 since the Plane has dimensions 10x10 already.
+		boundaryLeft.transform.localScale = new Vector3(Height, 1f, Length / 10f); // Divide by 10 since the Plane has dimensions 10x10 already.
+		fixTextureScale(boundaryLeft);
 		boundaryLeft.transform.parent = boundary.transform;
 		
 		GameObject boundaryRight = Instantiate(BoundaryPrefab);
 		boundaryRight.tag = "BoundaryRight";
 		boundaryRight.transform.position = new Vector3(Width / 2f, 10f, Length / 2f);
 		boundaryRight.transform.rotation = Quaternion.Euler(0f, 0f, 90f);
-		boundaryRight.transform.localScale = new Vector3(Width / 10f, 1f, Length / 10f); // Divide by 10 since the Plane has dimensions 10x10 already.
+		boundaryRight.transform.localScale = new Vector3(Height, 1f, Length / 10f); // Divide by 10 since the Plane has dimensions 10x10 already.
+		fixTextureScale(boundaryRight);
 		boundaryRight.transform.parent = boundary.transform;
 
 		GameObject boundaryFinish = Instantiate(FinishPrefab);
 		boundaryFinish.tag = "BoundaryFinish";
 		boundaryFinish.transform.position = new Vector3(0f, 10f, Length);
 		boundaryFinish.transform.rotation = Quaternion.Euler(-90f, 0f, 0f);
-		boundaryFinish.transform.localScale = new Vector3(Width / 10f, 1f, Width / 10f); // Divide by 10 since the Plane has dimensions 10x10 already.
+		boundaryFinish.transform.localScale = new Vector3(Width / 10f, 1f, Height); // Divide by 10 since the Plane has dimensions 10x10 already.
+		fixTextureScale(boundaryFinish);
 		boundaryFinish.transform.parent = boundary.transform;
 
 		GameObject sunlight = new GameObject("Sunlight");
@@ -97,4 +101,8 @@ public class LevelGenerator : MonoBehaviour {
 		return result;
 	}
 
+	private void fixTextureScale(GameObject subject) {
+		// Make the texture tile well even as we stretch the quad
+		subject.GetComponent<MeshRenderer>().material.mainTextureScale = new Vector2(subject.transform.localScale.x, subject.transform.localScale.z);
+	}
 }

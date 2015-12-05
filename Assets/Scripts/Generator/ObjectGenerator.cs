@@ -6,15 +6,19 @@ public class ObjectGenerator : MonoBehaviour {
 	public List<GameObject> StructuralObjects;
 	public List<GameObject> DynamicObjects;
 
-	public int NStructures = 10;
-	public int NDynamics = 10;
+	public float StructureDensityInv = 750f; // Reciprocal of structures per square meter
+	public float DynamicDensityInv = 750f; // Reciprocal of dynamics per square meter
 
 	/**
 	 * Generate the objects that are present (cannons, barrels etc)
 	 */
 	public List<GameObject> Generate (Terrain terrain, Rect boundary) {
-		List<GameObject> objects = generateStructuralObjects(terrain, boundary);
-		objects.AddRange(generateDynamicObjects(terrain, boundary));
+		float surfaceArea = boundary.width * boundary.height;
+		Debug.Log("Surface area: " + surfaceArea);
+		int nStructures = (int)Mathf.Round(surfaceArea / StructureDensityInv);
+		int nDynamics = (int)Mathf.Round(surfaceArea / DynamicDensityInv);
+		List<GameObject> objects = generateStructuralObjects(terrain, boundary, nStructures);
+		objects.AddRange(generateDynamicObjects(terrain, boundary, nDynamics));
 		return objects;
 	}
 	
@@ -32,9 +36,9 @@ public class ObjectGenerator : MonoBehaviour {
 	 * 
 	 * They may be embedded into the ground a bit.
 	 */
-	List<GameObject> generateStructuralObjects (Terrain terrain, Rect boundary) {
+	List<GameObject> generateStructuralObjects (Terrain terrain, Rect boundary, int amount) {
 		List<GameObject> result = new List<GameObject>();
-		for (int i = 0; i < NStructures; i++) {
+		for (int i = 0; i < amount; i++) {
 			GameObject current = generateObject(StructuralObjects, terrain, boundary);
 			current.transform.position += new Vector3(0f, -0.1f, 0f);
 			result.Add(current);
@@ -47,9 +51,9 @@ public class ObjectGenerator : MonoBehaviour {
 	 * 
 	 * They will not be empedded into the ground, but may spawn unnaturally above it.
 	 */
-	List<GameObject> generateDynamicObjects (Terrain terrain, Rect boundary) {
+	List<GameObject> generateDynamicObjects (Terrain terrain, Rect boundary, int amount) {
 		List<GameObject> result = new List<GameObject>();
-		for (int i = 0; i < NDynamics; i++) {
+		for (int i = 0; i < amount; i++) {
 			GameObject current = generateObject(DynamicObjects, terrain, boundary);
 			current.transform.position += new Vector3(0f, 1f, 0f); // Avoid immediate terrain collision (Placing the object using a sweep does not always work: MeshColliders are not supported.
 			result.Add(current);
