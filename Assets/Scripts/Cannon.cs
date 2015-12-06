@@ -4,12 +4,17 @@ public class Cannon : MonoBehaviour {
 
 	public GameObject Projectile;
 	public Transform EjectionPoint;
-	public float ProjectileSpeed;
-	public float ShotInterval;
+	public float ProjectileSpeed = 20;
+	public float ShotInterval = 3;
+	public float ProjectileSpeedVar = 0;
+	public float ShotIntervalVar = 0;
+
 	float LastShot;
 
 	void Start () {
 		LastShot = 0;
+		ProjectileSpeed += (Random.value*2-1) * ProjectileSpeedVar;
+		ShotInterval += (Random.value*2-1) * ShotIntervalVar;
 	}
 
 	void LateUpdate () {

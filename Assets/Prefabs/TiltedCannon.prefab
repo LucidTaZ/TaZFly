@@ -117,13 +117,23 @@ MonoBehaviour:
   EjectionPoint: {fileID: 489908}
   ProjectileSpeed: 20
   ShotInterval: 3
+  ProjectileSpeedVar: 5
+  ShotIntervalVar: 1
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: ProjectileSpeedVar
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: ShotIntervalVar
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 145798}
