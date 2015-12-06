@@ -14,7 +14,8 @@ public class LevelGenerator : MonoBehaviour {
 	public float Width = 50f;
 	public float Length = 150f;
 	const float Height = 5f; // Of the boundary
-	
+	public int EnemyCount = 1;
+
 	public GameObject BoundaryPrefab;
 	public GameObject FinishPrefab;
 
@@ -56,11 +57,15 @@ public class LevelGenerator : MonoBehaviour {
 		playerSpawn.tag = "Spawn";
 		playerSpawn.transform.position = PlayerSpawnPosition;
 		playerSpawn.transform.parent = result.transform;
-		
-		GameObject enemy1Spawn = new GameObject("Enemy Spawn 1");
-		enemy1Spawn.tag = "EnemySpawn";
-		enemy1Spawn.transform.position = EnemySpawnPosition;
-		enemy1Spawn.transform.parent = result.transform;
+
+		for (int i = 1; i <= EnemyCount; i++) {
+			GameObject enemySpawn = new GameObject("Enemy Spawn " + i);
+			enemySpawn.tag = "EnemySpawn";
+			float enemySpacing = 4f;
+			float enemyOffset = -EnemyCount/2 + i;
+			enemySpawn.transform.position = EnemySpawnPosition + new Vector3(enemySpacing * enemyOffset, 0, 0);
+			enemySpawn.transform.parent = result.transform;
+		}
 
 		GameObject boundary = new GameObject("Boundary");
 		boundary.transform.parent = result.transform;

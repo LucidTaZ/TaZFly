@@ -455,10 +455,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Width: 50
   Length: 150
+  EnemyCount: 10
   BoundaryPrefab: {fileID: 194632, guid: e70f786866219c64689a2a0ef21a186c, type: 2}
   FinishPrefab: {fileID: 154870, guid: 00d9120d0ceb1144789ceebcf971fc8f, type: 2}
-  PlayerSpawnPosition: {x: 6, y: 20, z: 0}
-  EnemySpawnPosition: {x: 8, y: 20, z: 0}
+  PlayerSpawnPosition: {x: 0, y: 20, z: 0}
+  EnemySpawnPosition: {x: 0, y: 15, z: 0}
 --- !u!4 &986803828
 Transform:
   m_ObjectHideFlags: 0
