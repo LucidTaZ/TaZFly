@@ -6,6 +6,12 @@ public class AvoidingAI : BaseAI {
 	public float LookDownAheadDistance;
 	RaycastHit hitInfo;
 
+	float lookDownAheadDistanceStart;
+
+	void Start () {
+		lookDownAheadDistanceStart = LookDownAheadDistance;
+	}
+
 	void Update () {
 		bool sweepResultForward = GetComponent<Rigidbody>().SweepTest(Vector3.forward, out hitInfo, LookAheadDistance);
 
@@ -23,6 +29,13 @@ public class AvoidingAI : BaseAI {
 				FlyLower();
 			}
 		}
+	}
+
+	void LateUpdate () {
+		// The more damage, the more cautious it becomes
+		Hitpoints hitpoints = GetComponent<Hitpoints>();
+		float damage = hitpoints.GetDamage();
+		LookDownAheadDistance = lookDownAheadDistanceStart * (1 + 2 * damage);
 	}
 
 }
