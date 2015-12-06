@@ -531,6 +531,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 1015826479}
+  - 114: {fileID: 1015826480}
   m_Layer: 0
   m_Name: Display Text
   m_TagString: Untagged
@@ -552,6 +553,19 @@ Transform:
   - {fileID: 456775765}
   m_Father: {fileID: 0}
   m_RootOrder: 3
+--- !u!114 &1015826480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1015826478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3313f642836e15f46bbb08dd92f95b59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HitpointsText: {fileID: 1570678103}
+  SpeedText: {fileID: 456775764}
 --- !u!1 &1570678102
 GameObject:
   m_ObjectHideFlags: 0
@@ -642,8 +656,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2998e003c7a8d1f41b63a3d7116e5ab8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HitpointText: {fileID: 1570678103}
-  SpeedText: {fileID: 456775764}
+  Gui: {fileID: 1015826480}
   ShipTemplate: {fileID: 100000, guid: 1b755fba83643734da848502acd2ab31, type: 2}
   MinY: 0
   MaxY: 25

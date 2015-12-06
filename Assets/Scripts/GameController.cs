@@ -2,8 +2,7 @@
 
 public class GameController : MonoBehaviour {
 
-	public GUIText HitpointText;
-	public GUIText SpeedText;
+	public GUIController Gui;
 
 	public GameObject ShipTemplate;
 	protected GameObject InstantiatedPlayerShip;
@@ -75,9 +74,6 @@ public class GameController : MonoBehaviour {
 				//Debug.Log("Player dead.");
 				Application.Quit();
 			}
-
-			HitpointText.text = System.String.Format("Hitpoints: {0:P0}", Mathf.Max(0, InstantiatedPlayerHitpoints.GetRelativeHitpoints()));
-			SpeedText.text = System.String.Format("Speed: {0:N2}", InstantiatedPlayerShip.GetComponent<Rigidbody>().velocity.z);
 		}
 	}
 
@@ -170,6 +166,7 @@ public class GameController : MonoBehaviour {
 
 	void attachPlayer (GameObject ship) {
 		InstantiatedPlayerHitpoints = ship.GetComponent<Hitpoints>();
+		Gui.SetPlayer(ship);
 
 		ShipSteeringController sc = ship.AddComponent<PlayerController>();
 		sc.HorizontalMoveRate = 10;
