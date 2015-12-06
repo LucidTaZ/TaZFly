@@ -454,7 +454,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Width: 50
-  Length: 150
+  Length: 1000
   EnemyCount: 10
   BoundaryPrefab: {fileID: 194632, guid: e70f786866219c64689a2a0ef21a186c, type: 2}
   FinishPrefab: {fileID: 154870, guid: 00d9120d0ceb1144789ceebcf971fc8f, type: 2}
@@ -521,8 +521,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c50f185fad09083419f03eac2f179fa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FrequencyScale: 15
-  BaselineImportance: .600000024
+  FrequencyScale: 30
+  BaselineImportance: .200000003
+  Skew: 1.39999998
 --- !u!1 &1015826478
 GameObject:
   m_ObjectHideFlags: 0
