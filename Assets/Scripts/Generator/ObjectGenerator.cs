@@ -11,10 +11,11 @@ public class ObjectGenerator : MonoBehaviour {
 
 	/**
 	 * Generate the objects that are present (cannons, barrels etc)
+	 * 
+	 * TODO: Protect spawn area
 	 */
 	public List<GameObject> Generate (Terrain terrain, Rect boundary) {
 		float surfaceArea = boundary.width * boundary.height;
-		Debug.Log("Surface area: " + surfaceArea);
 		int nStructures = (int)Mathf.Round(surfaceArea / StructureDensityInv);
 		int nDynamics = (int)Mathf.Round(surfaceArea / DynamicDensityInv);
 		List<GameObject> objects = generateStructuralObjects(terrain, boundary, nStructures);

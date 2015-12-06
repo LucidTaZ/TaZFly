@@ -17,9 +17,6 @@ public class PerlinNoise2D : MonoBehaviour, INoise2D
 	{
 		float baselineHeight = Mathf.PerlinNoise(point.y / FrequencyScale / 5 + 9999, 0f);
 		float detailHeight = Mathf.PerlinNoise(point.x / FrequencyScale, point.y / FrequencyScale);
-		if (detailHeight > 0.95) {
-			Debug.Log("baselineHeight: " + baselineHeight + ", detailHeight: " + detailHeight);
-		}
 		return Mathf.Lerp(detailHeight, baselineHeight, BaselineImportance);
 	}
 

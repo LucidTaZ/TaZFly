@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class AvoidingAI : BaseAI {
 
@@ -9,7 +8,6 @@ public class AvoidingAI : BaseAI {
 
 	void Update () {
 		bool sweepResultForward = GetComponent<Rigidbody>().SweepTest(Vector3.forward, out hitInfo, LookAheadDistance);
-		//bool sweepResultForward = rigidbody.SweepTest(rigidbody.velocity, out hitInfo, LookAheadDistance);
 
 		if (sweepResultForward) {
 			AvoidPoint(hitInfo.point);

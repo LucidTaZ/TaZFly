@@ -21,7 +21,6 @@ public class Hitpoints : MonoBehaviour {
 
     public void Decrease(int delta = 1)
     {
-        //Debug.Log("Taking " + delta + " damage.");
         HitpointsValue -= delta;
 
         if (!IsAlive() && GetComponents<PlayerController>().Length == 0)

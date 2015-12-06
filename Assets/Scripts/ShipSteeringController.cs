@@ -14,14 +14,13 @@ public class ShipSteeringController : MonoBehaviour {
 			Mathf.Clamp(dx, -1.0f, 1.0f) * HorizontalMoveRate,
 			Mathf.Clamp(dy, -1.0f, 1.0f) * VerticalMoveRate,
 			GetComponent<Rigidbody>().velocity.z
-			);
+		);
 		
 		GetComponent<Rigidbody>().velocity = Vector3.Lerp(
 			GetComponent<Rigidbody>().velocity,
 			desiredVector,
 			increment
-			);
-		//Debug.Log("Steered to " + rigidbody.velocity + ".");
+		);
 	}
 
 	protected void Steer (Vector3 direction) {

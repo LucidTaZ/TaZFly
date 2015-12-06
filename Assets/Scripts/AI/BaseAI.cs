@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class BaseAI : ShipSteeringController {
 
@@ -10,17 +9,14 @@ public class BaseAI : ShipSteeringController {
 		resolutionDirection.x = Mathf.Sign(resolutionDirection.x);
 		resolutionDirection.y = Mathf.Sign(resolutionDirection.y);
 
-		//Debug.Log("Avoiding by going " + resolutionDirection + ".");
 		Steer(resolutionDirection);
 	}
 
 	protected void FlyLower () {
-		//Debug.Log("Lowering.");
 		Steer(0.0f, -2.0f);
 	}
 
 	protected void FlyStraight () {
-		//Debug.Log("Flying straight.");
 		Steer(0.0f, 0.0f);
 	}
 
