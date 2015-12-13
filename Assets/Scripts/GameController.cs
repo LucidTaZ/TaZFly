@@ -1,25 +1,35 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class GameController : MonoBehaviour {
 
 	public GUIController Gui;
 
 	public GameObject ShipTemplate;
-	protected GameObject InstantiatedPlayerShip;
-	protected Hitpoints InstantiatedPlayerHitpoints;
-
 	public float MinY;
 	public float MaxY;
 
 	public GameObject[] Levels;
-	private int currentLevelIndex;
-	private GameObject currentLevel = null; // Points to the currently instantiated prefab
 
-	private bool loadNextLevelFlag; // Flag that steers loading the next level.
-	private bool levelUnloaded = false; // Flag that signals that the loading of a new level can start (Unity needs one game loop cycle to destroy stuff)
-	private bool levelActive = false; // Becomes true after level loading, becomes false before level unloading. Prevents null references after the last level has been played.
+	GameObject instantiatedPlayerShip;
+	List<GameObject> instantiatedEnemyShips = new List<GameObject>();
+	Hitpoints instantiatedPlayerHitpoints;
+	
+	List<IGameListener> listeners = new List<IGameListener>();
+
+	int currentLevelIndex;
+	GameObject currentLevel = null; // Points to the currently instantiated prefab
+
+	bool loadNextLevelFlag; // Flag that steers loading the next level.
+	bool levelUnloaded = false; // Flag that signals that the loading of a new level can start (Unity needs one game loop cycle to destroy stuff)
+	bool levelActive = false; // Becomes true after level loading, becomes false before level unloading. Prevents null references after the last level has been played.
+
+	public void Register (IGameListener listener) {
+		listeners.Add(listener);
+	}
 
 	void Start () {
+		listeners.ForEach(delegate(IGameListener listener) { listener.OnGameStarted(); });
 		loadNextLevel(0);
 	}
 
@@ -46,6 +56,7 @@ public class GameController : MonoBehaviour {
 		}
 
 		levelActive = true;
+		listeners.ForEach(delegate(IGameListener listener) { listener.OnLevelStarted(currentLevel); });
 	}
 
 	void Update () {
@@ -66,11 +77,14 @@ public class GameController : MonoBehaviour {
 
 		if (Input.GetKey(KeyCode.Escape)) {
 			Debug.Log("Player quit.");
+			listeners.ForEach(delegate(IGameListener listener) { listener.OnLevelEnded(currentLevel); listener.OnGameEnded(); });
 			Application.Quit();
 		}
 
+		checkPlayers();
+
 		if (levelActive) {
-			if (!InstantiatedPlayerHitpoints.IsAlive()) {
+			if (!instantiatedPlayerHitpoints.IsAlive()) {
 				//Debug.Log("Player dead.");
 				Application.Quit();
 			}
@@ -79,11 +93,13 @@ public class GameController : MonoBehaviour {
 
 	public void PlayerFinished () {
 		//Debug.Log("Player finished.");
+		listeners.ForEach(delegate(IGameListener listener) { listener.OnPlayerFinished(instantiatedPlayerShip); }); // TODO: Fire event also for enemy finished
 		loadNextLevelFlag = true;
 	}
 
 	void unloadLevel () {
 		levelActive = false;
+		listeners.ForEach(delegate(IGameListener listener) { listener.OnLevelEnded(currentLevel); });
 		if (currentLevel != null) {
 			unloadCameras();
 			//Debug.Log("Destroying current level with name: " + currentLevel.name);
@@ -91,6 +107,8 @@ public class GameController : MonoBehaviour {
 			//DestroyImmediate(currentLevel);
 			currentLevel = null;
 		}
+
+		instantiatedEnemyShips.Clear();
 
 		// Really check whether Unity did its job:
 		if (GameObject.FindGameObjectsWithTag("Spawn").Length == 0) {
@@ -145,13 +163,16 @@ public class GameController : MonoBehaviour {
 	}
 
 	void instantiatePlayerShip (Boundary fieldBoundary, GameObject level, Vector3 spawnPoint) {
-		InstantiatedPlayerShip = instantiateShip(fieldBoundary, level, spawnPoint);
-		attachPlayer(InstantiatedPlayerShip);
+		instantiatedPlayerShip = instantiateShip(fieldBoundary, level, spawnPoint);
+		attachPlayer(instantiatedPlayerShip);
+		listeners.ForEach(delegate(IGameListener listener) { listener.OnPlayerCreated(instantiatedPlayerShip); });
 	}
 
 	void instantiateEnemyShip (Boundary fieldBoundary, GameObject level, Vector3 spawnPoint) {
 		GameObject instantiatedShip = instantiateShip(fieldBoundary, level, spawnPoint);
 		attachAI(instantiatedShip);
+		instantiatedEnemyShips.Add(instantiatedShip);
+		listeners.ForEach(delegate(IGameListener listener) { listener.OnPlayerCreated(instantiatedShip); });
 	}
 
 	GameObject instantiateShip (Boundary fieldBoundary, GameObject level, Vector3 spawnPoint) {
@@ -165,7 +186,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	void attachPlayer (GameObject ship) {
-		InstantiatedPlayerHitpoints = ship.GetComponent<Hitpoints>();
+		instantiatedPlayerHitpoints = ship.GetComponent<Hitpoints>();
 		Gui.SetPlayer(ship);
 
 		ShipSteeringController sc = ship.AddComponent<PlayerController>();
@@ -178,7 +199,7 @@ public class GameController : MonoBehaviour {
 
 		// Give Player collider to Finish, so the Finish knows when to trigger
 		
-		GameObject.FindGameObjectWithTag("BoundaryFinish").GetComponent<FinishController>().Load(InstantiatedPlayerShip);
+		GameObject.FindGameObjectWithTag("BoundaryFinish").GetComponent<FinishController>().Load(instantiatedPlayerShip);
 	}
 
 	void attachAI (GameObject ship) {
@@ -209,4 +230,19 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+	/**
+	 * See who is still alive and send events for those that died
+	 */
+	void checkPlayers () {
+		if (instantiatedPlayerShip != null && !instantiatedPlayerShip.GetComponent<Hitpoints>().IsAlive()) {
+			listeners.ForEach(delegate(IGameListener listener) { listener.OnPlayerDestroyed(instantiatedPlayerShip); });
+		}
+		for (int i = 0; i < instantiatedEnemyShips.Count; i++) {
+			GameObject enemy = instantiatedEnemyShips[i];
+			if (enemy == null || !enemy.GetComponent<Hitpoints>().IsAlive()) {
+				listeners.ForEach(delegate(IGameListener listener) { listener.OnPlayerDestroyed(enemy); });
+				instantiatedEnemyShips.RemoveAt(i);
+			}
+		}
+	}
 }
