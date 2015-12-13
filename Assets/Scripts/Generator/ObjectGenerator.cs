@@ -9,15 +9,20 @@ public class ObjectGenerator : MonoBehaviour {
 	public float StructureDensityInv = 750f; // Reciprocal of structures per square meter
 	public float DynamicDensityInv = 750f; // Reciprocal of dynamics per square meter
 
+	public Rect ProtectedZone; // No-spawn zone
+
 	/**
 	 * Generate the objects that are present (cannons, barrels etc)
-	 * 
-	 * TODO: Protect spawn area
 	 */
 	public List<GameObject> Generate (Terrain terrain, Rect boundary) {
-		float surfaceArea = boundary.width * boundary.height;
-		int nStructures = (int)Mathf.Round(surfaceArea / StructureDensityInv);
-		int nDynamics = (int)Mathf.Round(surfaceArea / DynamicDensityInv);
+		float totalSurfaceArea = boundary.width * boundary.height;
+		float protectedSurfaceArea = ProtectedZone.width * ProtectedZone.height;
+		float usableSurfaceArea = totalSurfaceArea - protectedSurfaceArea;
+		if (usableSurfaceArea < 0f) {
+			throw new UnityException("Negative surface area, check settings.");
+		}
+		int nStructures = (int)Mathf.Round(usableSurfaceArea / StructureDensityInv);
+		int nDynamics = (int)Mathf.Round(usableSurfaceArea / DynamicDensityInv);
 		List<GameObject> objects = generateStructuralObjects(terrain, boundary, nStructures);
 		objects.AddRange(generateDynamicObjects(terrain, boundary, nDynamics));
 		return objects;
@@ -25,8 +30,11 @@ public class ObjectGenerator : MonoBehaviour {
 	
 	GameObject generateObject (IList<GameObject> pool, Terrain terrain, Rect boundary) {
 		GameObject result = Instantiate(pool[Random.Range(0, pool.Count)]);
-		float x = Random.Range(boundary.xMin, boundary.xMax);
-		float z = Random.Range(boundary.yMin, boundary.yMax);
+		float x, z;
+		do {
+			x = Random.Range(boundary.xMin, boundary.xMax);
+			z = Random.Range(boundary.yMin, boundary.yMax);
+		} while (isInsideProtectedZone(x, z));
 		float y = terrain.SampleHeight(new Vector3(x, 0f, z));
 		result.transform.position = new Vector3(x, y, z);
 		return result;
@@ -60,5 +68,9 @@ public class ObjectGenerator : MonoBehaviour {
 			result.Add(current);
 		}
 		return result;
+	}
+
+	bool isInsideProtectedZone (float x, float z) {
+		return ProtectedZone.Contains(new Vector2(x, z));
 	}
 }

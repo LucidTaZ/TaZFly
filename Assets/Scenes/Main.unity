@@ -561,6 +561,12 @@ MonoBehaviour:
   - {fileID: 100000, guid: a32d1918824c42a42be32d77238dd884, type: 2}
   StructureDensityInv: 750
   DynamicDensityInv: 750
+  ProtectedZone:
+    serializedVersion: 2
+    x: -12.5
+    y: 0
+    width: 25
+    height: 40
 --- !u!114 &986803831
 MonoBehaviour:
   m_ObjectHideFlags: 0
