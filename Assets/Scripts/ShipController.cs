@@ -20,6 +20,7 @@ public class ShipController : MonoBehaviour {
 	protected const float EPSILON = 0.0001f;
 
 	public void Load (Boundary boundary) {
+		Exhaust.gameObject.SetActive(false); // Fix for emission bug in 5.3.1f1. Should be fixed in 5.3.1p1 or 5.3.2
 		FieldBoundary = boundary;
 	}
 
@@ -70,7 +71,9 @@ public class ShipController : MonoBehaviour {
 	void adjustExhaust () {
 		if (GetComponent<Hitpoints>()) {
 			float damage = GetComponent<Hitpoints>().GetDamage(); // 0 to 1
-			Exhaust.emissionRate = damage * 10;
+			ParticleSystem.MinMaxCurve emissionRate = new ParticleSystem.MinMaxCurve(damage * 10);
+			ParticleSystem.EmissionModule em = Exhaust.emission;
+			em.rate = emissionRate;
 			Exhaust.startLifetime = damage * 4.5f + 0.5f;
 			Exhaust.startColor = Color.Lerp(Color.white, Color.black, damage);
 		} else {
