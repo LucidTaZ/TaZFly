@@ -1,51 +1,52 @@
 ﻿using UnityEngine;
 
-public class Hitpoints : MonoBehaviour {
+public class Hitpoints : MonoBehaviour, IHitpointsUser {
 
-    protected int StartHitpoints;
     public int HitpointsValue;
 
-    void Start()
+	protected HitpointsController controller;
+
+    void OnEnable()
     {
-        StartHitpoints = HitpointsValue; // Take over setting from editor.
+		controller.SetHitpointsUser(this);
     }
+
+	void Awake()
+	{
+		controller = new HitpointsController(HitpointsValue); // Take over setting from editor.
+	}
 
     void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.GetComponent<OverrideDamage>()) {
-            Decrease(collision.collider.GetComponent<OverrideDamage>().Damage);
+            controller.Decrease(collision.collider.GetComponent<OverrideDamage>().Damage);
         } else {
-            Decrease((int)collision.relativeVelocity.magnitude);
+			controller.Decrease((int)collision.relativeVelocity.magnitude);
         }
     }
 
-    public void Decrease(int delta = 1)
-    {
-        HitpointsValue -= delta;
+	public void Die ()
+	{
+		if (GetComponents<PlayerController>().Length == 0) {
+			Debug.Log("AI Player died.");
+			Destroy(gameObject);
 
-        if (!IsAlive() && GetComponents<PlayerController>().Length == 0)
-        {
-            // AI player died
-            Debug.Log("AI Player died.");
-            Destroy(gameObject);
+			// TODO: Should we rewrite this to remove the PlayerController check and handle the player case by throwing an Event or something?
+		}
+	}
 
-            // TODO: Should we rewrite this to remove the PlayerController check and handle the player case by throwing an Event or something?
-        }
-    }
+	public bool IsAlive()
+	{
+		return controller.IsAlive();
+	}
 
-    public float GetRelativeHitpoints()
-    {
-        return (float)HitpointsValue / StartHitpoints;
-    }
+	public float GetRelativeHitpoints()
+	{
+		return controller.GetRelativeHitpoints();
+	}
 
-    public float GetDamage()
-    {
-        return Mathf.Clamp(1.0f - GetRelativeHitpoints(), 0.0f, 1.0f);
-    }
-
-    public bool IsAlive()
-    {
-        return HitpointsValue > 0;
-    }
-
+	public float GetDamage()
+	{
+		return controller.GetDamage();
+	}
 }
