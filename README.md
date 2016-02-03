@@ -14,6 +14,8 @@ In this game, you fly faster if you fly lower! The controls are WASD on desktop 
 
 ![Imgur](http://i.imgur.com/R6fSqLq.jpg)
 
+![Imgur](http://i.imgur.com/c7AM1Us.jpg)
+
 # Thanks
 This game is inspired by a small indie game I played a long time ago. It had a similar game mechanic of coupling the speed to the altitude. Unfortunately I cannot remember the name of that game, but it was awesome, thanks a lot!
 
