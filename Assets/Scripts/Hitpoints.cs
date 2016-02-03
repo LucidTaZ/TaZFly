@@ -4,6 +4,8 @@ public class Hitpoints : MonoBehaviour, IHitpointsUser {
 
     public int HitpointsValue;
 
+	public GameObject DeathExplosion;
+
 	protected HitpointsController controller;
 
     void OnEnable()
@@ -27,11 +29,16 @@ public class Hitpoints : MonoBehaviour, IHitpointsUser {
 
 	public void Die ()
 	{
-		if (GetComponents<PlayerController>().Length == 0) {
-			Debug.Log("AI Player died.");
-			Destroy(gameObject);
-
-			// TODO: Should we rewrite this to remove the PlayerController check and handle the player case by throwing an Event or something?
+		// Explode the Detonator framework explosion
+		if (DeathExplosion) {
+			GameObject detonatorObject = GameObject.Instantiate(DeathExplosion);
+			DeathExplosion = null; // Make sure it only happens once!
+			detonatorObject.transform.position = transform.position;
+			detonatorObject.GetComponent<Detonator>().Explode();
+			CameraShakePositional.ShakeAtLocation(transform.position, 50, 5, 1.0f, 6.5f);
+			DestroyObject(gameObject, detonatorObject.GetComponent<Detonator>().destroyTime); // Destroy gameobject when effect is approximately over
+		} else {
+			DestroyObject(gameObject);
 		}
 	}
 

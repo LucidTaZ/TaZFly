@@ -221,6 +221,14 @@ public class GameController : MonoBehaviour {
 			if ((swoon = thisCamera.GetComponent<CameraSwoon>()) != null) {
 				swoon.Load(ship);
 			}
+			CameraFollow pcs;
+			if ((pcs = thisCamera.GetComponentInParent<CameraFollow>()) != null) {
+				pcs.Load(ship);
+			}
+			CameraSwoon pswoon;
+			if ((pswoon = thisCamera.GetComponentInParent<CameraSwoon>()) != null) {
+				pswoon.Load(ship);
+			}
 		}
 	}
 
