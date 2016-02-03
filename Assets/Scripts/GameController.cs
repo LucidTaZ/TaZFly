@@ -213,9 +213,13 @@ public class GameController : MonoBehaviour {
 		
 		Camera[] cameras = FindObjectsOfType<Camera>();
 		foreach (Camera thisCamera in cameras) {
-			CameraController cs;
-			if ((cs = thisCamera.GetComponent<CameraController>()) != null) {
+			CameraFollow cs;
+			if ((cs = thisCamera.GetComponent<CameraFollow>()) != null) {
 				cs.Load(ship);
+			}
+			CameraSwoon swoon;
+			if ((swoon = thisCamera.GetComponent<CameraSwoon>()) != null) {
+				swoon.Load(ship);
 			}
 		}
 	}
@@ -223,9 +227,13 @@ public class GameController : MonoBehaviour {
 	void unloadCameras () {
 		Camera[] cameras = FindObjectsOfType<Camera>();
 		foreach (Camera thisCamera in cameras) {
-			CameraController cs;
-			if ((cs = thisCamera.GetComponent<CameraController>()) != null) {
+			CameraFollow cs;
+			if ((cs = thisCamera.GetComponent<CameraFollow>()) != null) {
 				cs.Unload();
+			}
+			CameraSwoon swoon;
+			if ((swoon = thisCamera.GetComponent<CameraSwoon>()) != null) {
+				swoon.Unload();
 			}
 		}
 	}

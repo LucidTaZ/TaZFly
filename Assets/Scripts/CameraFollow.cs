@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class CameraController : MonoBehaviour {
+public class CameraFollow : MonoBehaviour {
 
 	private GameObject Subject;
 	private bool loaded = false;
@@ -17,7 +17,8 @@ public class CameraController : MonoBehaviour {
 	}
 
 	void Start () {
-		offset = transform.position; // Take over the relative position modeled in the editor.
+		// Take over the relative settings modeled in the editor.
+		offset = transform.position;
 	}
 	
 	void LateUpdate () {
