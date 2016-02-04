@@ -17,6 +17,8 @@ GameObject:
   - 82: {fileID: 8259606}
   - 114: {fileID: 11458364}
   - 114: {fileID: 11470686}
+  - 114: {fileID: 11487352}
+  - 114: {fileID: 11414736}
   m_Layer: 0
   m_Name: Ship
   m_TagString: Ship
@@ -310,12 +312,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f66fe6e1996142e48a30a99493f72a97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BankElevator: 5
-  BankAileron: 5
-  BankRudder: 2
-  BankConvergeSpeed: 0.5
-  PropellerAnimator: {fileID: 9500000}
   Exhaust: {fileID: 19800000}
+--- !u!114 &11414736
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46d9d18f2dab7bc4699856cdc58be0f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PropellerAnimator: {fileID: 9500000}
 --- !u!114 &11416586
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -370,6 +379,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ScaleFactor: 0.01
   NeutralSpeed: 10
+--- !u!114 &11487352
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa9ce11473506bb4da9bc77013dd38ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BankElevator: 5
+  BankAileron: 5
+  BankRudder: 2
+  BankConvergeSpeed: 0.5
 --- !u!136 &13600000
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -2023,6 +2047,26 @@ Prefab:
       propertyPath: DeathExplosion
       value: 
       objectReference: {fileID: 100000, guid: d87da4e2db8e1eb4ab14da9e244c6f69, type: 2}
+    - target: {fileID: 0}
+      propertyPath: BankElevator
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: BankAileron
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: BankRudder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: BankConvergeSpeed
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: PropellerAnimator
+      value: 
+      objectReference: {fileID: 9500000}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 100000}

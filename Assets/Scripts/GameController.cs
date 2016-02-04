@@ -250,6 +250,9 @@ public class GameController : MonoBehaviour {
 	 * See who is still alive and send events for those that died
 	 */
 	void checkPlayers () {
+		if (instantiatedPlayerShip == null) {
+			loadNextLevelFlag = true;
+		}
 		if (instantiatedPlayerShip != null && !instantiatedPlayerShip.GetComponent<Hitpoints>().IsAlive()) {
 			listeners.ForEach(delegate(IGameListener listener) { listener.OnPlayerDestroyed(instantiatedPlayerShip); });
 		}
@@ -257,7 +260,7 @@ public class GameController : MonoBehaviour {
 			GameObject enemy = instantiatedEnemyShips[i];
 			if (enemy == null || !enemy.GetComponent<Hitpoints>().IsAlive()) {
 				listeners.ForEach(delegate(IGameListener listener) { listener.OnPlayerDestroyed(enemy); });
-				instantiatedEnemyShips.RemoveAt(i);
+				//instantiatedEnemyShips.RemoveAt(i);
 			}
 		}
 	}

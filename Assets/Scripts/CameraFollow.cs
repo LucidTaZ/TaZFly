@@ -22,7 +22,7 @@ public class CameraFollow : MonoBehaviour {
 	}
 	
 	void LateUpdate () {
-		if (loaded) {
+		if (loaded && Subject) {
 			transform.position = Subject.transform.position + offset;
 		}
 	}

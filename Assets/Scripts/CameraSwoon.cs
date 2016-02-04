@@ -25,7 +25,7 @@ public class CameraSwoon : MonoBehaviour {
 	}
 	
 	void LateUpdate () {
-		if (loaded) {
+		if (loaded && Subject) {
 			Quaternion maximumDeviation = Quaternion.Slerp(rotation, Subject.transform.rotation, MaxDeviation);
 			transform.rotation = Quaternion.Slerp(transform.rotation, maximumDeviation, ConvergeSpeed * Time.deltaTime);
 		}
