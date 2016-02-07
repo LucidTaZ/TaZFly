@@ -3,6 +3,7 @@
 public class Hitpoints : MonoBehaviour, IHitpointsUser {
 
     public int HitpointsValue;
+	public float DamagePerNewton = 1000;
 
 	public GameObject DeathExplosion;
 
@@ -29,7 +30,9 @@ public class Hitpoints : MonoBehaviour, IHitpointsUser {
         if (collision.collider.GetComponent<OverrideDamage>()) {
             controller.Decrease(collision.collider.GetComponent<OverrideDamage>().Damage);
         } else {
-			controller.Decrease((int)collision.relativeVelocity.magnitude);
+			//controller.Decrease((int)collision.relativeVelocity.magnitude);
+			float force = collision.impulse.magnitude / Time.fixedDeltaTime;
+			controller.Decrease((int)(force / DamagePerNewton));
         }
     }
 

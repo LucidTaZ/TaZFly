@@ -208,7 +208,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!82 &8259606
 AudioSource:
@@ -352,6 +352,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HitpointsValue: 100
+  DamagePerNewton: 1000
   DeathExplosion: {fileID: 100000, guid: d87da4e2db8e1eb4ab14da9e244c6f69, type: 2}
 --- !u!114 &11458364
 MonoBehaviour:
@@ -392,8 +393,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BankElevator: 5
   BankAileron: 5
-  BankRudder: 2
-  BankConvergeSpeed: 0.5
+  BankRudder: 3
+  BankConvergeSpeed: 50
 --- !u!136 &13600000
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -2057,16 +2058,36 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: BankRudder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: BankConvergeSpeed
-      value: 0.5
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: PropellerAnimator
       value: 
       objectReference: {fileID: 9500000}
+    - target: {fileID: 0}
+      propertyPath: m_Constraints
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 100000}
