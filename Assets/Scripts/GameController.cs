@@ -13,6 +13,7 @@ public class GameController : MonoBehaviour {
 
 	GameObject instantiatedPlayerShip;
 	List<GameObject> instantiatedEnemyShips = new List<GameObject>();
+	List<GameObject> notifiedDeaths = new List<GameObject>();
 	Hitpoints instantiatedPlayerHitpoints;
 	
 	List<IGameListener> listeners = new List<IGameListener>();
@@ -60,6 +61,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	void Update () {
+		//Debug.Log("Update()...");
 		if (loadNextLevelFlag) {
 			if (!levelUnloaded) {
 				unloadLevel();
@@ -82,13 +84,6 @@ public class GameController : MonoBehaviour {
 		}
 
 		checkPlayers();
-
-		if (levelActive) {
-			if (!instantiatedPlayerHitpoints.IsAlive()) {
-				//Debug.Log("Player dead.");
-				Application.Quit();
-			}
-		}
 	}
 
 	public void PlayerFinished () {
@@ -98,17 +93,28 @@ public class GameController : MonoBehaviour {
 	}
 
 	void unloadLevel () {
+		Debug.Log("Unloading level...");
+
 		levelActive = false;
 		listeners.ForEach(delegate(IGameListener listener) { listener.OnLevelEnded(currentLevel); });
 		if (currentLevel != null) {
 			unloadCameras();
-			//Debug.Log("Destroying current level with name: " + currentLevel.name);
+
 			DestroyObject(currentLevel);
-			//DestroyImmediate(currentLevel);
+
+			if (instantiatedPlayerShip != null) {
+				DestroyObject(instantiatedPlayerShip);
+			}
+			instantiatedEnemyShips.ForEach(delegate(GameObject enemyShip) {
+				if (enemyShip != null) {
+					DestroyObject(enemyShip);
+				}
+			});
+			instantiatedEnemyShips.Clear();
+			notifiedDeaths.Clear();
+
 			currentLevel = null;
 		}
-
-		instantiatedEnemyShips.Clear();
 
 		// Really check whether Unity did its job:
 		if (GameObject.FindGameObjectsWithTag("Spawn").Length == 0) {
@@ -117,14 +123,14 @@ public class GameController : MonoBehaviour {
 	}
 
 	GameObject loadLevel (GameObject level) {
-		// Have origin
+		Debug.Log("Loading level...");
 
+		// Have origin
 		if (GameObject.FindGameObjectsWithTag("Spawn").Length != 1) {
 			throw new UnityException("Level must have 1 gameobject with tag Spawn.");
 		}
 		
 		// Have boundary
-
 		if (GameObject.FindGameObjectsWithTag("BoundaryFinish").Length != 1) {
 			throw new UnityException("Level must have 1 gameobject with tag BoundaryFinish.");
 		}
@@ -254,13 +260,19 @@ public class GameController : MonoBehaviour {
 			loadNextLevelFlag = true;
 		}
 		if (instantiatedPlayerShip != null && !instantiatedPlayerShip.GetComponent<Hitpoints>().IsAlive()) {
-			listeners.ForEach(delegate(IGameListener listener) { listener.OnPlayerDestroyed(instantiatedPlayerShip); });
+			if (!notifiedDeaths.Contains(instantiatedPlayerShip)) {
+				listeners.ForEach(delegate(IGameListener listener) { listener.OnPlayerDestroyed(instantiatedPlayerShip); });
+				notifiedDeaths.Add(instantiatedPlayerShip);
+			}
 		}
 		for (int i = 0; i < instantiatedEnemyShips.Count; i++) {
 			GameObject enemy = instantiatedEnemyShips[i];
 			if (enemy == null || !enemy.GetComponent<Hitpoints>().IsAlive()) {
-				listeners.ForEach(delegate(IGameListener listener) { listener.OnPlayerDestroyed(enemy); });
-				//instantiatedEnemyShips.RemoveAt(i);
+				if (!notifiedDeaths.Contains(enemy)) {
+					listeners.ForEach(delegate(IGameListener listener) { listener.OnPlayerDestroyed(enemy); });
+					instantiatedEnemyShips.RemoveAt(i); // Lose track of ship, the ship will destroy itself via a timer
+					notifiedDeaths.Add(enemy);
+				}
 			}
 		}
 	}

@@ -38,12 +38,18 @@ public class Hitpoints : MonoBehaviour, IHitpointsUser {
 
 	public void Die ()
 	{
+		if (GetComponent<PlayerController>()) {
+			Debug.Log("Starting to die...");
+		}
 		Destroy(GetComponent<AutomaticSpeed>());
 		Destroy(GetComponent<ShipSteeringController>());
 		Destroy(GetComponent<BankByVelocity>());
 		GetComponent<Rigidbody>().useGravity = true;
 		GetComponent<Rigidbody>().freezeRotation = false;
 		GetComponent<PropellerController>().StopSpinning();
+		if (GetComponent<PlayerController>()) {
+			Debug.Log("Died.");
+		}
 	}
 
 	void Explode()
