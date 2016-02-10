@@ -15,8 +15,6 @@ public class GameController : MonoBehaviour {
 	List<GameObject> instantiatedEnemyShips = new List<GameObject>();
 	List<GameObject> notifiedDeaths = new List<GameObject>();
 	Hitpoints instantiatedPlayerHitpoints;
-	
-	List<IGameListener> listeners = new List<IGameListener>();
 
 	int currentLevelIndex;
 	GameObject currentLevel = null; // Points to the currently instantiated prefab
@@ -25,12 +23,7 @@ public class GameController : MonoBehaviour {
 	bool levelUnloaded = false; // Flag that signals that the loading of a new level can start (Unity needs one game loop cycle to destroy stuff)
 	bool levelActive = false; // Becomes true after level loading, becomes false before level unloading. Prevents null references after the last level has been played.
 
-	public void Register (IGameListener listener) {
-		listeners.Add(listener);
-	}
-
 	void Start () {
-		listeners.ForEach(delegate(IGameListener listener) { listener.OnGameStarted(); });
 		loadNextLevel(0);
 	}
 
@@ -57,7 +50,6 @@ public class GameController : MonoBehaviour {
 		}
 
 		levelActive = true;
-		listeners.ForEach(delegate(IGameListener listener) { listener.OnLevelStarted(currentLevel); });
 	}
 
 	void Update () {
@@ -77,18 +69,11 @@ public class GameController : MonoBehaviour {
 			}
 		}
 
-		if (Input.GetKey(KeyCode.Escape)) {
-			Debug.Log("Player quit.");
-			listeners.ForEach(delegate(IGameListener listener) { listener.OnLevelEnded(currentLevel); listener.OnGameEnded(); });
-			Application.Quit();
-		}
-
 		checkPlayers();
 	}
 
 	public void PlayerFinished () {
 		//Debug.Log("Player finished.");
-		listeners.ForEach(delegate(IGameListener listener) { listener.OnPlayerFinished(instantiatedPlayerShip); }); // TODO: Fire event also for enemy finished
 		loadNextLevelFlag = true;
 	}
 
@@ -96,7 +81,6 @@ public class GameController : MonoBehaviour {
 		Debug.Log("Unloading level...");
 
 		levelActive = false;
-		listeners.ForEach(delegate(IGameListener listener) { listener.OnLevelEnded(currentLevel); });
 		if (currentLevel != null) {
 			unloadCameras();
 
@@ -149,45 +133,44 @@ public class GameController : MonoBehaviour {
 			throw new UnityException("Please model the level as a box with the long side aligned with the Z axis.");
 		}
 
-		Boundary fieldBoundary = new Boundary();
-		fieldBoundary.MinX = GameObject.FindGameObjectWithTag("BoundaryLeft").transform.position.x;
-		fieldBoundary.MaxX = GameObject.FindGameObjectWithTag("BoundaryRight").transform.position.x;
-		fieldBoundary.MinY = MinY;
-		fieldBoundary.MaxY = MaxY;
+		BoundaryEnforcer be;
+		if (be = GetComponent<BoundaryEnforcer>()) {
+			be.FieldBoundary.MinX = GameObject.FindGameObjectWithTag("BoundaryLeft").transform.position.x;
+			be.FieldBoundary.MaxX = GameObject.FindGameObjectWithTag("BoundaryRight").transform.position.x;
+			be.FieldBoundary.MinY = MinY;
+			be.FieldBoundary.MaxY = MaxY;
+		}
 
 		// Load Ship
 		GameObject spawn = GameObject.FindGameObjectWithTag("Spawn");
-		instantiatePlayerShip(fieldBoundary, level, spawn.transform.position);
+		instantiatePlayerShip(level, spawn.transform.position);
 
 		// Load enemy Ships
 		GameObject[] enemySpawns = GameObject.FindGameObjectsWithTag("EnemySpawn");
 		foreach (GameObject enemySpawn in enemySpawns) {
-			instantiateEnemyShip(fieldBoundary, level, enemySpawn.transform.position);
+			instantiateEnemyShip(level, enemySpawn.transform.position);
 		}
 
 		return level;
 	}
 
-	void instantiatePlayerShip (Boundary fieldBoundary, GameObject level, Vector3 spawnPoint) {
-		instantiatedPlayerShip = instantiateShip(fieldBoundary, level, spawnPoint);
+	void instantiatePlayerShip (GameObject level, Vector3 spawnPoint) {
+		instantiatedPlayerShip = instantiateShip(level, spawnPoint);
 		attachPlayer(instantiatedPlayerShip);
-		listeners.ForEach(delegate(IGameListener listener) { listener.OnPlayerCreated(instantiatedPlayerShip); });
 	}
 
-	void instantiateEnemyShip (Boundary fieldBoundary, GameObject level, Vector3 spawnPoint) {
-		GameObject instantiatedShip = instantiateShip(fieldBoundary, level, spawnPoint);
+	void instantiateEnemyShip (GameObject level, Vector3 spawnPoint) {
+		GameObject instantiatedShip = instantiateShip(level, spawnPoint);
 		attachAI(instantiatedShip);
 		instantiatedEnemyShips.Add(instantiatedShip);
-		listeners.ForEach(delegate(IGameListener listener) { listener.OnPlayerCreated(instantiatedShip); });
 	}
 
-	GameObject instantiateShip (Boundary fieldBoundary, GameObject level, Vector3 spawnPoint) {
+	GameObject instantiateShip (GameObject level, Vector3 spawnPoint) {
 		GameObject ship = Instantiate(ShipTemplate) as GameObject;
 		ship.transform.parent = level.transform;
 		ship.transform.position = spawnPoint;
 
 		ShipController shipController = ship.GetComponent<ShipController>();
-		shipController.Load(fieldBoundary);
 		return ship;
 	}
 
@@ -261,7 +244,6 @@ public class GameController : MonoBehaviour {
 		}
 		if (instantiatedPlayerShip != null && !instantiatedPlayerShip.GetComponent<Hitpoints>().IsAlive()) {
 			if (!notifiedDeaths.Contains(instantiatedPlayerShip)) {
-				listeners.ForEach(delegate(IGameListener listener) { listener.OnPlayerDestroyed(instantiatedPlayerShip); });
 				notifiedDeaths.Add(instantiatedPlayerShip);
 			}
 		}
@@ -269,7 +251,6 @@ public class GameController : MonoBehaviour {
 			GameObject enemy = instantiatedEnemyShips[i];
 			if (enemy == null || !enemy.GetComponent<Hitpoints>().IsAlive()) {
 				if (!notifiedDeaths.Contains(enemy)) {
-					listeners.ForEach(delegate(IGameListener listener) { listener.OnPlayerDestroyed(enemy); });
 					instantiatedEnemyShips.RemoveAt(i); // Lose track of ship, the ship will destroy itself via a timer
 					notifiedDeaths.Add(enemy);
 				}

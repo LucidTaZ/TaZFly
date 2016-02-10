@@ -747,6 +747,7 @@ GameObject:
   - 4: {fileID: 1906712388}
   - 114: {fileID: 1906712389}
   - 114: {fileID: 1906712390}
+  - 114: {fileID: 1906712391}
   m_Layer: 0
   m_Name: GameController Holder
   m_TagString: GameController
@@ -788,8 +789,24 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1906712387}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39761fa16fb0ff44282eccdf4800b4b2, type: 3}
+  m_Script: {fileID: 11500000, guid: 13c8a9298666e434ba251cc339764f46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1906712391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1906712387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 015eeea1fbaa4014b90d12de8ddae729, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FieldBoundary:
+    MinX: 0
+    MinY: 0
+    MaxX: 0
+    MaxY: 0

@@ -8,6 +8,12 @@ public class BankByVelocity : MonoBehaviour {
 	public float BankRudder;
 	public float BankConvergeSpeed;
 
+	protected BoundaryEnforcer boundaryEnforcer;
+
+	public void Start () {
+		boundaryEnforcer = GameObject.FindGameObjectWithTag("GameController").GetComponent<BoundaryEnforcer>();
+	}
+
 	public void Load (Boundary boundary) {
 		FieldBoundary = boundary;
 	}
@@ -21,11 +27,10 @@ public class BankByVelocity : MonoBehaviour {
 		// Bank the plane based on current velocity:
 		Quaternion targetRotation = Quaternion.identity;
 
-		if (transform.position.y > FieldBoundary.MinY && transform.position.y < FieldBoundary.MaxY) {
+		if (!boundaryEnforcer || boundaryEnforcer.IsInVerticalBounds(transform.position)) {
 			targetRotation *= Quaternion.Euler(-velocity.y * BankElevator, 0.0f, 0.0f);
 		}
-
-		if (transform.position.x > FieldBoundary.MinX && transform.position.x < FieldBoundary.MaxX) {
+		if (!boundaryEnforcer || boundaryEnforcer.IsInHorizontalBounds(transform.position)) {
 			targetRotation *= Quaternion.AngleAxis(velocity.x * BankAileron, Vector3.up);
 			targetRotation *= Quaternion.AngleAxis(-velocity.x * BankRudder, Vector3.forward);
 		}
