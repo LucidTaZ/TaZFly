@@ -12,6 +12,8 @@ TagManager:
   - EnemySpawn
   - Cannonball
   - LevelGenerator
+  - BoundaryTop
+  - BoundaryBottom
   layers:
   - Default
   - TransparentFX

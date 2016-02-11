@@ -13,7 +13,14 @@ public class LevelGenerator : MonoBehaviour {
 
 	public float Width = 50f;
 	public float Length = 150f;
-	const float Height = 5f; // Of the boundary
+
+	// Boundary vertical placement
+	// The Boundary will range from -Height/2+OffsetHeight to Height/2+OffsetHeight
+	// So for values Height 50 and OffsetHeight 10, the result is -15 to 35.
+	// To make these nicely settable via the editor, we should make it more intuitive first.
+	const float Height = 50f; // Of the boundary
+	const float OffsetHeight = 10f; // How high to place the middle of the boundary?
+
 	public int EnemyCount = 1;
 
 	public GameObject BoundaryPrefab;
@@ -72,25 +79,43 @@ public class LevelGenerator : MonoBehaviour {
 
 		GameObject boundaryLeft = Instantiate(BoundaryPrefab);
 		boundaryLeft.tag = "BoundaryLeft";
-		boundaryLeft.transform.position = new Vector3(-Width / 2f, 10f, Length / 2f);
+		boundaryLeft.transform.position = new Vector3(-Width / 2f, OffsetHeight, Length / 2f);
 		boundaryLeft.transform.rotation = Quaternion.Euler(0f, 0f, -90f);
-		boundaryLeft.transform.localScale = new Vector3(Height, 1f, Length / 10f); // Divide by 10 since the Plane has dimensions 10x10 already.
+		boundaryLeft.transform.localScale = new Vector3(Height / 10f, 1f, Length / 10f); // Divide by 10 since the Plane has dimensions 10x10 already.
 		fixTextureScale(boundaryLeft);
 		boundaryLeft.transform.parent = boundary.transform;
-		
+
 		GameObject boundaryRight = Instantiate(BoundaryPrefab);
 		boundaryRight.tag = "BoundaryRight";
-		boundaryRight.transform.position = new Vector3(Width / 2f, 10f, Length / 2f);
+		boundaryRight.transform.position = new Vector3(Width / 2f, OffsetHeight, Length / 2f);
 		boundaryRight.transform.rotation = Quaternion.Euler(0f, 0f, 90f);
-		boundaryRight.transform.localScale = new Vector3(Height, 1f, Length / 10f); // Divide by 10 since the Plane has dimensions 10x10 already.
+		boundaryRight.transform.localScale = new Vector3(Height / 10f, 1f, Length / 10f); // Divide by 10 since the Plane has dimensions 10x10 already.
 		fixTextureScale(boundaryRight);
 		boundaryRight.transform.parent = boundary.transform;
 
+		GameObject boundaryTop = Instantiate(BoundaryPrefab);
+		boundaryTop.tag = "BoundaryTop";
+		boundaryTop.transform.position = new Vector3(0, OffsetHeight + Height / 2, Length / 2f);
+		boundaryTop.transform.rotation = Quaternion.Euler(0f, 0f, 180f);
+		boundaryTop.transform.localScale = new Vector3(Width / 10f, 1f, Length / 10f); // Divide by 10 since the Plane has dimensions 10x10 already.
+		boundaryTop.GetComponent<MeshRenderer>().enabled = false;
+		fixTextureScale(boundaryTop);
+		boundaryTop.transform.parent = boundary.transform;
+
+		GameObject boundaryBottom = Instantiate(BoundaryPrefab);
+		boundaryBottom.tag = "BoundaryBottom";
+		boundaryBottom.transform.position = new Vector3(0, 0f, Length / 2f);
+		boundaryBottom.transform.rotation = Quaternion.Euler(0f, 0f, 00f);
+		boundaryBottom.transform.localScale = new Vector3(Width / 10f, 1f, Length / 10f); // Divide by 10 since the Plane has dimensions 10x10 already.
+		boundaryBottom.GetComponent<MeshRenderer>().enabled = false;
+		fixTextureScale(boundaryBottom);
+		boundaryBottom.transform.parent = boundary.transform;
+
 		GameObject boundaryFinish = Instantiate(FinishPrefab);
 		boundaryFinish.tag = "BoundaryFinish";
-		boundaryFinish.transform.position = new Vector3(0f, 10f, Length);
+		boundaryFinish.transform.position = new Vector3(0f, OffsetHeight, Length);
 		boundaryFinish.transform.rotation = Quaternion.Euler(-90f, 0f, 0f);
-		boundaryFinish.transform.localScale = new Vector3(Width / 10f, 1f, Height); // Divide by 10 since the Plane has dimensions 10x10 already.
+		boundaryFinish.transform.localScale = new Vector3(Width / 10f, 1f, Height / 10f); // Divide by 10 since the Plane has dimensions 10x10 already.
 		fixTextureScale(boundaryFinish);
 		boundaryFinish.transform.parent = boundary.transform;
 

@@ -6,8 +6,6 @@ public class GameController : MonoBehaviour {
 	public GUIController Gui;
 
 	public GameObject ShipTemplate;
-	public float MinY;
-	public float MaxY;
 
 	public GameObject[] Levels;
 
@@ -137,8 +135,8 @@ public class GameController : MonoBehaviour {
 		if (be = GetComponent<BoundaryEnforcer>()) {
 			be.FieldBoundary.MinX = GameObject.FindGameObjectWithTag("BoundaryLeft").transform.position.x;
 			be.FieldBoundary.MaxX = GameObject.FindGameObjectWithTag("BoundaryRight").transform.position.x;
-			be.FieldBoundary.MinY = MinY;
-			be.FieldBoundary.MaxY = MaxY;
+			be.FieldBoundary.MinY = GameObject.FindGameObjectWithTag("BoundaryBottom").transform.position.y;
+			be.FieldBoundary.MaxY = GameObject.FindGameObjectWithTag("BoundaryTop").transform.position.y;
 		}
 
 		// Load Ship

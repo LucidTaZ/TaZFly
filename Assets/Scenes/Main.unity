@@ -780,8 +780,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Gui: {fileID: 1015826480}
   ShipTemplate: {fileID: 100000, guid: 1b755fba83643734da848502acd2ab31, type: 2}
-  MinY: 0
-  MaxY: 25
   Levels: []
 --- !u!114 &1906712390
 MonoBehaviour:
