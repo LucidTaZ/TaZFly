@@ -12,14 +12,12 @@ public class GameController : MonoBehaviour {
 	GameObject instantiatedPlayerShip;
 	List<GameObject> instantiatedEnemyShips = new List<GameObject>();
 	List<GameObject> notifiedDeaths = new List<GameObject>();
-	Hitpoints instantiatedPlayerHitpoints;
 
 	int currentLevelIndex;
 	GameObject currentLevel = null; // Points to the currently instantiated prefab
 
 	bool loadNextLevelFlag; // Flag that steers loading the next level.
 	bool levelUnloaded = false; // Flag that signals that the loading of a new level can start (Unity needs one game loop cycle to destroy stuff)
-	bool levelActive = false; // Becomes true after level loading, becomes false before level unloading. Prevents null references after the last level has been played.
 
 	void Start () {
 		loadNextLevel(0);
@@ -46,8 +44,6 @@ public class GameController : MonoBehaviour {
 		} else {
 			currentLevel = loadLevel(Instantiate(Levels[currentLevelIndex])); // currentLevel becomes a reference to the instantiation
 		}
-
-		levelActive = true;
 	}
 
 	void Update () {
@@ -78,7 +74,6 @@ public class GameController : MonoBehaviour {
 	void unloadLevel () {
 		Debug.Log("Unloading level...");
 
-		levelActive = false;
 		if (currentLevel != null) {
 			unloadCameras();
 
@@ -167,13 +162,10 @@ public class GameController : MonoBehaviour {
 		GameObject ship = Instantiate(ShipTemplate) as GameObject;
 		ship.transform.parent = level.transform;
 		ship.transform.position = spawnPoint;
-
-		ShipController shipController = ship.GetComponent<ShipController>();
 		return ship;
 	}
 
 	void attachPlayer (GameObject ship) {
-		instantiatedPlayerHitpoints = ship.GetComponent<Hitpoints>();
 		Gui.SetPlayer(ship);
 
 		ShipSteeringController sc = ship.AddComponent<PlayerController>();
