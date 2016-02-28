@@ -68,7 +68,7 @@ public class LevelGenerator : MonoBehaviour {
 		for (int i = 1; i <= EnemyCount; i++) {
 			GameObject enemySpawn = new GameObject("Enemy Spawn " + i);
 			enemySpawn.tag = "EnemySpawn";
-			float enemySpacing = 4f;
+			const float enemySpacing = 4f;
 			float enemyOffset = -EnemyCount/2 + i;
 			enemySpawn.transform.position = EnemySpawnPosition + new Vector3(enemySpacing * enemyOffset, 0, 0);
 			enemySpawn.transform.parent = result.transform;
@@ -98,18 +98,8 @@ public class LevelGenerator : MonoBehaviour {
 		boundaryTop.transform.position = new Vector3(0, OffsetHeight + Height / 2, Length / 2f);
 		boundaryTop.transform.rotation = Quaternion.Euler(0f, 0f, 180f);
 		boundaryTop.transform.localScale = new Vector3(Width / 10f, 1f, Length / 10f); // Divide by 10 since the Plane has dimensions 10x10 already.
-		boundaryTop.GetComponent<MeshRenderer>().enabled = false;
 		fixTextureScale(boundaryTop);
 		boundaryTop.transform.parent = boundary.transform;
-
-		GameObject boundaryBottom = Instantiate(BoundaryPrefab);
-		boundaryBottom.tag = "BoundaryBottom";
-		boundaryBottom.transform.position = new Vector3(0, 0f, Length / 2f);
-		boundaryBottom.transform.rotation = Quaternion.Euler(0f, 0f, 00f);
-		boundaryBottom.transform.localScale = new Vector3(Width / 10f, 1f, Length / 10f); // Divide by 10 since the Plane has dimensions 10x10 already.
-		boundaryBottom.GetComponent<MeshRenderer>().enabled = false;
-		fixTextureScale(boundaryBottom);
-		boundaryBottom.transform.parent = boundary.transform;
 
 		GameObject boundaryFinish = Instantiate(FinishPrefab);
 		boundaryFinish.tag = "BoundaryFinish";
@@ -127,7 +117,6 @@ public class LevelGenerator : MonoBehaviour {
 		lightSource.intensity = 1.58f;
 		lightSource.color = Color.white;
 		sunlight.transform.parent = result.transform;
-		GameObject.FindWithTag("LevelGenerator");
 		return result;
 	}
 

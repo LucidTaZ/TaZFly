@@ -107,31 +107,15 @@ public class GameController : MonoBehaviour {
 			throw new UnityException("Level must have 1 gameobject with tag Spawn.");
 		}
 		
-		// Have boundary
+		// Have finish
 		if (GameObject.FindGameObjectsWithTag("BoundaryFinish").Length != 1) {
 			throw new UnityException("Level must have 1 gameobject with tag BoundaryFinish.");
-		}
-		
-		if (GameObject.FindGameObjectsWithTag("BoundaryLeft").Length != 1) {
-			throw new UnityException("Level must have 1 gameobject with tag BoundaryLeft.");
-		}
-		
-		if (GameObject.FindGameObjectsWithTag("BoundaryRight").Length != 1) {
-			throw new UnityException("Level must have 1 gameobject with tag BoundaryRight.");
 		}
 
 		// Play in Z direction
 		Vector3 playfield = GameObject.FindGameObjectWithTag("BoundaryFinish").transform.position - GameObject.FindGameObjectWithTag("Spawn").transform.position;
 		if (playfield.z < playfield.x || playfield.z < playfield.y) {
 			throw new UnityException("Please model the level as a box with the long side aligned with the Z axis.");
-		}
-
-		BoundaryEnforcer be;
-		if (be = GetComponent<BoundaryEnforcer>()) {
-			be.FieldBoundary.MinX = GameObject.FindGameObjectWithTag("BoundaryLeft").transform.position.x;
-			be.FieldBoundary.MaxX = GameObject.FindGameObjectWithTag("BoundaryRight").transform.position.x;
-			be.FieldBoundary.MinY = GameObject.FindGameObjectWithTag("BoundaryBottom").transform.position.y;
-			be.FieldBoundary.MaxY = GameObject.FindGameObjectWithTag("BoundaryTop").transform.position.y;
 		}
 
 		// Load Ship
@@ -177,7 +161,9 @@ public class GameController : MonoBehaviour {
 		loadCameras(ship);
 
 		// Give Player collider to Finish, so the Finish knows when to trigger
-		
+		// Idea: we can let the finishcontroller figure this out in Awake(), but only if we first revise the lifetime of
+		// it, so that the player will be present at that time. One way to do that, I think, is to play every level in
+		// its own scene.
 		GameObject.FindGameObjectWithTag("BoundaryFinish").GetComponent<FinishController>().Load(instantiatedPlayerShip);
 	}
 
