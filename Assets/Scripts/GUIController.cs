@@ -11,9 +11,13 @@ public class GUIController : MonoBehaviour {
 	Hitpoints hitpoints;
 	Rigidbody subject;
 
-	public void SetPlayer(GameObject player) {
-		hitpoints = player.GetComponent<Hitpoints>();
-		subject = player.GetComponent<Rigidbody>();
+	public void Start() {
+		foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Ship")) {
+			if (obj.GetComponent<PlayerController>()) {
+				hitpoints = obj.GetComponent<Hitpoints>();
+				subject = obj.GetComponent<Rigidbody>();
+			}
+		}
 	}
 
 	void Update () {

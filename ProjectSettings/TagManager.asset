@@ -6,14 +6,12 @@ TagManager:
   tags:
   - Ship
   - Spawn
-  - BoundaryLeft
-  - BoundaryRight
   - BoundaryFinish
   - EnemySpawn
   - Cannonball
   - LevelGenerator
   - BoundaryTop
-  - BoundaryBottom
+  - GameFramework
   layers:
   - Default
   - TransparentFX

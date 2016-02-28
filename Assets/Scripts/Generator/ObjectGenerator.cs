@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 public class ObjectGenerator : MonoBehaviour {
 
+	public float LevelWidth = 50f;
+	public float LevelLength = 150f;
+
 	public List<GameObject> StructuralObjects;
 	public List<GameObject> DynamicObjects;
 
@@ -10,6 +13,13 @@ public class ObjectGenerator : MonoBehaviour {
 	public float DynamicDensityInv = 750f; // Reciprocal of dynamics per square meter
 
 	public Rect ProtectedZone; // No-spawn zone
+
+	public void Awake () {
+		Terrain terrain = findTerrain();
+		Rect boundary = new Rect(new Vector2(-LevelWidth / 2f, 0f), new Vector2(LevelWidth, LevelLength));
+
+		Generate(terrain, boundary);
+	}
 
 	/**
 	 * Generate the objects that are present (cannons, barrels etc)
@@ -72,5 +82,15 @@ public class ObjectGenerator : MonoBehaviour {
 
 	bool isInsideProtectedZone (float x, float z) {
 		return ProtectedZone.Contains(new Vector2(x, z));
+	}
+
+	private Terrain findTerrain () {
+		Terrain terrain;
+		foreach (GameObject obj in FindObjectsOfType<GameObject>()) {
+			if (terrain = obj.GetComponent<Terrain>()) {
+				return terrain;
+			}
+		}
+		throw new MissingComponentException("Terrain not found, either have a Terrain component somewhere, or generate one using the TerrainGenerator, which has to execute before the ObjectGenerator!");
 	}
 }
