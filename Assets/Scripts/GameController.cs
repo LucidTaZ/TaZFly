@@ -9,10 +9,6 @@ public class GameController : MonoBehaviour {
 
 	public GameObject[] Levels;
 
-	GameObject instantiatedPlayerShip;
-	List<GameObject> instantiatedEnemyShips = new List<GameObject>();
-	List<GameObject> notifiedDeaths = new List<GameObject>();
-
 	int currentLevelIndex;
 	GameObject currentLevel = null; // Points to the currently instantiated prefab
 
@@ -33,14 +29,7 @@ public class GameController : MonoBehaviour {
 		}
 
 		if (currentLevelIndex >= Levels.Length) {
-			// See if we can generate a new one
-			if (GameObject.FindWithTag("LevelGenerator")) {
-				LevelGenerator generator = GameObject.FindWithTag("LevelGenerator").GetComponent<LevelGenerator>();
-				GameObject level = generator.Generate();
-				currentLevel = loadLevel(level);
-			} else {
-				throw new UnityException("Out of levels.");
-			}
+			throw new UnityException("Out of levels.");
 		} else {
 			currentLevel = loadLevel(Instantiate(Levels[currentLevelIndex])); // currentLevel becomes a reference to the instantiation
 		}
@@ -62,8 +51,6 @@ public class GameController : MonoBehaviour {
 				levelUnloaded = false;
 			}
 		}
-
-		checkPlayers();
 	}
 
 	public void PlayerFinished () {
@@ -78,17 +65,6 @@ public class GameController : MonoBehaviour {
 			unloadCameras();
 
 			DestroyObject(currentLevel);
-
-			if (instantiatedPlayerShip != null) {
-				DestroyObject(instantiatedPlayerShip);
-			}
-			instantiatedEnemyShips.ForEach(delegate(GameObject enemyShip) {
-				if (enemyShip != null) {
-					DestroyObject(enemyShip);
-				}
-			});
-			instantiatedEnemyShips.Clear();
-			notifiedDeaths.Clear();
 
 			currentLevel = null;
 		}
@@ -132,14 +108,13 @@ public class GameController : MonoBehaviour {
 	}
 
 	void instantiatePlayerShip (GameObject level, Vector3 spawnPoint) {
-		instantiatedPlayerShip = instantiateShip(level, spawnPoint);
+		GameObject instantiatedPlayerShip = instantiateShip(level, spawnPoint);
 		attachPlayer(instantiatedPlayerShip);
 	}
 
 	void instantiateEnemyShip (GameObject level, Vector3 spawnPoint) {
 		GameObject instantiatedShip = instantiateShip(level, spawnPoint);
 		attachAI(instantiatedShip);
-		instantiatedEnemyShips.Add(instantiatedShip);
 	}
 
 	GameObject instantiateShip (GameObject level, Vector3 spawnPoint) {
@@ -164,7 +139,7 @@ public class GameController : MonoBehaviour {
 		// Idea: we can let the finishcontroller figure this out in Awake(), but only if we first revise the lifetime of
 		// it, so that the player will be present at that time. One way to do that, I think, is to play every level in
 		// its own scene.
-		GameObject.FindGameObjectWithTag("BoundaryFinish").GetComponent<FinishController>().Load(instantiatedPlayerShip);
+		GameObject.FindGameObjectWithTag("BoundaryFinish").GetComponent<FinishController>().Load(ship);
 	}
 
 	void attachAI (GameObject ship) {
@@ -207,29 +182,6 @@ public class GameController : MonoBehaviour {
 			CameraSwoon swoon;
 			if ((swoon = thisCamera.GetComponent<CameraSwoon>()) != null) {
 				swoon.Unload();
-			}
-		}
-	}
-
-	/**
-	 * See who is still alive and send events for those that died
-	 */
-	void checkPlayers () {
-		if (instantiatedPlayerShip == null) {
-			loadNextLevelFlag = true;
-		}
-		if (instantiatedPlayerShip != null && !instantiatedPlayerShip.GetComponent<Hitpoints>().IsAlive()) {
-			if (!notifiedDeaths.Contains(instantiatedPlayerShip)) {
-				notifiedDeaths.Add(instantiatedPlayerShip);
-			}
-		}
-		for (int i = 0; i < instantiatedEnemyShips.Count; i++) {
-			GameObject enemy = instantiatedEnemyShips[i];
-			if (enemy == null || !enemy.GetComponent<Hitpoints>().IsAlive()) {
-				if (!notifiedDeaths.Contains(enemy)) {
-					instantiatedEnemyShips.RemoveAt(i); // Lose track of ship, the ship will destroy itself via a timer
-					notifiedDeaths.Add(enemy);
-				}
 			}
 		}
 	}

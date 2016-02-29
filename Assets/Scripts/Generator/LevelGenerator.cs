@@ -26,25 +26,19 @@ public class LevelGenerator : MonoBehaviour {
 	public GameObject BoundaryPrefab;
 	public GameObject FinishPrefab;
 
-	public Vector3 PlayerSpawnPosition;
-	public Vector3 EnemySpawnPosition;
+	public Vector3 PlayerSpawnPosition = new Vector3(0f, 20f, 0f);
+	public Vector3 EnemySpawnPosition = new Vector3(0f, 15f, 0f);
+
+	public void Awake () {
+		GameObject level = Generate();
+		level.transform.parent = gameObject.transform;
+	}
 
 	public GameObject Generate () {
 		GameObject result = new GameObject("Generated Level");
 
 		GameObject standards = generateStandards();
 		standards.transform.parent = result.transform;
-
-		GameObject terrain = GetComponent<TerrainGenerator>().Generate(2*Width, 1.4f * Length); // Generate the terrain larger than the playing area
-		terrain.transform.parent = result.transform;
-
-		List<GameObject> levelObjects = GetComponent<ObjectGenerator>().Generate(
-			terrain.GetComponent<Terrain>(),
-			new Rect(new Vector2(-Width / 2f, 0f), new Vector2(Width, Length))
-		);
-		foreach (GameObject levelObject in levelObjects) {
-			levelObject.transform.parent = result.transform;
-		}
 
 		return result;
 	}
@@ -78,7 +72,6 @@ public class LevelGenerator : MonoBehaviour {
 		boundary.transform.parent = result.transform;
 
 		GameObject boundaryLeft = Instantiate(BoundaryPrefab);
-		boundaryLeft.tag = "BoundaryLeft";
 		boundaryLeft.transform.position = new Vector3(-Width / 2f, OffsetHeight, Length / 2f);
 		boundaryLeft.transform.rotation = Quaternion.Euler(0f, 0f, -90f);
 		boundaryLeft.transform.localScale = new Vector3(Height / 10f, 1f, Length / 10f); // Divide by 10 since the Plane has dimensions 10x10 already.
@@ -86,7 +79,6 @@ public class LevelGenerator : MonoBehaviour {
 		boundaryLeft.transform.parent = boundary.transform;
 
 		GameObject boundaryRight = Instantiate(BoundaryPrefab);
-		boundaryRight.tag = "BoundaryRight";
 		boundaryRight.transform.position = new Vector3(Width / 2f, OffsetHeight, Length / 2f);
 		boundaryRight.transform.rotation = Quaternion.Euler(0f, 0f, 90f);
 		boundaryRight.transform.localScale = new Vector3(Height / 10f, 1f, Length / 10f); // Divide by 10 since the Plane has dimensions 10x10 already.
@@ -94,7 +86,6 @@ public class LevelGenerator : MonoBehaviour {
 		boundaryRight.transform.parent = boundary.transform;
 
 		GameObject boundaryTop = Instantiate(BoundaryPrefab);
-		boundaryTop.tag = "BoundaryTop";
 		boundaryTop.transform.position = new Vector3(0, OffsetHeight + Height / 2, Length / 2f);
 		boundaryTop.transform.rotation = Quaternion.Euler(0f, 0f, 180f);
 		boundaryTop.transform.localScale = new Vector3(Width / 10f, 1f, Length / 10f); // Divide by 10 since the Plane has dimensions 10x10 already.

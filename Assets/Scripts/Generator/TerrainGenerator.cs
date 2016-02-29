@@ -2,6 +2,9 @@
 
 public class TerrainGenerator : MonoBehaviour {
 
+	public float Width = 100f;
+	public float Length = 200f;
+
 	public int MapResolution = 128;
 
 	public float MinimumHeight = 0f;
@@ -13,8 +16,10 @@ public class TerrainGenerator : MonoBehaviour {
 
 	protected INoise2D TerrainNoise;
 
-	public void Start () {
+	public void Awake () {
 		TerrainNoise = GetComponent<INoise2D>();
+		GameObject terrain = Generate(Width, Length);
+		terrain.transform.parent = gameObject.transform;
 	}
 
 	public GameObject Generate (float width, float length) {
