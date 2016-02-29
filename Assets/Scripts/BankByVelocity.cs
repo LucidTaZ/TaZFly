@@ -21,14 +21,9 @@ public class BankByVelocity : MonoBehaviour {
 		// Bank the plane based on current velocity:
 		Quaternion targetRotation = Quaternion.identity;
 
-		if (transform.position.y > FieldBoundary.MinY && transform.position.y < FieldBoundary.MaxY) {
-			targetRotation *= Quaternion.Euler(-velocity.y * BankElevator, 0.0f, 0.0f);
-		}
-
-		if (transform.position.x > FieldBoundary.MinX && transform.position.x < FieldBoundary.MaxX) {
-			targetRotation *= Quaternion.AngleAxis(velocity.x * BankAileron, Vector3.up);
-			targetRotation *= Quaternion.AngleAxis(-velocity.x * BankRudder, Vector3.forward);
-		}
+		targetRotation *= Quaternion.Euler(-velocity.y * BankElevator, 0.0f, 0.0f);
+		targetRotation *= Quaternion.AngleAxis(velocity.x * BankAileron, Vector3.up);
+		targetRotation *= Quaternion.AngleAxis(-velocity.x * BankRudder, Vector3.forward);
 
 		//transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, BankConvergeSpeed * Time.deltaTime);
 		transform.rotation = targetRotation;

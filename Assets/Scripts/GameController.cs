@@ -6,31 +6,16 @@ public class GameController : MonoBehaviour {
 	public GUIController Gui;
 
 	public GameObject ShipTemplate;
-	public float MinY;
-	public float MaxY;
 
 	public GameObject[] Levels;
-
-	GameObject instantiatedPlayerShip;
-	List<GameObject> instantiatedEnemyShips = new List<GameObject>();
-	List<GameObject> notifiedDeaths = new List<GameObject>();
-	Hitpoints instantiatedPlayerHitpoints;
-	
-	List<IGameListener> listeners = new List<IGameListener>();
 
 	int currentLevelIndex;
 	GameObject currentLevel = null; // Points to the currently instantiated prefab
 
 	bool loadNextLevelFlag; // Flag that steers loading the next level.
 	bool levelUnloaded = false; // Flag that signals that the loading of a new level can start (Unity needs one game loop cycle to destroy stuff)
-	bool levelActive = false; // Becomes true after level loading, becomes false before level unloading. Prevents null references after the last level has been played.
-
-	public void Register (IGameListener listener) {
-		listeners.Add(listener);
-	}
 
 	void Start () {
-		listeners.ForEach(delegate(IGameListener listener) { listener.OnGameStarted(); });
 		loadNextLevel(0);
 	}
 
@@ -44,20 +29,10 @@ public class GameController : MonoBehaviour {
 		}
 
 		if (currentLevelIndex >= Levels.Length) {
-			// See if we can generate a new one
-			if (GameObject.FindWithTag("LevelGenerator")) {
-				LevelGenerator generator = GameObject.FindWithTag("LevelGenerator").GetComponent<LevelGenerator>();
-				GameObject level = generator.Generate();
-				currentLevel = loadLevel(level);
-			} else {
-				throw new UnityException("Out of levels.");
-			}
+			throw new UnityException("Out of levels.");
 		} else {
 			currentLevel = loadLevel(Instantiate(Levels[currentLevelIndex])); // currentLevel becomes a reference to the instantiation
 		}
-
-		levelActive = true;
-		listeners.ForEach(delegate(IGameListener listener) { listener.OnLevelStarted(currentLevel); });
 	}
 
 	void Update () {
@@ -76,42 +51,20 @@ public class GameController : MonoBehaviour {
 				levelUnloaded = false;
 			}
 		}
-
-		if (Input.GetKey(KeyCode.Escape)) {
-			Debug.Log("Player quit.");
-			listeners.ForEach(delegate(IGameListener listener) { listener.OnLevelEnded(currentLevel); listener.OnGameEnded(); });
-			Application.Quit();
-		}
-
-		checkPlayers();
 	}
 
 	public void PlayerFinished () {
 		//Debug.Log("Player finished.");
-		listeners.ForEach(delegate(IGameListener listener) { listener.OnPlayerFinished(instantiatedPlayerShip); }); // TODO: Fire event also for enemy finished
 		loadNextLevelFlag = true;
 	}
 
 	void unloadLevel () {
 		Debug.Log("Unloading level...");
 
-		levelActive = false;
-		listeners.ForEach(delegate(IGameListener listener) { listener.OnLevelEnded(currentLevel); });
 		if (currentLevel != null) {
 			unloadCameras();
 
 			DestroyObject(currentLevel);
-
-			if (instantiatedPlayerShip != null) {
-				DestroyObject(instantiatedPlayerShip);
-			}
-			instantiatedEnemyShips.ForEach(delegate(GameObject enemyShip) {
-				if (enemyShip != null) {
-					DestroyObject(enemyShip);
-				}
-			});
-			instantiatedEnemyShips.Clear();
-			notifiedDeaths.Clear();
 
 			currentLevel = null;
 		}
@@ -130,17 +83,9 @@ public class GameController : MonoBehaviour {
 			throw new UnityException("Level must have 1 gameobject with tag Spawn.");
 		}
 		
-		// Have boundary
+		// Have finish
 		if (GameObject.FindGameObjectsWithTag("BoundaryFinish").Length != 1) {
 			throw new UnityException("Level must have 1 gameobject with tag BoundaryFinish.");
-		}
-		
-		if (GameObject.FindGameObjectsWithTag("BoundaryLeft").Length != 1) {
-			throw new UnityException("Level must have 1 gameobject with tag BoundaryLeft.");
-		}
-		
-		if (GameObject.FindGameObjectsWithTag("BoundaryRight").Length != 1) {
-			throw new UnityException("Level must have 1 gameobject with tag BoundaryRight.");
 		}
 
 		// Play in Z direction
@@ -149,50 +94,37 @@ public class GameController : MonoBehaviour {
 			throw new UnityException("Please model the level as a box with the long side aligned with the Z axis.");
 		}
 
-		Boundary fieldBoundary = new Boundary();
-		fieldBoundary.MinX = GameObject.FindGameObjectWithTag("BoundaryLeft").transform.position.x;
-		fieldBoundary.MaxX = GameObject.FindGameObjectWithTag("BoundaryRight").transform.position.x;
-		fieldBoundary.MinY = MinY;
-		fieldBoundary.MaxY = MaxY;
-
 		// Load Ship
 		GameObject spawn = GameObject.FindGameObjectWithTag("Spawn");
-		instantiatePlayerShip(fieldBoundary, level, spawn.transform.position);
+		instantiatePlayerShip(level, spawn.transform.position);
 
 		// Load enemy Ships
 		GameObject[] enemySpawns = GameObject.FindGameObjectsWithTag("EnemySpawn");
 		foreach (GameObject enemySpawn in enemySpawns) {
-			instantiateEnemyShip(fieldBoundary, level, enemySpawn.transform.position);
+			instantiateEnemyShip(level, enemySpawn.transform.position);
 		}
 
 		return level;
 	}
 
-	void instantiatePlayerShip (Boundary fieldBoundary, GameObject level, Vector3 spawnPoint) {
-		instantiatedPlayerShip = instantiateShip(fieldBoundary, level, spawnPoint);
+	void instantiatePlayerShip (GameObject level, Vector3 spawnPoint) {
+		GameObject instantiatedPlayerShip = instantiateShip(level, spawnPoint);
 		attachPlayer(instantiatedPlayerShip);
-		listeners.ForEach(delegate(IGameListener listener) { listener.OnPlayerCreated(instantiatedPlayerShip); });
 	}
 
-	void instantiateEnemyShip (Boundary fieldBoundary, GameObject level, Vector3 spawnPoint) {
-		GameObject instantiatedShip = instantiateShip(fieldBoundary, level, spawnPoint);
+	void instantiateEnemyShip (GameObject level, Vector3 spawnPoint) {
+		GameObject instantiatedShip = instantiateShip(level, spawnPoint);
 		attachAI(instantiatedShip);
-		instantiatedEnemyShips.Add(instantiatedShip);
-		listeners.ForEach(delegate(IGameListener listener) { listener.OnPlayerCreated(instantiatedShip); });
 	}
 
-	GameObject instantiateShip (Boundary fieldBoundary, GameObject level, Vector3 spawnPoint) {
+	GameObject instantiateShip (GameObject level, Vector3 spawnPoint) {
 		GameObject ship = Instantiate(ShipTemplate) as GameObject;
 		ship.transform.parent = level.transform;
 		ship.transform.position = spawnPoint;
-
-		ShipController shipController = ship.GetComponent<ShipController>();
-		shipController.Load(fieldBoundary);
 		return ship;
 	}
 
 	void attachPlayer (GameObject ship) {
-		instantiatedPlayerHitpoints = ship.GetComponent<Hitpoints>();
 		Gui.SetPlayer(ship);
 
 		ShipSteeringController sc = ship.AddComponent<PlayerController>();
@@ -204,8 +136,10 @@ public class GameController : MonoBehaviour {
 		loadCameras(ship);
 
 		// Give Player collider to Finish, so the Finish knows when to trigger
-		
-		GameObject.FindGameObjectWithTag("BoundaryFinish").GetComponent<FinishController>().Load(instantiatedPlayerShip);
+		// Idea: we can let the finishcontroller figure this out in Awake(), but only if we first revise the lifetime of
+		// it, so that the player will be present at that time. One way to do that, I think, is to play every level in
+		// its own scene.
+		GameObject.FindGameObjectWithTag("BoundaryFinish").GetComponent<FinishController>().Load(ship);
 	}
 
 	void attachAI (GameObject ship) {
@@ -248,31 +182,6 @@ public class GameController : MonoBehaviour {
 			CameraSwoon swoon;
 			if ((swoon = thisCamera.GetComponent<CameraSwoon>()) != null) {
 				swoon.Unload();
-			}
-		}
-	}
-
-	/**
-	 * See who is still alive and send events for those that died
-	 */
-	void checkPlayers () {
-		if (instantiatedPlayerShip == null) {
-			loadNextLevelFlag = true;
-		}
-		if (instantiatedPlayerShip != null && !instantiatedPlayerShip.GetComponent<Hitpoints>().IsAlive()) {
-			if (!notifiedDeaths.Contains(instantiatedPlayerShip)) {
-				listeners.ForEach(delegate(IGameListener listener) { listener.OnPlayerDestroyed(instantiatedPlayerShip); });
-				notifiedDeaths.Add(instantiatedPlayerShip);
-			}
-		}
-		for (int i = 0; i < instantiatedEnemyShips.Count; i++) {
-			GameObject enemy = instantiatedEnemyShips[i];
-			if (enemy == null || !enemy.GetComponent<Hitpoints>().IsAlive()) {
-				if (!notifiedDeaths.Contains(enemy)) {
-					listeners.ForEach(delegate(IGameListener listener) { listener.OnPlayerDestroyed(enemy); });
-					instantiatedEnemyShips.RemoveAt(i); // Lose track of ship, the ship will destroy itself via a timer
-					notifiedDeaths.Add(enemy);
-				}
 			}
 		}
 	}
