@@ -24,10 +24,18 @@ public class CollisionSound : MonoBehaviour {
 		}
 	}
 
+	void OnCollisionEnter (Collision collisionInfo) {
+		tryToPlaySound(collisionInfo.impulse.sqrMagnitude);
+	}
+
 	void OnCollisionStay (Collision collisionInfo) {
+		tryToPlaySound(collisionInfo.impulse.sqrMagnitude);
+	}
+
+	private void tryToPlaySound (float sqrMagnitude) {
 		if (
 			cooldownTimer <= 0f
-			&& collisionInfo.impulse.sqrMagnitude > MagThreshold*MagThreshold
+			&& sqrMagnitude > MagThreshold*MagThreshold
 			&& GetComponent<Rigidbody>().velocity.sqrMagnitude > VelocityThreshold*VelocityThreshold
 		) {
 			playSound();

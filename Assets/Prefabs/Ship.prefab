@@ -398,7 +398,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clips:
-  - {fileID: 8300000, guid: 86ab0e624a0544c418d52b062a0f2c5f, type: 3}
+  - {fileID: 8300000, guid: 7c4896b7f3632ed4b989d7d6d3c7e138, type: 3}
+  - {fileID: 8300000, guid: 7c4896b7f3632ed4b989d7d6d3c7e138, type: 3}
+  - {fileID: 8300000, guid: 4a9af08078dd80a41bb5b782f76c210a, type: 3}
+  - {fileID: 8300000, guid: 8a1f2138b7198d049b1738666a6809f8, type: 3}
   Cooldown: 0.2
   MagThreshold: 2
   VelocityThreshold: 10
@@ -3698,6 +3701,14 @@ Prefab:
       propertyPath: Cooldown
       value: 0.2
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: clips.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 7c4896b7f3632ed4b989d7d6d3c7e138, type: 3}
+    - target: {fileID: 0}
+      propertyPath: clips.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: 7c4896b7f3632ed4b989d7d6d3c7e138, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 100000}
