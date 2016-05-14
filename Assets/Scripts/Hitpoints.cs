@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class Hitpoints : MonoBehaviour, IHitpointsUser {
 
@@ -8,6 +10,7 @@ public class Hitpoints : MonoBehaviour, IHitpointsUser {
 	public GameObject DeathExplosion;
 
 	protected bool exploded = false;
+	bool isPlayer;
 
 	protected HitpointsController controller;
 
@@ -21,8 +24,22 @@ public class Hitpoints : MonoBehaviour, IHitpointsUser {
 		controller = new HitpointsController(HitpointsValue); // Take over setting from editor.
 	}
 
+	void Start()
+	{
+		isPlayer = GetComponent<PlayerController>();
+	}
+
+	void OnCollisionStay(Collision collision)
+	{
+		if (!IsAlive()) {
+			// We are in free fall mode after hitpoints depletion. Anything we hit will detonate us.
+			Explode();
+		}
+	}
+
     void OnCollisionEnter(Collision collision)
     {
+		Debug.Log("OnCollisionEnter");
 		if (!IsAlive()) {
 			// We are in free fall mode after hitpoints depletion. Anything we hit will detonate us.
 			Explode();
@@ -38,18 +55,14 @@ public class Hitpoints : MonoBehaviour, IHitpointsUser {
 
 	public void Die ()
 	{
-		if (GetComponent<PlayerController>()) {
-			Debug.Log("Starting to die...");
-		}
+		Debug.Log("Starting to die...");
 		Destroy(GetComponent<AutomaticSpeed>());
 		Destroy(GetComponent<ShipSteeringController>());
 		Destroy(GetComponent<BankByVelocity>());
 		GetComponent<Rigidbody>().useGravity = true;
 		GetComponent<Rigidbody>().freezeRotation = false;
 		GetComponent<PropellerController>().StopSpinning();
-		if (GetComponent<PlayerController>()) {
-			Debug.Log("Died.");
-		}
+		Debug.Log("Died.");
 	}
 
 	void Explode()
@@ -57,16 +70,28 @@ public class Hitpoints : MonoBehaviour, IHitpointsUser {
 		// Explode the Detonator framework explosion
 		if (!exploded) {
 			if (DeathExplosion) {
+				Debug.Log("Going to explode...");
 				GameObject detonatorObject = GameObject.Instantiate(DeathExplosion);
 				DeathExplosion = null; // Make sure it only happens once!
 				detonatorObject.transform.position = transform.position;
 				detonatorObject.GetComponent<Detonator>().Explode();
 				CameraShakePositional.ShakeAtLocation(transform.position, 50, 5, 1.0f, 6.5f);
-				DestroyObject(gameObject, detonatorObject.GetComponent<Detonator>().destroyTime); // Destroy gameobject when effect is approximately over
+				StartCoroutine(WaitThenCleanup(detonatorObject.GetComponent<Detonator>().destroyTime)); // Wait until effect is approximately over
 			} else {
 				DestroyObject(gameObject);
 			}
 			exploded = true;
+		}
+	}
+
+	IEnumerator WaitThenCleanup(float seconds)
+	{
+		Debug.Log("Going to yield for " + seconds + " seconds");
+		yield return new WaitForSeconds(seconds);
+		Debug.Log("Proceding");
+		DestroyObject(gameObject);
+		if (isPlayer) {
+			SceneManager.LoadScene("MainMenu");
 		}
 	}
 

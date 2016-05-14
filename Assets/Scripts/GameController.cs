@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
 
@@ -45,7 +45,7 @@ public class GameController : MonoBehaviour {
 					loadNextLevel();
 				} catch (UnityException e) {
 					Debug.Log(e.Message);
-					Application.Quit();
+					SceneManager.LoadScene("MainMenu");
 				}
 				loadNextLevelFlag = false;
 				levelUnloaded = false;
