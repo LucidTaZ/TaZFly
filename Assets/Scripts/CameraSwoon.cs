@@ -5,10 +5,16 @@ public class CameraSwoon : MonoBehaviour {
 	public float MaxDeviation = 0.2f;
 	public float ConvergeSpeed = 0.6f;
 
-	private GameObject Subject;
+	public GameObject Subject;
 	private bool loaded = false;
 
 	private Quaternion rotation;
+
+	void Awake () {
+		if (Subject != null) {
+			loaded = true;
+		}
+	}
 
 	public void Load (GameObject subject) {
 		Subject = subject;

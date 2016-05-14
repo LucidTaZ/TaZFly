@@ -2,10 +2,16 @@
 
 public class CameraFollow : MonoBehaviour {
 
-	private GameObject Subject;
+	public GameObject Subject;
 	private bool loaded = false;
 
 	private Vector3 offset;
+
+	void Awake () {
+		if (Subject != null) {
+			loaded = true;
+		}
+	}
 
 	public void Load (GameObject subject) {
 		Subject = subject;
@@ -18,7 +24,11 @@ public class CameraFollow : MonoBehaviour {
 
 	void Start () {
 		// Take over the relative settings modeled in the editor.
-		offset = transform.position;
+		if (loaded) {
+			offset = transform.position - Subject.transform.position;
+		} else {
+			offset = transform.position;
+		}
 	}
 	
 	void LateUpdate () {

@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+// TODO: Take into account the initial rotation, and make sure the subject always travels in that direction, not simply the Z direction always
+
 public class AutomaticSpeed : MonoBehaviour {
 
 	public float MinSpeed;
