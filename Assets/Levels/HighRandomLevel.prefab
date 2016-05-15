@@ -1,0 +1,149 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &139558
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 443362}
+  - 114: {fileID: 11446872}
+  - 114: {fileID: 11427602}
+  - 114: {fileID: 11447114}
+  - 114: {fileID: 11402298}
+  m_Layer: 0
+  m_Name: HighRandomLevel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 4294967295
+  m_IsActive: 1
+--- !u!4 &443362
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 139558}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+--- !u!114 &11402298
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 139558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c50f185fad09083419f03eac2f179fa5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FrequencyScale: 80
+  BaselineImportance: 0.7
+  Skew: 1
+--- !u!114 &11427602
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 139558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21411aa0b797d27488675a9152829967, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Width: 50
+  Length: 1000
+  BottomBoundary: -15
+  TopBoundary: 230
+  SlowHeight: 200
+  SpeedyHeight: 50
+  EnemyCount: 5
+  BoundaryPrefab: {fileID: 194632, guid: e70f786866219c64689a2a0ef21a186c, type: 2}
+  FinishPrefab: {fileID: 154870, guid: 00d9120d0ceb1144789ceebcf971fc8f, type: 2}
+  PlayerSpawnPosition: {x: 0, y: 200, z: 0}
+  EnemySpawnPosition: {x: 0, y: 185, z: 0}
+  SnapSpawnsToGround: 1
+--- !u!114 &11446872
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 139558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8dc0f72471c50b47964e08fbd456912, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Width: 100
+  Length: 1400
+  MapResolution: 256
+  MinimumHeight: 0
+  MaximumHeight: 200
+  FlatTexture: {fileID: 2800000, guid: f0a8168310b10da4faedc474bb26c20f, type: 3}
+  SteepTexture: {fileID: 2800000, guid: 3787ecf31b318914f908bb48537ebf10, type: 3}
+--- !u!114 &11447114
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 139558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 652785566d3215744ab6e6be9d11daba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LevelWidth: 50
+  LevelLength: 1000
+  StructuralObjects:
+  - {fileID: 145798, guid: 937c5449d1a58b04397bdf8aec813363, type: 2}
+  - {fileID: 100000, guid: 13d630ce2704860458da89a0438ebf5d, type: 2}
+  - {fileID: 100000, guid: 54459e60436a99e4eb2ca9d57f1eefab, type: 2}
+  DynamicObjects:
+  - {fileID: 159596, guid: 7b3f80297d7f6154c83972934acf2d8d, type: 2}
+  - {fileID: 100000, guid: a814fc3c901e6af4c8af38f67d1e0115, type: 2}
+  - {fileID: 100000, guid: ee20e41a8e1dad440878962c415238d1, type: 2}
+  - {fileID: 100000, guid: a32d1918824c42a42be32d77238dd884, type: 2}
+  StructureDensityInv: 1500
+  DynamicDensityInv: 1500
+  ProtectedZone:
+    serializedVersion: 2
+    x: -12.5
+    y: 0
+    width: 25
+    height: 40
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: FrequencyScale
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: BaselineImportance
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: MaximumHeight
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: SlowHeight
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: SpeedyHeight
+      value: 50
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 139558}
+  m_IsPrefabParent: 1

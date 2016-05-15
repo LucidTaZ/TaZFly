@@ -88,6 +88,11 @@ public class GameController : MonoBehaviour {
 			throw new UnityException("Level must have 1 gameobject with tag BoundaryFinish.");
 		}
 
+		// Have SlowHeight and SpeedyHeight markers
+		if (GameObject.FindGameObjectsWithTag("SlowHeight").Length != 1 || GameObject.FindGameObjectsWithTag("SpeedyHeight").Length != 1) {
+			throw new UnityException("Level must have two gameobjects with tags SlowHeight and SpeedyHeight, respectively.");
+		}
+
 		// Play in Z direction
 		Vector3 playfield = GameObject.FindGameObjectWithTag("BoundaryFinish").transform.position - GameObject.FindGameObjectWithTag("Spawn").transform.position;
 		if (playfield.z < playfield.x || playfield.z < playfield.y) {
@@ -121,6 +126,8 @@ public class GameController : MonoBehaviour {
 		GameObject ship = Instantiate(ShipTemplate) as GameObject;
 		ship.transform.parent = level.transform;
 		ship.transform.position = spawnPoint;
+		ship.GetComponent<AutomaticSpeed>().SlowHeight = GameObject.FindWithTag("SlowHeight").transform.position.y;
+		ship.GetComponent<AutomaticSpeed>().SpeedyHeight = GameObject.FindWithTag("SpeedyHeight").transform.position.y;
 		return ship;
 	}
 
