@@ -3,7 +3,7 @@
 public class PlayerController : ShipSteeringController {
 
 	void Update () {
-		Steer(Input.GetAxis("Horizontal"), Input.GetAxis("VerticalPlane"));
+		SteerLocalSpace(Input.GetAxis("Horizontal"), Input.GetAxis("VerticalPlane"));
 	}
 	
 }

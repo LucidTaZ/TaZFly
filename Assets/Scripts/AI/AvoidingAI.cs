@@ -9,6 +9,7 @@ public class AvoidingAI : BaseAI {
 	float lookDownAheadDistanceStart;
 
 	void Start () {
+		base.Start();
 		lookDownAheadDistanceStart = LookDownAheadDistance;
 	}
 

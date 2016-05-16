@@ -9,15 +9,15 @@ public class BaseAI : ShipSteeringController {
 		resolutionDirection.x = Mathf.Sign(resolutionDirection.x);
 		resolutionDirection.y = Mathf.Sign(resolutionDirection.y);
 
-		Steer(resolutionDirection);
+		SteerWorldSpace(resolutionDirection);
 	}
 
 	protected void FlyLower () {
-		Steer(0.0f, -2.0f);
+		SteerLocalSpace(0.0f, -2.0f);
 	}
 
 	protected void FlyStraight () {
-		Steer(0.0f, 0.0f);
+		SteerLocalSpace(0.0f, 0.0f);
 	}
 
 }

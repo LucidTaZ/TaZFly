@@ -8,10 +8,20 @@ public class AutomaticSpeed : MonoBehaviour {
 	public float MaxSpeed;
 	public float SlowHeight; // Height at which MinSpeed is achieved
 	public float SpeedyHeight; // Height at which MaxSpeed is achieved
-	
+
+	Quaternion flightDirection;
+	Quaternion flightDirectionInversed;
+
+	void Start () {
+		flightDirection = transform.rotation;
+		flightDirectionInversed = Quaternion.Inverse(flightDirection);
+	}
+
 	void FixedUpdate () {
 		float speed = computeSpeed(transform.position.y);
-		GetComponent<Rigidbody>().velocity = new Vector3(GetComponent<Rigidbody>().velocity.x, GetComponent<Rigidbody>().velocity.y, speed);
+		Vector3 velocityInForwardSpace = flightDirectionInversed * GetComponent<Rigidbody>().velocity;
+		velocityInForwardSpace.z = speed;
+		GetComponent<Rigidbody>().velocity = flightDirection * velocityInForwardSpace;
 	}
 	
 	float computeSpeed (float height) {
