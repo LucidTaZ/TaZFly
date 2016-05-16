@@ -440,8 +440,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1372174101}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 12.26, z: -10}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071067}
+  m_LocalPosition: {x: 9.9, y: 11.15, z: 8.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -464,7 +464,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1372174101}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 556424bef4635df4fa7bacce4608d06c, type: 3}
   m_Name: 
@@ -671,12 +671,12 @@ Canvas:
   serializedVersion: 2
   m_RenderMode: 1
   m_Camera: {fileID: 1372174105}
-  m_PlaneDistance: 5
+  m_PlaneDistance: 0.4
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
-  m_SortingLayerID: 0
+  m_SortingLayerID: 500816313
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!224 &1683075266
@@ -693,7 +693,7 @@ RectTransform:
   - {fileID: 170474943}
   - {fileID: 1781727450}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
@@ -918,7 +918,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 1b755fba83643734da848502acd2ab31, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 10
+      value: 10.08
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 1b755fba83643734da848502acd2ab31, type: 2}
       propertyPath: m_LocalPosition.z
@@ -942,7 +942,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 1b755fba83643734da848502acd2ab31, type: 2}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 1b755fba83643734da848502acd2ab31, type: 2}
       propertyPath: m_LocalScale.x
@@ -972,6 +972,14 @@ Prefab:
       propertyPath: DamagePerNewton
       value: 1000
       objectReference: {fileID: 0}
+    - target: {fileID: 11455688, guid: 1b755fba83643734da848502acd2ab31, type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11455688, guid: 1b755fba83643734da848502acd2ab31, type: 2}
+      propertyPath: DeathExplosion
+      value: 
+      objectReference: {fileID: 100000, guid: d87da4e2db8e1eb4ab14da9e244c6f69, type: 2}
     m_RemovedComponents:
     - {fileID: 11458364, guid: 1b755fba83643734da848502acd2ab31, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 1b755fba83643734da848502acd2ab31, type: 2}
