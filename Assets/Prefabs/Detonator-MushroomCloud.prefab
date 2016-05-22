@@ -37,7 +37,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.46535206, y: .96972084, z: 33.924263}
+  m_LocalPosition: {x: 2.465352, y: 0.96972084, z: 33.924263}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -59,22 +59,22 @@ MonoBehaviour:
   on: 1
   detonatorControlled: 1
   startSize: 1
-  size: 2.57181811
+  size: 2.571818
   explodeDelayMin: 0
   explodeDelayMax: 0
   startDuration: 2
   duration: 2.6387856
   timeScale: 1
   startDetail: 1
-  detail: 1.01585507
+  detail: 1.0158551
   startColor: {r: 1, g: 1, b: 1, a: 1}
-  color: {r: .238461554, g: .238461554, b: .238461554, a: .211764708}
+  color: {r: 0.23846155, g: 0.23846155, b: 0.23846155, a: 0.21176471}
   startLocalPosition: {x: 0, y: 0, z: 0}
   localPosition: {x: 0, y: 0, z: 0}
   startForce: {x: 0, y: 0, z: 0}
-  force: {x: 5, y: 32.0059204, z: 5}
+  force: {x: 5, y: 32.00592, z: 5}
   startVelocity: {x: 0, y: 0, z: 0}
-  velocity: {x: 8, y: 16.2874126, z: 8}
+  velocity: {x: 8, y: 16.287413, z: 8}
   detailThreshold: 0
   cloudRingMaterial: {fileID: 0}
 --- !u!1002 &11400001
@@ -94,20 +94,20 @@ MonoBehaviour:
   on: 1
   detonatorControlled: 1
   startSize: 1
-  size: 5.04597712
-  explodeDelayMin: .907081723
-  explodeDelayMax: .732426167
+  size: 5.045977
+  explodeDelayMin: 0.9070817
+  explodeDelayMax: 0.73242617
   startDuration: 2
-  duration: 6.96028852
+  duration: 6.9602885
   timeScale: 1
   startDetail: 1
-  detail: 3.41508031
+  detail: 3.4150803
   startColor: {r: 1, g: 1, b: 1, a: 1}
-  color: {r: 0, g: 0, b: 0, a: .0627451017}
+  color: {r: 0, g: 0, b: 0, a: 0.0627451}
   startLocalPosition: {x: 0, y: 0, z: 0}
   localPosition: {x: 0, y: 0, z: 0}
   startForce: {x: 0, y: 0, z: 0}
-  force: {x: .162, y: 2.55999994, z: 0}
+  force: {x: 0.162, y: 2.56, z: 0}
   startVelocity: {x: 0, y: 0, z: 0}
   velocity: {x: 300, y: 20, z: 300}
   detailThreshold: 0
@@ -129,16 +129,16 @@ MonoBehaviour:
   on: 1
   detonatorControlled: 1
   startSize: 1
-  size: 2.14193392
-  explodeDelayMin: .00333978236
-  explodeDelayMax: .0577549338
+  size: 2.141934
+  explodeDelayMin: 0.0033397824
+  explodeDelayMax: 0.057754934
   startDuration: 2
-  duration: 8.19273758
+  duration: 8.192738
   timeScale: 1
   startDetail: 1
   detail: 1
   startColor: {r: 1, g: 1, b: 1, a: 1}
-  color: {r: .300000012, g: .300000012, b: .300000012, a: .211764708}
+  color: {r: 0.3, g: 0.3, b: 0.3, a: 0.21176471}
   startLocalPosition: {x: 0, y: 0, z: 0}
   localPosition: {x: 0, y: 51, z: 0}
   startForce: {x: 0, y: 0, z: 0}
@@ -167,11 +167,11 @@ MonoBehaviour:
   on: 1
   detonatorControlled: 1
   startSize: 1
-  size: 7.82266903
+  size: 7.822669
   explodeDelayMin: 1
   explodeDelayMax: 1
   startDuration: 2
-  duration: 3.20551133
+  duration: 3.2055113
   timeScale: 1
   startDetail: 1
   detail: 1
@@ -202,20 +202,20 @@ MonoBehaviour:
   on: 1
   detonatorControlled: 1
   startSize: 1
-  size: 2.03214693
-  explodeDelayMin: .800000012
-  explodeDelayMax: .800000012
+  size: 2.032147
+  explodeDelayMin: 0.8
+  explodeDelayMax: 0.8
   startDuration: 2
   duration: 4
   timeScale: 1
   startDetail: 1
-  detail: 7.35555506
+  detail: 7.355555
   startColor: {r: 1, g: 1, b: 1, a: 1}
   color: {r: 1, g: 1, b: 1, a: 1}
   startLocalPosition: {x: 0, y: 0, z: 0}
   localPosition: {x: 0, y: 45, z: 0}
   startForce: {x: 0, y: 0, z: 0}
-  force: {x: 0, y: -9.81000042, z: 0}
+  force: {x: 0, y: -9.81, z: 0}
   startVelocity: {x: 0, y: 0, z: 0}
   velocity: {x: 155, y: 155, z: 155}
   detailThreshold: 0
@@ -238,10 +238,10 @@ MonoBehaviour:
   detonatorControlled: 1
   startSize: 1
   size: 1
-  explodeDelayMin: .744852602
-  explodeDelayMax: .792426229
+  explodeDelayMin: 0.7448526
+  explodeDelayMax: 0.7924262
   startDuration: 2
-  duration: .899104357
+  duration: 0.89910436
   timeScale: 1
   startDetail: 1
   detail: 1
@@ -273,20 +273,20 @@ MonoBehaviour:
   on: 1
   detonatorControlled: 1
   startSize: 1
-  size: 3.67247272
-  explodeDelayMin: .769705355
-  explodeDelayMax: .82242614
+  size: 3.6724727
+  explodeDelayMin: 0.76970536
+  explodeDelayMax: 0.82242614
   startDuration: 2
   duration: 7.1262126
   timeScale: 1
   startDetail: 1
-  detail: 1.58445418
+  detail: 1.5844542
   startColor: {r: 1, g: 1, b: 1, a: 1}
-  color: {r: 1, g: .423000008, b: 0, a: 1}
+  color: {r: 1, g: 0.423, b: 0, a: 1}
   startLocalPosition: {x: 0, y: 0, z: 0}
-  localPosition: {x: 0, y: 25.4824867, z: 0}
+  localPosition: {x: 0, y: 25.482487, z: 0}
   startForce: {x: 0, y: 0, z: 0}
-  force: {x: -.779999793, y: 0, z: 0}
+  force: {x: -0.7799998, y: 0, z: 0}
   startVelocity: {x: 0, y: 0, z: 0}
   velocity: {x: 0, y: 0, z: 0}
   detailThreshold: 0
@@ -313,16 +313,16 @@ MonoBehaviour:
   on: 1
   detonatorControlled: 1
   startSize: 1
-  size: 1.44747174
-  explodeDelayMin: .430491537
-  explodeDelayMax: .365147144
+  size: 1.4474717
+  explodeDelayMin: 0.43049154
+  explodeDelayMax: 0.36514714
   startDuration: 2
-  duration: 6.78427124
+  duration: 6.7842712
   timeScale: 1
   startDetail: 1
   detail: 1
   startColor: {r: 1, g: 1, b: 1, a: 1}
-  color: {r: 1, g: .423000008, b: 0, a: 1}
+  color: {r: 1, g: 0.423, b: 0, a: 1}
   startLocalPosition: {x: 0, y: 0, z: 0}
   localPosition: {x: 0, y: 36, z: 0}
   startForce: {x: 0, y: 0, z: 0}
@@ -353,16 +353,16 @@ MonoBehaviour:
   on: 1
   detonatorControlled: 1
   startSize: 1
-  size: 1.62485218
-  explodeDelayMin: .179999992
-  explodeDelayMax: .239999995
+  size: 1.6248522
+  explodeDelayMin: 0.17999999
+  explodeDelayMax: 0.24
   startDuration: 2
-  duration: 6.09788704
+  duration: 6.097887
   timeScale: 1
   startDetail: 1
   detail: 1
   startColor: {r: 1, g: 1, b: 1, a: 1}
-  color: {r: 1, g: .423000008, b: 0, a: 1}
+  color: {r: 1, g: 0.423, b: 0, a: 1}
   startLocalPosition: {x: 0, y: 0, z: 0}
   localPosition: {x: 0, y: 15, z: 0}
   startForce: {x: 0, y: 0, z: 0}
@@ -397,12 +397,12 @@ MonoBehaviour:
   explodeDelayMin: 0
   explodeDelayMax: 0
   startDuration: 2
-  duration: 5.73184109
+  duration: 5.731841
   timeScale: 1
   startDetail: 1
   detail: 1
   startColor: {r: 1, g: 1, b: 1, a: 1}
-  color: {r: 1, g: .423000008, b: 0, a: 1}
+  color: {r: 1, g: 0.423, b: 0, a: 1}
   startLocalPosition: {x: 0, y: 0, z: 0}
   localPosition: {x: 0, y: 0, z: 0}
   startForce: {x: 0, y: 0, z: 0}
@@ -430,15 +430,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b4007f1233a9b74fa9be42583fafba6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 10
-  color: {r: 1, g: .423000008, b: 0, a: 0}
+  size: 5
+  color: {r: 1, g: 0.423, b: 0, a: 0}
   explodeOnStart: 1
   duration: 3
   detail: 1
-  upwardsBias: 10.3910904
-  destroyTime: 16.2768192
+  upwardsBias: 10.39109
+  destroyTime: 16.27682
   useWorldSpace: 1
-  direction: {x: 0, y: 26.0627308, z: 0}
+  direction: {x: 0, y: 26.06273, z: 0}
   fireballAMaterial: {fileID: 0}
   fireballBMaterial: {fileID: 0}
   smokeAMaterial: {fileID: 0}
@@ -473,8 +473,8 @@ MonoBehaviour:
   detonatorControlled: 1
   startSize: 1
   size: 1
-  explodeDelayMin: .829999804
-  explodeDelayMax: .842426121
+  explodeDelayMin: 0.8299998
+  explodeDelayMax: 0.8424261
   startDuration: 2
   duration: 2
   timeScale: 1
@@ -489,8 +489,8 @@ MonoBehaviour:
   startVelocity: {x: 0, y: 0, z: 0}
   velocity: {x: 0, y: 0, z: 0}
   detailThreshold: 0
-  radius: 324.171173
-  power: 15516.9326
+  radius: 324.17117
+  power: 15516.933
   fireObject: {fileID: 0}
   fireObjectLife: 0
 --- !u!1002 &11400023
@@ -502,12 +502,15 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: size
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 100000}
   m_IsPrefabParent: 1
-  m_IsExploded: 1
 --- !u!1002 &100100001
 EditorExtensionImpl:
   serializedVersion: 6

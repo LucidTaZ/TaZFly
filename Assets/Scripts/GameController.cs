@@ -160,21 +160,18 @@ public class GameController : MonoBehaviour {
 		
 		Camera[] cameras = FindObjectsOfType<Camera>();
 		foreach (Camera thisCamera in cameras) {
-			FollowSubject cs;
-			if ((cs = thisCamera.GetComponent<FollowSubject>()) != null) {
-				cs.Load(ship);
+			// Uses GetComponentInParent(), which also looks in the GameObject itself
+			FollowSubject follow;
+			if ((follow = thisCamera.GetComponentInParent<FollowSubject>()) != null) {
+				follow.Load(ship);
 			}
 			SwoonWithSubject swoon;
-			if ((swoon = thisCamera.GetComponent<SwoonWithSubject>()) != null) {
+			if ((swoon = thisCamera.GetComponentInParent<SwoonWithSubject>()) != null) {
 				swoon.Load(ship);
 			}
-			FollowSubject pcs;
-			if ((pcs = thisCamera.GetComponentInParent<FollowSubject>()) != null) {
-				pcs.Load(ship);
-			}
-			SwoonWithSubject pswoon;
-			if ((pswoon = thisCamera.GetComponentInParent<SwoonWithSubject>()) != null) {
-				pswoon.Load(ship);
+			ZoomOutOnDeath zoom;
+			if ((zoom = thisCamera.GetComponentInParent<ZoomOutOnDeath>()) != null) {
+				zoom.Load(ship);
 			}
 		}
 	}

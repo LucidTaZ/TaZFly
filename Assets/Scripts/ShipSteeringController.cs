@@ -15,7 +15,7 @@ public class ShipSteeringController : MonoBehaviour {
 		// never be called, even if the child class does not implement it explicitly.)
 		flightDirection = transform.rotation;
 		flightDirectionInversed = Quaternion.Inverse(flightDirection);
-		Debug.Log("Flight direction: " + flightDirection);
+		//Debug.Log("Flight direction: " + flightDirection);
 	}
 
 	protected void SteerLocalSpace (float dx, float dy) {

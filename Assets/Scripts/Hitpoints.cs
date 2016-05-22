@@ -39,7 +39,7 @@ public class Hitpoints : MonoBehaviour, IHitpointsUser {
 
     void OnCollisionEnter(Collision collision)
     {
-		Debug.Log("OnCollisionEnter");
+		//Debug.Log("OnCollisionEnter");
 		if (!IsAlive()) {
 			// We are in free fall mode after hitpoints depletion. Anything we hit will detonate us.
 			Explode();
@@ -55,14 +55,14 @@ public class Hitpoints : MonoBehaviour, IHitpointsUser {
 
 	public void Die ()
 	{
-		Debug.Log("Starting to die...");
+		//Debug.Log("Starting to die...");
 		Destroy(GetComponent<AutomaticSpeed>());
 		Destroy(GetComponent<ShipSteeringController>());
 		Destroy(GetComponent<BankByVelocity>());
 		GetComponent<Rigidbody>().useGravity = true;
 		GetComponent<Rigidbody>().freezeRotation = false;
 		GetComponent<PropellerController>().StopSpinning();
-		Debug.Log("Died.");
+		//Debug.Log("Died.");
 	}
 
 	void Explode()
@@ -70,7 +70,7 @@ public class Hitpoints : MonoBehaviour, IHitpointsUser {
 		// Explode the Detonator framework explosion
 		if (!exploded) {
 			if (DeathExplosion) {
-				Debug.Log("Going to explode...");
+				//Debug.Log("Going to explode...");
 				GameObject detonatorObject = GameObject.Instantiate(DeathExplosion);
 				DeathExplosion = null; // Make sure it only happens once!
 				detonatorObject.transform.position = transform.position;
@@ -86,9 +86,9 @@ public class Hitpoints : MonoBehaviour, IHitpointsUser {
 
 	IEnumerator WaitThenCleanup(float seconds)
 	{
-		Debug.Log("Going to yield for " + seconds + " seconds");
+		//Debug.Log("Going to yield for " + seconds + " seconds");
 		yield return new WaitForSeconds(seconds);
-		Debug.Log("Proceding");
+		//Debug.Log("Proceding");
 		DestroyObject(gameObject);
 		if (isPlayer) {
 			SceneManager.LoadScene("MainMenu");
