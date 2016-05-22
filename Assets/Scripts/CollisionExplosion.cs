@@ -15,7 +15,7 @@ public class CollisionExplosion : MonoBehaviour {
 		if (!actionPerformed) {
 			actionPerformed = true;
 
-			CameraShakePositional.ShakeAtLocation(transform.position, 10, 1, 0.1f, 0.5f);
+			ShakePositional.ShakeAtLocation(transform.position, 10, 1, 0.1f, 0.5f);
 
 			gameObject.GetComponent<MeshRenderer>().enabled = false;
 			Collider[] colliders = gameObject.GetComponents<Collider>();

@@ -160,20 +160,20 @@ public class GameController : MonoBehaviour {
 		
 		Camera[] cameras = FindObjectsOfType<Camera>();
 		foreach (Camera thisCamera in cameras) {
-			CameraFollow cs;
-			if ((cs = thisCamera.GetComponent<CameraFollow>()) != null) {
+			FollowSubject cs;
+			if ((cs = thisCamera.GetComponent<FollowSubject>()) != null) {
 				cs.Load(ship);
 			}
-			CameraSwoon swoon;
-			if ((swoon = thisCamera.GetComponent<CameraSwoon>()) != null) {
+			SwoonWithSubject swoon;
+			if ((swoon = thisCamera.GetComponent<SwoonWithSubject>()) != null) {
 				swoon.Load(ship);
 			}
-			CameraFollow pcs;
-			if ((pcs = thisCamera.GetComponentInParent<CameraFollow>()) != null) {
+			FollowSubject pcs;
+			if ((pcs = thisCamera.GetComponentInParent<FollowSubject>()) != null) {
 				pcs.Load(ship);
 			}
-			CameraSwoon pswoon;
-			if ((pswoon = thisCamera.GetComponentInParent<CameraSwoon>()) != null) {
+			SwoonWithSubject pswoon;
+			if ((pswoon = thisCamera.GetComponentInParent<SwoonWithSubject>()) != null) {
 				pswoon.Load(ship);
 			}
 		}
@@ -182,12 +182,12 @@ public class GameController : MonoBehaviour {
 	void unloadCameras () {
 		Camera[] cameras = FindObjectsOfType<Camera>();
 		foreach (Camera thisCamera in cameras) {
-			CameraFollow cs;
-			if ((cs = thisCamera.GetComponent<CameraFollow>()) != null) {
+			FollowSubject cs;
+			if ((cs = thisCamera.GetComponent<FollowSubject>()) != null) {
 				cs.Unload();
 			}
-			CameraSwoon swoon;
-			if ((swoon = thisCamera.GetComponent<CameraSwoon>()) != null) {
+			SwoonWithSubject swoon;
+			if ((swoon = thisCamera.GetComponent<SwoonWithSubject>()) != null) {
 				swoon.Unload();
 			}
 		}

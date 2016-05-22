@@ -75,7 +75,7 @@ public class Hitpoints : MonoBehaviour, IHitpointsUser {
 				DeathExplosion = null; // Make sure it only happens once!
 				detonatorObject.transform.position = transform.position;
 				detonatorObject.GetComponent<Detonator>().Explode();
-				CameraShakePositional.ShakeAtLocation(transform.position, 50, 5, 1.0f, 6.5f);
+				ShakePositional.ShakeAtLocation(transform.position, 50, 5, 1.0f, 6.5f);
 				StartCoroutine(WaitThenCleanup(detonatorObject.GetComponent<Detonator>().destroyTime)); // Wait until effect is approximately over
 			} else {
 				DestroyObject(gameObject);

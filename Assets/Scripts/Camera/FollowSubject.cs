@@ -1,14 +1,11 @@
 ﻿using UnityEngine;
 
-public class CameraSwoon : MonoBehaviour {
-
-	public float MaxDeviation = 0.2f;
-	public float ConvergeSpeed = 0.6f;
+public class FollowSubject : MonoBehaviour {
 
 	public GameObject Subject;
 	private bool loaded = false;
 
-	private Quaternion rotation;
+	private Vector3 offset;
 
 	void Awake () {
 		if (Subject != null) {
@@ -27,13 +24,16 @@ public class CameraSwoon : MonoBehaviour {
 
 	void Start () {
 		// Take over the relative settings modeled in the editor.
-		rotation = transform.rotation;
+		if (loaded) {
+			offset = transform.position - Subject.transform.position;
+		} else {
+			offset = transform.position;
+		}
 	}
 	
 	void LateUpdate () {
 		if (loaded && Subject) {
-			Quaternion maximumDeviation = Quaternion.Slerp(rotation, Subject.transform.rotation, MaxDeviation);
-			transform.rotation = Quaternion.Slerp(transform.rotation, maximumDeviation, ConvergeSpeed * Time.deltaTime);
+			transform.position = Subject.transform.position + offset;
 		}
 	}
 }
