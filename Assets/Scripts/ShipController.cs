@@ -24,9 +24,11 @@ public class ShipController : MonoBehaviour {
 			float damage = GetComponent<Hitpoints>().GetDamage(); // 0 to 1
 			ParticleSystem.MinMaxCurve emissionRate = new ParticleSystem.MinMaxCurve(damage * 10);
 			ParticleSystem.EmissionModule em = Exhaust.emission;
-			em.rate = emissionRate;
-			Exhaust.startLifetime = damage * 4.5f + 0.5f;
-			Exhaust.startColor = Color.Lerp(Color.white, Color.black, damage);
+			em.rateOverDistance = emissionRate;
+
+			ParticleSystem.MainModule mainModule = Exhaust.main;
+			mainModule.startLifetime = damage * 4.5f + 0.5f;
+			mainModule.startColor = Color.Lerp(Color.white, Color.black, damage);
 		} else {
 			Debug.LogWarning("Trying to adjust exhaust without expected component.");
 		}
