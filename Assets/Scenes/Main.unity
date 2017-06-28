@@ -1,19 +1,19 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!29 &1
-SceneSettings:
+OcclusionCullingSettings:
   m_ObjectHideFlags: 0
-  m_PVSData: 
-  m_PVSObjectsArray: []
-  m_PVSPortalsArray: []
+  serializedVersion: 2
   m_OcclusionBakeSettings:
     smallestOccluder: 5
     smallestHole: 0.25
     backfaceThreshold: 100
+  m_SceneGUID: 00000000000000000000000000000000
+  m_OcclusionCullingData: {fileID: 0}
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 6
+  serializedVersion: 7
   m_Fog: 0
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
@@ -37,12 +37,12 @@ RenderSettings:
   m_ReflectionIntensity: 0
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!157 &4
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 6
+  serializedVersion: 7
   m_GIWorkflowMode: 0
-  m_LightmapsMode: 1
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -53,17 +53,22 @@ LightmapSettings:
     m_EnableBakedLightmaps: 1
     m_EnableRealtimeLightmaps: 0
   m_LightmapEditorSettings:
-    serializedVersion: 3
+    serializedVersion: 4
     m_Resolution: 1
     m_BakeResolution: 50
     m_TextureWidth: 1024
     m_TextureHeight: 1024
+    m_AO: 0
     m_AOMaxDistance: 1
-    m_Padding: 2
     m_CompAOExponent: 0
+    m_CompAOExponentDirect: 0
+    m_Padding: 2
     m_LightmapParameters: {fileID: 0}
+    m_LightmapsBakeMode: 1
     m_TextureCompression: 0
+    m_DirectLightInLightProbes: 1
     m_FinalGather: 0
+    m_FinalGatherFiltering: 1
     m_FinalGatherRayCount: 1024
     m_ReflectionCompression: 2
   m_LightingDataAsset: {fileID: 0}
@@ -74,26 +79,27 @@ NavMeshSettings:
   m_ObjectHideFlags: 0
   m_BuildSettings:
     serializedVersion: 2
+    agentTypeID: 0
     agentRadius: 0.5
     agentHeight: 2
     agentSlope: 45
     agentClimb: 0.4
     ledgeDropHeight: 0
     maxJumpAcrossDistance: 0
-    accuratePlacement: 0
     minRegionArea: 2
-    cellSize: 0.16666666
     manualCellSize: 0
+    cellSize: 0.16666666
+    accuratePlacement: 0
   m_NavMeshData: {fileID: 0}
 --- !u!1 &136774113
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 136774115}
-  - 82: {fileID: 136774114}
+  - component: {fileID: 136774115}
+  - component: {fileID: 136774114}
   m_Layer: 0
   m_Name: Background Music
   m_TagString: Untagged
@@ -117,6 +123,7 @@ AudioSource:
   Loop: 1
   Mute: 0
   Spatialize: 0
+  SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
@@ -129,12 +136,14 @@ AudioSource:
   rolloffCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - time: 0
+    - serializedVersion: 2
+      time: 0
       value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
-    - time: 1
+    - serializedVersion: 2
+      time: 1
       value: 0
       inSlope: 0
       outSlope: 0
@@ -145,7 +154,8 @@ AudioSource:
   panLevelCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - time: 0
+    - serializedVersion: 2
+      time: 0
       value: 1
       inSlope: 0
       outSlope: 0
@@ -156,7 +166,8 @@ AudioSource:
   spreadCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - time: 0
+    - serializedVersion: 2
+      time: 0
       value: 0
       inSlope: 0
       outSlope: 0
@@ -167,7 +178,8 @@ AudioSource:
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - time: 0
+    - serializedVersion: 2
+      time: 0
       value: 1
       inSlope: 0
       outSlope: 0
@@ -187,15 +199,16 @@ Transform:
   m_Children: []
   m_Father: {fileID: 957013705}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &146542648
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 146542649}
-  - 132: {fileID: 146542650}
+  - component: {fileID: 146542649}
+  - component: {fileID: 146542650}
   m_Layer: 0
   m_Name: Enemies Text
   m_TagString: Untagged
@@ -215,6 +228,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1015826479}
   m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!132 &146542650
 GUIText:
   m_ObjectHideFlags: 0
@@ -243,12 +257,12 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 175032085}
-  - 114: {fileID: 175032088}
-  - 114: {fileID: 175032087}
-  - 114: {fileID: 175032086}
+  - component: {fileID: 175032085}
+  - component: {fileID: 175032088}
+  - component: {fileID: 175032087}
+  - component: {fileID: 175032086}
   m_Layer: 0
   m_Name: Camera Holder
   m_TagString: Untagged
@@ -269,6 +283,7 @@ Transform:
   - {fileID: 957013705}
   m_Father: {fileID: 0}
   m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &175032086
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -312,13 +327,13 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 230962305}
-  - 20: {fileID: 230962304}
-  - 124: {fileID: 230962303}
-  - 92: {fileID: 230962302}
-  - 114: {fileID: 230962301}
+  - component: {fileID: 230962305}
+  - component: {fileID: 230962304}
+  - component: {fileID: 230962303}
+  - component: {fileID: 230962302}
+  - component: {fileID: 230962301}
   m_Layer: 0
   m_Name: Map camera
   m_TagString: Untagged
@@ -398,15 +413,16 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &456775763
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 456775765}
-  - 132: {fileID: 456775764}
+  - component: {fileID: 456775765}
+  - component: {fileID: 456775764}
   m_Layer: 0
   m_Name: Speed Text
   m_TagString: Untagged
@@ -449,19 +465,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1015826479}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &957013700
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 957013705}
-  - 20: {fileID: 957013704}
-  - 92: {fileID: 957013703}
-  - 124: {fileID: 957013702}
-  - 81: {fileID: 957013701}
-  - 114: {fileID: 957013706}
+  - component: {fileID: 957013705}
+  - component: {fileID: 957013704}
+  - component: {fileID: 957013703}
+  - component: {fileID: 957013702}
+  - component: {fileID: 957013701}
+  - component: {fileID: 957013706}
   m_Layer: 0
   m_Name: Player Camera
   m_TagString: MainCamera
@@ -537,6 +554,7 @@ Transform:
   - {fileID: 136774115}
   m_Father: {fileID: 175032085}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &957013706
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -555,10 +573,10 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 1015826479}
-  - 114: {fileID: 1015826480}
+  - component: {fileID: 1015826479}
+  - component: {fileID: 1015826480}
   m_Layer: 0
   m_Name: GUI
   m_TagString: Untagged
@@ -581,6 +599,7 @@ Transform:
   - {fileID: 146542649}
   m_Father: {fileID: 0}
   m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1015826480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -600,10 +619,10 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 1570678104}
-  - 132: {fileID: 1570678103}
+  - component: {fileID: 1570678104}
+  - component: {fileID: 1570678103}
   m_Layer: 0
   m_Name: Hitpoints Text
   m_TagString: Untagged
@@ -646,16 +665,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1015826479}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1906712387
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 1906712388}
-  - 114: {fileID: 1906712389}
-  - 114: {fileID: 1906712390}
+  - component: {fileID: 1906712388}
+  - component: {fileID: 1906712389}
+  - component: {fileID: 1906712390}
   m_Layer: 0
   m_Name: GameController Holder
   m_TagString: GameController
@@ -675,6 +695,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1906712389
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -689,7 +710,7 @@ MonoBehaviour:
   Gui: {fileID: 1015826480}
   ShipTemplate: {fileID: 100000, guid: 1b755fba83643734da848502acd2ab31, type: 2}
   Levels:
-  - {fileID: 151756, guid: bc7543bfa67528f4a9fb2114448d112b, type: 2}
+  - {fileID: 140538, guid: 27bc45a1d96d66c46b0ae9688a7968a2, type: 2}
 --- !u!114 &1906712390
 MonoBehaviour:
   m_ObjectHideFlags: 0
