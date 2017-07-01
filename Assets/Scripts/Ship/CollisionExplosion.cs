@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class CollisionExplosion : MonoBehaviour {
 	// Prefab from the "Detonator" framework (asset store)
@@ -27,12 +28,29 @@ public class CollisionExplosion : MonoBehaviour {
 			if (Detonator) {
 				GameObject detonatorObject = GameObject.Instantiate(Detonator);
 				detonatorObject.transform.position = transform.position;
-				detonatorObject.GetComponent<Detonator>().Explode();
-				DestroyObject(gameObject, detonatorObject.GetComponent<Detonator>().destroyTime); // Destroy gameobject when effect is approximately over
+				waitForDestructionThenCleanup(detonatorObject); // Destroy gameobject when effect is over
 			} else {
-				DestroyObject(gameObject, 10); // Destroy gameobject when effect is approximately over
+				waitThenCleanup(10f); // Destroy gameobject after a suitable time
 			}
 		}
 	}
 
+	IEnumerator waitForDestructionThenCleanup(GameObject subject)
+	{
+		while (subject != null) {
+			yield return null;
+		}
+		cleanup();
+	}
+
+	IEnumerator waitThenCleanup(float seconds)
+	{
+		yield return new WaitForSeconds(seconds);
+		cleanup();
+	}
+
+	void cleanup()
+	{
+		DestroyObject(gameObject);
+	}
 }

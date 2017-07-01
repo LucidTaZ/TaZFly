@@ -5,13 +5,13 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 439058}
-  - 114: {fileID: 11470968}
-  - 114: {fileID: 11437096}
-  - 114: {fileID: 11408062}
-  - 114: {fileID: 11493598}
+  - component: {fileID: 439058}
+  - component: {fileID: 11470968}
+  - component: {fileID: 11437096}
+  - component: {fileID: 11408062}
+  - component: {fileID: 11493598}
   m_Layer: 0
   m_Name: ShortRandomLevel
   m_TagString: Untagged
@@ -31,6 +31,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &11408062
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -74,11 +75,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Width: 50
   Length: 200
+  BottomBoundary: -15
+  TopBoundary: 35
+  SlowHeight: 25
+  SpeedyHeight: 3
   EnemyCount: 1
   BoundaryPrefab: {fileID: 194632, guid: e70f786866219c64689a2a0ef21a186c, type: 2}
   FinishPrefab: {fileID: 154870, guid: 00d9120d0ceb1144789ceebcf971fc8f, type: 2}
   PlayerSpawnPosition: {x: 0, y: 20, z: 0}
   EnemySpawnPosition: {x: 0, y: 15, z: 0}
+  SnapSpawnsToGround: 1
 --- !u!114 &11470968
 MonoBehaviour:
   m_ObjectHideFlags: 1

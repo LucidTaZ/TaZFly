@@ -61,7 +61,9 @@ public class Hitpoints : MonoBehaviour, IHitpointsUser {
 		Destroy(GetComponent<BankByVelocity>());
 		GetComponent<Rigidbody>().useGravity = true;
 		GetComponent<Rigidbody>().freezeRotation = false;
-		GetComponent<PropellerController>().StopSpinning();
+		if (GetComponent<PropellerController>()) {
+			GetComponent<PropellerController>().StopSpinning();
+		}
 		//Debug.Log("Died.");
 	}
 
@@ -74,21 +76,31 @@ public class Hitpoints : MonoBehaviour, IHitpointsUser {
 				GameObject detonatorObject = GameObject.Instantiate(DeathExplosion);
 				DeathExplosion = null; // Make sure it only happens once!
 				detonatorObject.transform.position = transform.position;
-				detonatorObject.GetComponent<Detonator>().Explode();
 				ShakePositional.ShakeAtLocation(transform.position, 50, 5, 1.0f, 6.5f);
-				StartCoroutine(WaitThenCleanup(detonatorObject.GetComponent<Detonator>().destroyTime)); // Wait until effect is approximately over
+				StartCoroutine(waitForDestructionThenCleanup(detonatorObject)); // Wait until effect is approximately over
 			} else {
-				DestroyObject(gameObject);
+				StartCoroutine(waitThenCleanup(3f));
 			}
 			exploded = true;
 		}
 	}
 
-	IEnumerator WaitThenCleanup(float seconds)
+	IEnumerator waitForDestructionThenCleanup(GameObject subject)
 	{
-		//Debug.Log("Going to yield for " + seconds + " seconds");
+		while (subject != null) {
+			yield return null;
+		}
+		cleanup();
+	}
+
+	IEnumerator waitThenCleanup(float seconds)
+	{
 		yield return new WaitForSeconds(seconds);
-		//Debug.Log("Proceding");
+		cleanup();
+	}
+
+	void cleanup()
+	{
 		DestroyObject(gameObject);
 		if (isPlayer) {
 			SceneManager.LoadScene("MainMenu");

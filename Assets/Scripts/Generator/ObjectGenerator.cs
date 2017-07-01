@@ -86,7 +86,7 @@ public class ObjectGenerator : MonoBehaviour {
 	bool isInsideProtectedZone (float x, float z) {
 		return ProtectedZone.Contains(new Vector2(x, z));
 	}
-		
+
 	Terrain findTerrain () {
 		Terrain terrain;
 		foreach (GameObject obj in FindObjectsOfType<GameObject>()) {

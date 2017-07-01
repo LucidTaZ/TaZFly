@@ -6,6 +6,13 @@ public class PropellerController : MonoBehaviour {
 
 	bool stopping = false;
 
+	void Start () {
+		if (!PropellerAnimator.isActiveAndEnabled) {
+			Debug.LogWarning("No propeller to animate, disabling script.");
+			enabled = false;
+		}
+	}
+
 	void FixedUpdate () {
 		if (stopping) {
 			PropellerAnimator.SetFloat("Speed", Mathf.Lerp(0, PropellerAnimator.GetFloat("Speed"), 0.5f * Time.deltaTime));
