@@ -34,15 +34,15 @@ public class TerrainGenerator : MonoBehaviour {
 		GameObject result = Terrain.CreateTerrainGameObject(terrainData);
 		result.transform.position = new Vector3(-width / 2f, MinimumHeight, 0f);
 		result.GetComponent<Terrain>().Flush();
-		
+
+		// Tie the Unity Terrain into our game-side Terrain logic:
+		result.AddComponent<UnityGameTerrain>();
+
 		applyTextures(terrainData);
-		
+
 		return result;
 	}
 	
-	/**
-	 * Generate the GameObject that contains the terrain
-	 */
 	void applyTextures (TerrainData terrainData) {
 		SplatPrototype FlatSplat = new SplatPrototype();
 		SplatPrototype SteepSplat = new SplatPrototype();

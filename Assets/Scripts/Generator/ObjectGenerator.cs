@@ -15,7 +15,7 @@ public class ObjectGenerator : MonoBehaviour {
 	public Rect ProtectedZone; // No-spawn zone
 
 	public void Awake () {
-		Terrain terrain = findTerrain();
+		GameTerrain terrain = findTerrain();
 		Rect boundary = new Rect(new Vector2(-LevelWidth / 2f, 0f), new Vector2(LevelWidth, LevelLength));
 
 		List<GameObject> objects = Generate(terrain, boundary);
@@ -27,7 +27,7 @@ public class ObjectGenerator : MonoBehaviour {
 	/**
 	 * Generate the objects that are present (cannons, barrels etc)
 	 */
-	public List<GameObject> Generate (Terrain terrain, Rect boundary) {
+	public List<GameObject> Generate (GameTerrain terrain, Rect boundary) {
 		float totalSurfaceArea = boundary.width * boundary.height;
 		float protectedSurfaceArea = ProtectedZone.width * ProtectedZone.height;
 		float usableSurfaceArea = totalSurfaceArea - protectedSurfaceArea;
@@ -41,15 +41,16 @@ public class ObjectGenerator : MonoBehaviour {
 		return objects;
 	}
 	
-	GameObject generateObject (IList<GameObject> pool, Terrain terrain, Rect boundary) {
+	GameObject generateObject (IList<GameObject> pool, GameTerrain terrain, Rect boundary) {
 		GameObject result = Instantiate(pool[Random.Range(0, pool.Count)]);
-		float x, z;
+		Vector2 sampled;
 		do {
-			x = Random.Range(boundary.xMin, boundary.xMax);
-			z = Random.Range(boundary.yMin, boundary.yMax);
-		} while (isInsideProtectedZone(x, z));
-		float y = terrain.SampleHeight(new Vector3(x, 0f, z));
-		result.transform.position = new Vector3(x, y, z);
+			sampled = new Vector2(
+				Random.Range(boundary.xMin, boundary.xMax),
+				Random.Range(boundary.yMin, boundary.yMax)
+			);
+		} while (isInsideProtectedZone(sampled));
+		result.transform.position = terrain.RaycastDownto(sampled);
 		return result;
 	}
 	
@@ -58,7 +59,7 @@ public class ObjectGenerator : MonoBehaviour {
 	 * 
 	 * They may be embedded into the ground a bit.
 	 */
-	List<GameObject> generateStructuralObjects (Terrain terrain, Rect boundary, int amount) {
+	List<GameObject> generateStructuralObjects (GameTerrain terrain, Rect boundary, int amount) {
 		List<GameObject> result = new List<GameObject>();
 		for (int i = 0; i < amount; i++) {
 			GameObject current = generateObject(StructuralObjects, terrain, boundary);
@@ -73,7 +74,7 @@ public class ObjectGenerator : MonoBehaviour {
 	 * 
 	 * They will not be empedded into the ground, but may spawn unnaturally above it.
 	 */
-	List<GameObject> generateDynamicObjects (Terrain terrain, Rect boundary, int amount) {
+	List<GameObject> generateDynamicObjects (GameTerrain terrain, Rect boundary, int amount) {
 		List<GameObject> result = new List<GameObject>();
 		for (int i = 0; i < amount; i++) {
 			GameObject current = generateObject(DynamicObjects, terrain, boundary);
@@ -83,17 +84,17 @@ public class ObjectGenerator : MonoBehaviour {
 		return result;
 	}
 
-	bool isInsideProtectedZone (float x, float z) {
-		return ProtectedZone.Contains(new Vector2(x, z));
+	bool isInsideProtectedZone (Vector2 coordinate) {
+		return ProtectedZone.Contains(coordinate);
 	}
 
-	Terrain findTerrain () {
-		Terrain terrain;
+	GameTerrain findTerrain () {
+		GameTerrain terrain;
 		foreach (GameObject obj in FindObjectsOfType<GameObject>()) {
-			if (terrain = obj.GetComponent<Terrain>()) {
+			if ((terrain = obj.GetComponent<GameTerrain>()) != null) {
 				return terrain;
 			}
 		}
-		throw new MissingComponentException("Terrain not found, either have a Terrain component somewhere, or generate one using the TerrainGenerator, which has to execute before the ObjectGenerator!");
+		throw new MissingComponentException("GameTerrain not found, either have a GameTerrain component somewhere, or generate one using the TerrainGenerator, which has to execute before the ObjectGenerator!");
 	}
 }

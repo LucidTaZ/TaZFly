@@ -66,7 +66,7 @@ public class LevelGenerator : MonoBehaviour {
 		GameObject playerSpawn = new GameObject("Spawn");
 		playerSpawn.tag = "Spawn";
 		playerSpawn.transform.position = PlayerSpawnPosition;
-		SnapSpawnToGroundIfNeeded(playerSpawn, 10);
+		snapSpawnToGroundIfNeeded(playerSpawn, 10);
 		playerSpawn.transform.parent = result.transform;
 
 		for (int i = 1; i <= EnemyCount; i++) {
@@ -75,7 +75,7 @@ public class LevelGenerator : MonoBehaviour {
 			const float enemySpacing = 4f;
 			float enemyOffset = -EnemyCount/2 + i;
 			enemySpawn.transform.position = EnemySpawnPosition + new Vector3(enemySpacing * enemyOffset, 0, 0);
-			SnapSpawnToGroundIfNeeded(enemySpawn, 5);
+			snapSpawnToGroundIfNeeded(enemySpawn, 5);
 			enemySpawn.transform.parent = result.transform;
 		}
 
@@ -132,30 +132,33 @@ public class LevelGenerator : MonoBehaviour {
 		return result;
 	}
 
-	private void fixTextureScale(GameObject subject) {
+	void fixTextureScale (GameObject subject) {
 		// Make the texture tile well even as we stretch the quad
 		subject.GetComponent<MeshRenderer>().material.mainTextureScale = new Vector2(subject.transform.localScale.x, subject.transform.localScale.z);
 	}
 
-	private void SnapSpawnToGroundIfNeeded(GameObject spawn, float distanceFromGround) {
+	void snapSpawnToGroundIfNeeded (GameObject spawn, float distanceFromGround) {
 		if (SnapSpawnsToGround) {
-			Terrain terrain = FindTerrain();
-			float y = terrain.SampleHeight(spawn.transform.position);
-			spawn.transform.position = new Vector3(
+			GameTerrain terrain = findTerrain();
+			spawn.transform.position = terrain.RaycastDownto(new Vector2(
 				spawn.transform.position.x,
-				y + distanceFromGround,
 				spawn.transform.position.z
+			));
+			spawn.transform.position += new Vector3(
+				0,
+				distanceFromGround,
+				0
 			);
 		}
 	}
 
-	private Terrain FindTerrain () {
-		Terrain terrain;
+	GameTerrain findTerrain () {
+		GameTerrain terrain;
 		foreach (GameObject obj in FindObjectsOfType<GameObject>()) {
-			if (terrain = obj.GetComponent<Terrain>()) {
+			if ((terrain = obj.GetComponent<GameTerrain>()) != null) {
 				return terrain;
 			}
 		}
-		throw new MissingComponentException("Terrain not found, either have a Terrain component somewhere, or generate one using the TerrainGenerator, which has to execute before the ObjectGenerator!");
+		throw new MissingComponentException("GameTerrain not found, either have a GameTerrain component somewhere, or generate one using the TerrainGenerator, which has to execute before the ObjectGenerator!");
 	}
 }
