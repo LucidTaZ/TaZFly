@@ -1,5 +1,14 @@
 ﻿using UnityEngine;
 
+/**
+ * Generates a Terrain using Unity's Terrain component
+ *
+ * The result is a GameObject that has:
+ * - visuals
+ * - colliders
+ * - a GameTerrain interface component
+ */
+[RequireComponent(typeof(INoise2D))]
 public class TerrainGenerator : MonoBehaviour {
 
 	public float Width = 100f;

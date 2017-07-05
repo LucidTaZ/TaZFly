@@ -1,0 +1,130 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1395735976829540}
+  m_IsPrefabParent: 1
+--- !u!1 &1395735976829540
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4178731844355618}
+  - component: {fileID: 114716271517974398}
+  - component: {fileID: 114893463288962884}
+  - component: {fileID: 114617233233428494}
+  - component: {fileID: 114683822401377892}
+  m_Layer: 0
+  m_Name: ShortLowpolyRandomLevel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 4294967295
+  m_IsActive: 1
+--- !u!4 &4178731844355618
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1395735976829540}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114617233233428494
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1395735976829540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 652785566d3215744ab6e6be9d11daba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LevelWidth: 50
+  LevelLength: 200
+  StructuralObjects:
+  - {fileID: 145798, guid: 937c5449d1a58b04397bdf8aec813363, type: 2}
+  - {fileID: 100000, guid: 13d630ce2704860458da89a0438ebf5d, type: 2}
+  - {fileID: 100000, guid: 54459e60436a99e4eb2ca9d57f1eefab, type: 2}
+  DynamicObjects:
+  - {fileID: 159596, guid: 7b3f80297d7f6154c83972934acf2d8d, type: 2}
+  - {fileID: 100000, guid: a814fc3c901e6af4c8af38f67d1e0115, type: 2}
+  - {fileID: 100000, guid: ee20e41a8e1dad440878962c415238d1, type: 2}
+  - {fileID: 100000, guid: a32d1918824c42a42be32d77238dd884, type: 2}
+  StructureDensityInv: 2500
+  DynamicDensityInv: 2500
+  ProtectedZone:
+    serializedVersion: 2
+    x: -12.5
+    y: 0
+    width: 25
+    height: 40
+--- !u!114 &114683822401377892
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1395735976829540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c50f185fad09083419f03eac2f179fa5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FrequencyScale: 30
+  BaselineImportance: 0.2
+  Skew: 1.4
+--- !u!114 &114716271517974398
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1395735976829540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3888644cb2df86542b9423311af33006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Width: 100
+  Length: 250
+  MinimumHeight: 0
+  MaximumHeight: 20
+  ResolutionX: 8
+  ResolutionZ: 16
+  GroundMaterial: {fileID: 2100000, guid: 213d7f06bf451db45906f01d356c2c28, type: 2}
+--- !u!114 &114893463288962884
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1395735976829540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21411aa0b797d27488675a9152829967, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Width: 50
+  Length: 200
+  BottomBoundary: -15
+  TopBoundary: 35
+  SlowHeight: 25
+  SpeedyHeight: 3
+  EnemyCount: 1
+  BoundaryPrefab: {fileID: 194632, guid: e70f786866219c64689a2a0ef21a186c, type: 2}
+  FinishPrefab: {fileID: 154870, guid: 00d9120d0ceb1144789ceebcf971fc8f, type: 2}
+  PlayerSpawnPosition: {x: 0, y: 20, z: 0}
+  EnemySpawnPosition: {x: 0, y: 15, z: 0}
+  SnapSpawnsToGround: 1
