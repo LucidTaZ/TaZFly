@@ -71,6 +71,7 @@ public class MeshTerrainGenerator : MonoBehaviour {
 		Mesh terrainMesh = new Mesh();
 		terrainMesh.vertices = vertices;
 		terrainMesh.triangles = triangles;
+		terrainMesh.RecalculateNormals();
 
 		GameObject result = new GameObject("Generated Mesh Terrain");
 		result.transform.position = new Vector3(-Width / 2f, MinimumHeight, 0f);
