@@ -41,25 +41,31 @@ public class MeshTerrainGenerator : MonoBehaviour {
 		int[] triangles = new int[6 * fillSize];
 
 		for (int z = 0; z < ResolutionZ; z++) {
-			float zCoordinate = z * Length / ResolutionZ;
+			float zCoordinate = z * Length / (ResolutionZ-1);
 			for (int x = 0; x < ResolutionX; x++) {
-				float xCoordinate = x * Width / ResolutionX;
+				float xCoordinate = x * Width / (ResolutionX-1);
 				float yCoordinate = Mathf.Lerp(MinimumHeight, MaximumHeight, heightmap[z, x]);
 
 				vertices[z * ResolutionX + x] = new Vector3(xCoordinate, yCoordinate, zCoordinate);
 			}
 		}
 
-		for (int iVert = 0; iVert < fillSize; iVert++) {
-			// First half of quad
-			triangles[iVert * 6 + 0] = iVert;
-			triangles[iVert * 6 + 1] = iVert + ResolutionX;
-			triangles[iVert * 6 + 2] = iVert + 1;
+		int iTri = 0;
+		for (int z = 0; z < ResolutionZ - 1; z++) {
+			for (int x = 0; x < ResolutionX - 1; x++) {
+				int iVert = z * ResolutionX + x;
+				// First half of quad
+				triangles[iTri + 0] = iVert;
+				triangles[iTri + 1] = iVert + ResolutionX;
+				triangles[iTri + 2] = iVert + 1;
 
-			// Second half of quad
-			triangles[iVert * 6 + 3] = iVert + ResolutionX;
-			triangles[iVert * 6 + 4] = iVert + ResolutionX + 1;
-			triangles[iVert * 6 + 5] = iVert + 1;
+				// Second half of quad
+				triangles[iTri + 3] = iVert + ResolutionX;
+				triangles[iTri + 4] = iVert + ResolutionX + 1;
+				triangles[iTri + 5] = iVert + 1;
+
+				iTri += 6;
+			}
 		}
 
 		Mesh terrainMesh = new Mesh();
