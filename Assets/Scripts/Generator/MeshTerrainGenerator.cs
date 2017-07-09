@@ -38,6 +38,7 @@ public class MeshTerrainGenerator : MonoBehaviour {
 		int fillSize = (ResolutionZ-1) * (ResolutionX-1);
 
 		Vector3[] vertices = new Vector3[ResolutionZ * ResolutionX];
+		Color[] colors = new Color[ResolutionZ * ResolutionX];
 		int[] triangles = new int[6 * fillSize];
 
 		for (int z = 0; z < ResolutionZ; z++) {
@@ -47,6 +48,8 @@ public class MeshTerrainGenerator : MonoBehaviour {
 				float yCoordinate = Mathf.Lerp(MinimumHeight, MaximumHeight, heightmap[z, x]);
 
 				vertices[z * ResolutionX + x] = new Vector3(xCoordinate, yCoordinate, zCoordinate);
+				// Simple vertex colors, can hook this up to a sort of biome system later for interesting terrain colors
+				colors[z * ResolutionX + x] = Color.Lerp(Color.blue, Color.white, heightmap[z, x]);
 			}
 		}
 
@@ -71,6 +74,7 @@ public class MeshTerrainGenerator : MonoBehaviour {
 		Mesh terrainMesh = new Mesh();
 		terrainMesh.vertices = vertices;
 		terrainMesh.triangles = triangles;
+		terrainMesh.colors = colors;
 		terrainMesh.RecalculateNormals();
 
 		GameObject result = new GameObject("Generated Mesh Terrain");
