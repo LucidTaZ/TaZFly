@@ -8,7 +8,7 @@
  * - colliders
  * - a GameTerrain interface component
  */
-[RequireComponent(typeof(INoise2D))]
+[RequireComponent(typeof(IBiome))]
 public class MeshTerrainGenerator : MonoBehaviour {
 
 	public float Width = 100f;
@@ -22,10 +22,19 @@ public class MeshTerrainGenerator : MonoBehaviour {
 
 	public Material GroundMaterial;
 
-	protected INoise2D TerrainNoise;
+	public GameObject HeightNoise;
+	INoise2D heightNoise;
+
+	IBiome biomeGenerator;
 
 	public void Awake () {
-		TerrainNoise = GetComponent<INoise2D>();
+		heightNoise = HeightNoise.GetComponent<INoise2D>();
+		if (heightNoise == null) {
+			Debug.LogError("Referenced HeightNoise gameobject has no INoise2D component.");
+		}
+
+		biomeGenerator = GetComponent<IBiome>();
+		biomeGenerator.Initialize();
 
 		GameObject terrain = Generate();
 		terrain.transform.parent = gameObject.transform;
@@ -49,7 +58,7 @@ public class MeshTerrainGenerator : MonoBehaviour {
 
 				vertices[z * ResolutionX + x] = new Vector3(xCoordinate, yCoordinate, zCoordinate);
 				// Simple vertex colors, can hook this up to a sort of biome system later for interesting terrain colors
-				colors[z * ResolutionX + x] = Color.Lerp(Color.blue, Color.white, heightmap[z, x]);
+				colors[z * ResolutionX + x] = biomeGenerator.GetGroundColor(new Vector2(xCoordinate, zCoordinate));
 			}
 		}
 
@@ -106,7 +115,7 @@ public class MeshTerrainGenerator : MonoBehaviour {
 			float zCoordinate = z * Length / ResolutionZ;
 			for (int x = 0; x < ResolutionX; x++) {
 				float xCoordinate = x * Width / ResolutionX;
-				heightmap[z, x] = TerrainNoise.Sample(new Vector2(xCoordinate, zCoordinate));
+				heightmap[z, x] = heightNoise.Sample(new Vector2(xCoordinate, zCoordinate));
 			}
 		}
 
