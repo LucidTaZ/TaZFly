@@ -3,11 +3,13 @@
 public class BiomeGenerator : MonoBehaviour, IBiome {
 	public GameObject HumidityNoise;
 	public GameObject TemperatureNoise;
+	public GameObject HillynessNoise;
 
 	bool initialized;
 
 	INoise2D humidityNoise;
 	INoise2D temperatureNoise;
+	INoise2D hillynessNoise;
 
 	public void Awake () {
 		Initialize();
@@ -20,7 +22,8 @@ public class BiomeGenerator : MonoBehaviour, IBiome {
 
 		humidityNoise = HumidityNoise.GetComponent<INoise2D>();
 		temperatureNoise = TemperatureNoise.GetComponent<INoise2D>();
-		if (humidityNoise == null || temperatureNoise == null) {
+		hillynessNoise = HillynessNoise.GetComponent<INoise2D>();
+		if (humidityNoise == null || temperatureNoise == null || hillynessNoise == null) {
 			Debug.LogError("Noise gameobject references contain no INoise2D component.");
 		}
 
@@ -37,5 +40,9 @@ public class BiomeGenerator : MonoBehaviour, IBiome {
 		Color groundColor = Color.Lerp(humidityColor, temperatureColor, 0.5f);
 
 		return groundColor;
+	}
+
+	public float GetHillyness (Vector2 position) {
+		return hillynessNoise.Sample(position);
 	}
 }

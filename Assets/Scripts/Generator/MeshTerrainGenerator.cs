@@ -115,7 +115,13 @@ public class MeshTerrainGenerator : MonoBehaviour {
 			float zCoordinate = z * Length / ResolutionZ;
 			for (int x = 0; x < ResolutionX; x++) {
 				float xCoordinate = x * Width / ResolutionX;
-				heightmap[z, x] = heightNoise.Sample(new Vector2(xCoordinate, zCoordinate));
+				Vector2 groundCoordinates = new Vector2(xCoordinate, zCoordinate);
+				float hillyness = biomeGenerator.GetHillyness(groundCoordinates);
+				float detailHeight = heightNoise.Sample(groundCoordinates);
+
+				// Hillyness makes the terrain higher in general and also more varying in terms of smaller hills
+				// In what strength the hillyness has a flat influence to the general height, is the meaning of the blend factor
+				heightmap[z, x] = Mathf.Lerp(detailHeight * hillyness, hillyness, 0.2f);
 			}
 		}
 

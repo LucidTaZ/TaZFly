@@ -72,12 +72,41 @@ GameObject:
   - component: {fileID: 4979025549930820}
   - component: {fileID: 114126885501071340}
   m_Layer: 0
+  m_Name: Hillyness Noise
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1912375286707464
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4027702857653880}
+  - component: {fileID: 114578933997906514}
+  m_Layer: 0
   m_Name: Height Noise
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!4 &4027702857653880
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1912375286707464}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4178731844355618}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4178731844355618
 Transform:
   m_ObjectHideFlags: 1
@@ -88,9 +117,10 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 4979025549930820}
+  - {fileID: 4027702857653880}
   - {fileID: 4498681800714816}
   - {fileID: 4968298596637904}
+  - {fileID: 4979025549930820}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -126,12 +156,12 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1815766847589540}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4178731844355618}
-  m_RootOrder: 0
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &114126885501071340
 MonoBehaviour:
@@ -144,9 +174,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c50f185fad09083419f03eac2f179fa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FrequencyScale: 30
-  BaselineImportance: 0.2
-  Skew: 1.4
+  FrequencyScale: 100
+  Skew: 1
 --- !u!114 &114132345990847606
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -158,8 +187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c50f185fad09083419f03eac2f179fa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FrequencyScale: 5
-  BaselineImportance: 1
+  FrequencyScale: 25
   Skew: 1
 --- !u!114 &114257373618681956
 MonoBehaviour:
@@ -174,6 +202,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HumidityNoise: {fileID: 1182579546305346}
   TemperatureNoise: {fileID: 1741216784909032}
+  HillynessNoise: {fileID: 1815766847589540}
 --- !u!114 &114500807144701944
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -185,9 +214,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c50f185fad09083419f03eac2f179fa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FrequencyScale: 5
-  BaselineImportance: 1
+  FrequencyScale: 25
   Skew: 1
+--- !u!114 &114578933997906514
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1912375286707464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c50f185fad09083419f03eac2f179fa5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FrequencyScale: 20
+  Skew: 1.4
 --- !u!114 &114617233233428494
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -232,11 +273,11 @@ MonoBehaviour:
   Width: 100
   Length: 250
   MinimumHeight: 0
-  MaximumHeight: 20
+  MaximumHeight: 40
   ResolutionX: 8
   ResolutionZ: 16
   GroundMaterial: {fileID: 2100000, guid: 213d7f06bf451db45906f01d356c2c28, type: 2}
-  HeightNoise: {fileID: 1815766847589540}
+  HeightNoise: {fileID: 1912375286707464}
 --- !u!114 &114893463288962884
 MonoBehaviour:
   m_ObjectHideFlags: 1
