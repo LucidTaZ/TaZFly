@@ -187,7 +187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c50f185fad09083419f03eac2f179fa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FrequencyScale: 25
+  FrequencyScale: 175
   Skew: 1
 --- !u!114 &114257373618681956
 MonoBehaviour:
@@ -203,6 +203,7 @@ MonoBehaviour:
   HumidityNoise: {fileID: 1182579546305346}
   TemperatureNoise: {fileID: 1741216784909032}
   HillynessNoise: {fileID: 1815766847589540}
+  GroundColorMap: {fileID: 2800000, guid: 019cba1782464634eae71dce8d8d7064, type: 3}
 --- !u!114 &114500807144701944
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -214,7 +215,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c50f185fad09083419f03eac2f179fa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FrequencyScale: 25
+  FrequencyScale: 175
   Skew: 1
 --- !u!114 &114578933997906514
 MonoBehaviour:

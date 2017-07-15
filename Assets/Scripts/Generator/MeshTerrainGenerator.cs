@@ -57,7 +57,6 @@ public class MeshTerrainGenerator : MonoBehaviour {
 				float yCoordinate = Mathf.Lerp(MinimumHeight, MaximumHeight, heightmap[z, x]);
 
 				vertices[z * ResolutionX + x] = new Vector3(xCoordinate, yCoordinate, zCoordinate);
-				// Simple vertex colors, can hook this up to a sort of biome system later for interesting terrain colors
 				colors[z * ResolutionX + x] = biomeGenerator.GetGroundColor(new Vector2(xCoordinate, zCoordinate));
 			}
 		}

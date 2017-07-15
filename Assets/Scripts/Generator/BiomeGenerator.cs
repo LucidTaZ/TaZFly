@@ -5,6 +5,8 @@ public class BiomeGenerator : MonoBehaviour, IBiome {
 	public GameObject TemperatureNoise;
 	public GameObject HillynessNoise;
 
+	public Texture2D GroundColorMap; // x: temperature, y: precipitation
+
 	bool initialized;
 
 	INoise2D humidityNoise;
@@ -34,10 +36,7 @@ public class BiomeGenerator : MonoBehaviour, IBiome {
 		float humidity = humidityNoise.Sample(position);
 		float temperature = temperatureNoise.Sample(position);
 
-		// TODO: Improve this extremely simple system
-		Color humidityColor = Color.Lerp(Color.yellow, Color.green, humidity);
-		Color temperatureColor = Color.Lerp(Color.blue, Color.red, temperature);
-		Color groundColor = Color.Lerp(humidityColor, temperatureColor, 0.5f);
+		Color groundColor = GroundColorMap.GetPixelBilinear(temperature, humidity);
 
 		return groundColor;
 	}
