@@ -1,108 +1,50 @@
 ﻿using UnityEngine;
 
-/**
- * Generates a Terrain using Unity's Terrain component
- *
- * The result is a GameObject that has:
- * - visuals
- * - colliders
- * - a GameTerrain interface component
- */
-[RequireComponent(typeof(INoise2D))]
-public class TerrainGenerator : MonoBehaviour {
+[RequireComponent(typeof(IBiome))]
+abstract public class TerrainGenerator : MonoBehaviour
+{
+	public GameObject HeightNoise;
+	INoise2D heightNoise;
 
-	public float Width = 100f;
-	public float Length = 200f;
-
-	public int MapResolution = 128;
-
-	public float MinimumHeight = 0f;
-	public float MaximumHeight = 10f;
-
-	// Terrain textures:
-	public Texture2D FlatTexture;
-	public Texture2D SteepTexture;
-
-	protected INoise2D TerrainNoise;
+	protected IBiome biomeGenerator;
 
 	public void Awake () {
-		TerrainNoise = GetComponent<INoise2D>();
-		GameObject terrain = Generate(Width, Length);
+		heightNoise = HeightNoise.GetComponent<INoise2D>();
+		if (heightNoise == null) {
+			Debug.LogError("Referenced HeightNoise gameobject has no INoise2D component.");
+		}
+
+		biomeGenerator = GetComponent<IBiome>();
+		biomeGenerator.Initialize();
+
+		GameObject terrain = Generate();
 		terrain.transform.parent = gameObject.transform;
 	}
 
-	public GameObject Generate (float width, float length) {
-		TerrainData terrainData = new TerrainData();
-		terrainData.heightmapResolution = MapResolution;
-		terrainData.alphamapResolution = MapResolution;
-		
-		float[,] heightmap = generateHeightmap(MapResolution, width, length);
-		terrainData.SetHeights(0, 0, heightmap);
-		terrainData.size = new Vector3(width, MaximumHeight - MinimumHeight, length);
-		
-		GameObject result = Terrain.CreateTerrainGameObject(terrainData);
-		result.transform.position = new Vector3(-width / 2f, MinimumHeight, 0f);
-		result.GetComponent<Terrain>().Flush();
+	protected abstract GameObject Generate();
 
-		// Tie the Unity Terrain into our game-side Terrain logic:
-		result.AddComponent<UnityGameTerrain>();
-
-		applyTextures(terrainData);
-
-		return result;
-	}
-	
-	void applyTextures (TerrainData terrainData) {
-		SplatPrototype FlatSplat = new SplatPrototype();
-		SplatPrototype SteepSplat = new SplatPrototype();
-		
-		FlatSplat.texture = FlatTexture;
-		SteepSplat.texture = SteepTexture;
-		
-		terrainData.splatPrototypes = new SplatPrototype[]{FlatSplat, SteepSplat};
-		terrainData.RefreshPrototypes();
-		
-		float[,,] splatMap = new float[terrainData.alphamapResolution, terrainData.alphamapResolution, 2];
-		
-		for (int y = 0; y < terrainData.alphamapHeight; y++) {
-			for (int x = 0; x < terrainData.alphamapWidth; x++) {
-				float normalizedX = (float)x / (terrainData.alphamapWidth - 1);
-				float normalizedZ = (float)y / (terrainData.alphamapHeight - 1);
-				
-				float steepness = terrainData.GetSteepness(normalizedX, normalizedZ);
-				float steepnessNormalized = Mathf.Clamp(steepness / 25f, 0, 1f); // Division to tweak steepness to something that looks good
-				
-				splatMap[y, x, 0] = 1f - steepnessNormalized;
-				splatMap[y, x, 1] = steepnessNormalized;
-			}
-		}
-		
-		terrainData.SetAlphamaps(0, 0, splatMap);
-	}
-	
 	/**
 	 * Generate the raw heightmap data
-	 * 
+	 *
 	 * Each point must lie between 0 and 1.
-	 * 
-	 * Parameters:
-	 * - resolution: the resolution of the (sqare) height map
-	 * - width: width of the actual terrain that is being created
-	 * - height: height of the actual terrain that is being created
-	 * 
-	 * The width and height parameters are to know the shape of the (not necessarily square) terrain.
 	 */
-	float[,] generateHeightmap (int resolution, float width, float height) {
-		float[,] heightmap = new float[resolution, resolution];
-		
-		for (int y = 0; y < resolution; y++) {
-			float yCoordinate = y * height / resolution;
-			for (int x = 0; x < resolution; x++) {
-				float xCoordinate = x * width / resolution;
-				heightmap[y, x] = TerrainNoise.Sample(new Vector2(xCoordinate, yCoordinate));
+	protected float[,] GenerateHeightmap (int ResolutionX, int ResolutionZ, float Width, float Length) {
+		float[,] heightmap = new float[ResolutionZ, ResolutionX];
+
+		for (int z = 0; z < ResolutionZ; z++) {
+			float zCoordinate = z * Length / ResolutionZ;
+			for (int x = 0; x < ResolutionX; x++) {
+				float xCoordinate = x * Width / ResolutionX;
+				Vector2 groundCoordinates = new Vector2(xCoordinate, zCoordinate);
+				float hillyness = biomeGenerator.GetHillyness(groundCoordinates);
+				float detailHeight = heightNoise.Sample(groundCoordinates);
+
+				// Hillyness makes the terrain higher in general and also more varying in terms of smaller hills
+				// In what strength the hillyness has a flat influence to the general height, is the meaning of the blend factor
+				heightmap[z, x] = Mathf.Lerp(detailHeight * hillyness, hillyness, 0.2f);
 			}
 		}
-		
+
 		return heightmap;
 	}
 }
