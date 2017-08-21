@@ -6,11 +6,7 @@ public class CollisionExplosion : MonoBehaviour {
 	// Make sure the prefab does not have "Explode on start" enabled. We tweak it a bit before initiating the explosion
 	public GameObject Detonator;
 
-	bool actionPerformed;
-
-	void Start () {
-		actionPerformed = false;
-	}
+	bool actionPerformed = false;
 
 	void OnCollisionEnter (Collision collision) {
 		if (!actionPerformed) {

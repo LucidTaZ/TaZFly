@@ -14,6 +14,8 @@ public class SwoonWithSubject : MonoBehaviour {
 		if (Subject != null) {
 			loaded = true;
 		}
+		// Take over the relative settings modeled in the editor.
+		rotation = transform.rotation;
 	}
 
 	public void Load (GameObject subject) {
@@ -25,11 +27,6 @@ public class SwoonWithSubject : MonoBehaviour {
 		loaded = false;
 	}
 
-	void Start () {
-		// Take over the relative settings modeled in the editor.
-		rotation = transform.rotation;
-	}
-	
 	void LateUpdate () {
 		if (loaded && Subject) {
 			Quaternion maximumDeviation = Quaternion.Slerp(rotation, Subject.transform.rotation, MaxDeviation);

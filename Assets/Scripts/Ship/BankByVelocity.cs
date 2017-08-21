@@ -11,7 +11,7 @@ public class BankByVelocity : MonoBehaviour {
 	Quaternion flightDirection;
 	Quaternion flightDirectionInversed;
 
-	void Start () {
+	void Awake () {
 		flightDirection = transform.rotation;
 		flightDirectionInversed = Quaternion.Inverse(flightDirection);
 	}

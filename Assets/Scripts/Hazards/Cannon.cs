@@ -11,7 +11,7 @@ public class Cannon : MonoBehaviour {
 
 	float LastShot;
 
-	void Start () {
+	void Awake () {
 		LastShot = 0;
 		ProjectileSpeed += (Random.value*2-1) * ProjectileSpeedVar;
 		ShotInterval += (Random.value*2-1) * ShotIntervalVar;

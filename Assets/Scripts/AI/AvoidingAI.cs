@@ -8,8 +8,8 @@ public class AvoidingAI : BaseAI {
 
 	float lookDownAheadDistanceStart;
 
-	protected override void Start () {
-		base.Start();
+	protected override void Awake () {
+		base.Awake();
 		lookDownAheadDistanceStart = LookDownAheadDistance;
 	}
 

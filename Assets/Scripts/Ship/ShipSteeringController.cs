@@ -10,7 +10,7 @@ public class ShipSteeringController : MonoBehaviour {
 	Quaternion flightDirection;
 	Quaternion flightDirectionInversed;
 
-	protected virtual void Start () {
+	protected virtual void Awake () {
 		// protected virtual to enable this class being extended (leaving it private (the default) causes Start() to
 		// never be called, even if the child class does not implement it explicitly.)
 		flightDirection = transform.rotation;

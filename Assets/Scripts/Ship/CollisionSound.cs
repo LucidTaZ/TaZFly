@@ -12,7 +12,7 @@ public class CollisionSound : MonoBehaviour {
 
 	float cooldownTimer = 0f;
 
-	void Start () {
+	void Awake () {
 		if (clips.Length == 0) {
 			throw new UnityException("No audio clips assigned.");
 		}
