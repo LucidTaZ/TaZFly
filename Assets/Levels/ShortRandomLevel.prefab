@@ -51,12 +51,9 @@ MonoBehaviour:
   LevelLength: 200
   StructuralObjects:
   - {fileID: 145798, guid: 937c5449d1a58b04397bdf8aec813363, type: 2}
-  - {fileID: 100000, guid: 13d630ce2704860458da89a0438ebf5d, type: 2}
   - {fileID: 100000, guid: 54459e60436a99e4eb2ca9d57f1eefab, type: 2}
   DynamicObjects:
   - {fileID: 159596, guid: 7b3f80297d7f6154c83972934acf2d8d, type: 2}
-  - {fileID: 100000, guid: a814fc3c901e6af4c8af38f67d1e0115, type: 2}
-  - {fileID: 100000, guid: ee20e41a8e1dad440878962c415238d1, type: 2}
   - {fileID: 100000, guid: a32d1918824c42a42be32d77238dd884, type: 2}
   StructureDensityInv: 2500
   DynamicDensityInv: 2500
