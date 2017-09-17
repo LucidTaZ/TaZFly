@@ -1,6 +1,4 @@
-﻿using System;
-
-public interface IHitpointsUser
+﻿public interface IHitpointsUser
 {
 	void Die();
 }

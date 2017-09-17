@@ -6,9 +6,9 @@ public class SwoonWithSubject : MonoBehaviour {
 	public float ConvergeSpeed = 0.6f;
 
 	public GameObject Subject;
-	private bool loaded = false;
+	bool loaded;
 
-	private Quaternion rotation;
+	Quaternion rotation;
 
 	void Awake () {
 		if (Subject != null) {

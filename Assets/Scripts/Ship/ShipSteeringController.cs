@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class ShipSteeringController : MonoBehaviour {
-
 	public float HorizontalMoveRate;
 	public float VerticalMoveRate;
 
 	public float SteerInterpolationTime = 0.3f; // Rougly: Number of seconds to interpolate to a new vector
+
+	Rigidbody thisRigidbody;
 
 	Quaternion flightDirection;
 	Quaternion flightDirectionInversed;
@@ -13,6 +15,8 @@ public class ShipSteeringController : MonoBehaviour {
 	protected virtual void Awake () {
 		// protected virtual to enable this class being extended (leaving it private (the default) causes Start() to
 		// never be called, even if the child class does not implement it explicitly.)
+		thisRigidbody = GetComponent<Rigidbody>();
+
 		flightDirection = transform.rotation;
 		flightDirectionInversed = Quaternion.Inverse(flightDirection);
 		//Debug.Log("Flight direction: " + flightDirection);
@@ -21,7 +25,7 @@ public class ShipSteeringController : MonoBehaviour {
 	protected void SteerLocalSpace (float dx, float dy) {
 		float increment = Time.deltaTime / SteerInterpolationTime;
 
-		Vector3 velocityInForwardSpace = flightDirectionInversed * GetComponent<Rigidbody>().velocity;
+		Vector3 velocityInForwardSpace = flightDirectionInversed * thisRigidbody.velocity;
 
 		Vector3 desiredVectorInForwardSpace = new Vector3(
 			Mathf.Clamp(dx, -1.0f, 1.0f) * HorizontalMoveRate,
@@ -29,7 +33,7 @@ public class ShipSteeringController : MonoBehaviour {
 			velocityInForwardSpace.z
 		);
 		
-		GetComponent<Rigidbody>().velocity = flightDirection * Vector3.Lerp(
+		thisRigidbody.velocity = flightDirection * Vector3.Lerp(
 			velocityInForwardSpace,
 			desiredVectorInForwardSpace,
 			increment

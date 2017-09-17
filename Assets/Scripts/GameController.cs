@@ -10,10 +10,21 @@ public class GameController : MonoBehaviour {
 	public GameObject[] Levels;
 
 	int currentLevelIndex;
-	GameObject currentLevel = null; // Points to the currently instantiated prefab
+	GameObject currentLevel; // Points to the currently instantiated prefab
 
 	bool loadNextLevelFlag; // Flag that steers loading the next level.
-	bool levelUnloaded = false; // Flag that signals that the loading of a new level can start (Unity needs one game loop cycle to destroy stuff)
+	bool levelUnloaded; // Flag that signals that the loading of a new level can start (Unity needs one game loop cycle to destroy stuff)
+
+	public static GameController InstanceIfExists () {
+		GameObject instanceGameObject = GameObject.FindGameObjectWithTag("GameController");
+		if (instanceGameObject == null) {
+			Debug.Log("No GameController found. This is normal in the main menu but not in levels.");
+			return null;
+		}
+		GameController controller = instanceGameObject.GetComponent<GameController>();
+		Debug.Assert(controller != null);
+		return controller;
+	}
 
 	void Start () {
 		loadNextLevel(0);
@@ -123,7 +134,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	GameObject instantiateShip (GameObject level, Vector3 spawnPoint) {
-		GameObject ship = Instantiate(ShipTemplate) as GameObject;
+		GameObject ship = Instantiate(ShipTemplate);
 		ship.transform.parent = level.transform;
 		ship.transform.position = spawnPoint;
 		ship.GetComponent<AutomaticSpeed>().SlowHeight = GameObject.FindWithTag("SlowHeight").transform.position.y;

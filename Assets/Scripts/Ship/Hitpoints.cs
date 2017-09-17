@@ -4,20 +4,20 @@ using System.Collections;
 
 public class Hitpoints : MonoBehaviour, IHitpointsUser {
 
-    public int HitpointsValue;
+	public int HitpointsValue;
 	public float DamagePerNewton = 1000;
 
 	public GameObject DeathExplosion;
 
-	protected bool exploded = false;
+	protected bool exploded;
 	bool isPlayer;
 
 	protected HitpointsController controller;
 
-    void OnEnable()
-    {
+	void OnEnable()
+	{
 		controller.SetHitpointsUser(this);
-    }
+	}
 
 	void Awake()
 	{
@@ -37,21 +37,22 @@ public class Hitpoints : MonoBehaviour, IHitpointsUser {
 		}
 	}
 
-    void OnCollisionEnter(Collision collision)
-    {
+	void OnCollisionEnter(Collision collision)
+	{
 		//Debug.Log("OnCollisionEnter");
 		if (!IsAlive()) {
 			// We are in free fall mode after hitpoints depletion. Anything we hit will detonate us.
 			Explode();
 		}
-        if (collision.collider.GetComponent<OverrideDamage>()) {
-            controller.Decrease(collision.collider.GetComponent<OverrideDamage>().Damage);
-        } else {
+		OverrideDamage overrideDamage = collision.collider.GetComponent<OverrideDamage>();
+		if (overrideDamage) {
+			controller.Decrease(overrideDamage.Damage);
+		} else {
 			//controller.Decrease((int)collision.relativeVelocity.magnitude);
 			float force = collision.impulse.magnitude / Time.fixedDeltaTime;
 			controller.Decrease((int)(force / DamagePerNewton));
-        }
-    }
+		}
+	}
 
 	public void Die ()
 	{
@@ -61,9 +62,6 @@ public class Hitpoints : MonoBehaviour, IHitpointsUser {
 		Destroy(GetComponent<BankByVelocity>());
 		GetComponent<Rigidbody>().useGravity = true;
 		GetComponent<Rigidbody>().freezeRotation = false;
-		if (GetComponent<PropellerController>()) {
-			GetComponent<PropellerController>().StopSpinning();
-		}
 		//Debug.Log("Died.");
 	}
 
@@ -73,7 +71,7 @@ public class Hitpoints : MonoBehaviour, IHitpointsUser {
 		if (!exploded) {
 			if (DeathExplosion) {
 				//Debug.Log("Going to explode...");
-				GameObject detonatorObject = GameObject.Instantiate(DeathExplosion);
+				GameObject detonatorObject = Instantiate(DeathExplosion);
 				DeathExplosion = null; // Make sure it only happens once!
 				detonatorObject.transform.position = transform.position;
 				ShakePositional.ShakeAtLocation(transform.position, 50, 5, 1.0f, 6.5f);

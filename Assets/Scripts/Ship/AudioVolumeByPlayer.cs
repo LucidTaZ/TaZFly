@@ -6,6 +6,7 @@
  * We simply look at whether we have a PlayerController. That might need to be changed at some point, but for now it
  * works.
  */
+[RequireComponent(typeof(AudioSource))]
 public class AudioVolumeByPlayer : MonoBehaviour {
 
 	public float PlayerVolume = 1.0f;
@@ -13,10 +14,8 @@ public class AudioVolumeByPlayer : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		if (GetComponent<PlayerController>()) {
-			GetComponent<AudioSource>().volume = PlayerVolume;
-		} else {
-			GetComponent<AudioSource>().volume = NonPlayerVolume;
-		}
+		AudioSource source = GetComponent<AudioSource>();
+		bool isPlayer = GetComponent<PlayerController>() != null;
+		source.volume = isPlayer ? PlayerVolume : NonPlayerVolume;
 	}
 }

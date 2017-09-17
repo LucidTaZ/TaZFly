@@ -1,27 +1,28 @@
 ﻿using UnityEngine;
 
-// TODO: Take into account the initial rotation, and make sure the subject always travels in that direction, not simply the Z direction always
-
+[RequireComponent(typeof(Rigidbody))]
 public class AutomaticSpeed : MonoBehaviour {
-
 	public float MinSpeed;
 	public float MaxSpeed;
 	public float SlowHeight; // Height at which MinSpeed is achieved
 	public float SpeedyHeight; // Height at which MaxSpeed is achieved
 
+	Rigidbody thisRigidbody;
+
 	Quaternion flightDirection;
 	Quaternion flightDirectionInversed;
 
 	void Awake () {
+		thisRigidbody = GetComponent<Rigidbody>();
 		flightDirection = transform.rotation;
 		flightDirectionInversed = Quaternion.Inverse(flightDirection);
 	}
 
 	void FixedUpdate () {
 		float speed = computeSpeed(transform.position.y);
-		Vector3 velocityInForwardSpace = flightDirectionInversed * GetComponent<Rigidbody>().velocity;
+		Vector3 velocityInForwardSpace = flightDirectionInversed * thisRigidbody.velocity;
 		velocityInForwardSpace.z = speed;
-		GetComponent<Rigidbody>().velocity = flightDirection * velocityInForwardSpace;
+		thisRigidbody.velocity = flightDirection * velocityInForwardSpace;
 	}
 	
 	float computeSpeed (float height) {
@@ -32,7 +33,7 @@ public class AutomaticSpeed : MonoBehaviour {
 	}
 
 	float getSpeed () {
-		return GetComponent<Rigidbody>().velocity.z;
+		return thisRigidbody.velocity.z;
 	}
 
 	public float GetRelativeSpeed () {

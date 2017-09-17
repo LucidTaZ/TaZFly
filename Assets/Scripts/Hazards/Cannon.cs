@@ -26,12 +26,14 @@ public class Cannon : MonoBehaviour {
 	void Shoot () {
 		LastShot = Time.time;
 
-		GameObject projectile = (GameObject)Instantiate(Projectile);
+		GameObject projectile = Instantiate(Projectile);
 		projectile.transform.parent = gameObject.transform; // Cannonball is a child of the cannon. Makes sure it gets unloaded properly when the cannon is unloaded.
 		projectile.transform.position = EjectionPoint.position;
 		projectile.transform.rotation = transform.rotation;
-		projectile.GetComponent<Rigidbody>().AddTorque(new Vector3(Random.value, Random.value, Random.value) * 360);
-		projectile.GetComponent<Rigidbody>().velocity = transform.TransformVector(Vector3.up * ProjectileSpeed);
+
+		Rigidbody projectileRigidbody = projectile.GetComponent<Rigidbody>();
+		projectileRigidbody.AddTorque(new Vector3(Random.value, Random.value, Random.value) * 360);
+		projectileRigidbody.velocity = transform.TransformVector(Vector3.up * ProjectileSpeed);
 	}
 
 }

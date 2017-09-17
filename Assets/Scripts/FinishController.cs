@@ -2,9 +2,14 @@
 using System.Linq; // For Contains() method
 
 public class FinishController : MonoBehaviour {
-
 	protected Collider[] PlayerColliders;
-	private bool finished;
+	bool finished;
+
+	GameController gameController;
+
+	void Awake () {
+		gameController = GameController.InstanceIfExists();
+	}
 
 	public void Load (GameObject playerShip) {
 		PlayerColliders = playerShip.GetComponents<Collider>();
@@ -13,9 +18,10 @@ public class FinishController : MonoBehaviour {
 
 	void OnTriggerEnter (Collider other) {
 		if (!finished && PlayerColliders.Contains<Collider>(other)) {
-			GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().PlayerFinished();
+			if (gameController != null) {
+				gameController.PlayerFinished();
+			}
 			finished = true;
 		}
 	}
-	
 }

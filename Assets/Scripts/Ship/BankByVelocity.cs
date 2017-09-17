@@ -1,28 +1,26 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class BankByVelocity : MonoBehaviour {
-	protected Boundary FieldBoundary;
-
 	public float BankElevator;
 	public float BankAileron;
 	public float BankRudder;
 	public float BankConvergeSpeed;
 
+	Rigidbody thisRigidbody;
+
 	Quaternion flightDirection;
 	Quaternion flightDirectionInversed;
 
 	void Awake () {
+		thisRigidbody = GetComponent<Rigidbody>();
 		flightDirection = transform.rotation;
 		flightDirectionInversed = Quaternion.Inverse(flightDirection);
 	}
 
-	public void Load (Boundary boundary) {
-		FieldBoundary = boundary;
-	}
-
 	void Update () {
 		// Important: When implementing this in FixedUpdate, the orientation does not properly zero out anymore after having had a collision, nasty bug.
-		bankPlane(GetComponent<Rigidbody>().velocity);
+		bankPlane(thisRigidbody.velocity);
 	}
 
 	void bankPlane (Vector3 velocity) {

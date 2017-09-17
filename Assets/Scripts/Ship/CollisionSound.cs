@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
 
+[RequireComponent(typeof(Rigidbody))]
 public class CollisionSound : MonoBehaviour {
-
 	public AudioClip[] clips;
 
 	public float Cooldown = 0.5f;
@@ -10,9 +9,12 @@ public class CollisionSound : MonoBehaviour {
 	public float MagThreshold = 2f; // Minimum impulse
 	public float VelocityThreshold = 10f; // Minimum velocity
 
-	float cooldownTimer = 0f;
+	Rigidbody thisRigidbody;
+
+	float cooldownTimer;
 
 	void Awake () {
+		thisRigidbody = GetComponent<Rigidbody>();
 		if (clips.Length == 0) {
 			throw new UnityException("No audio clips assigned.");
 		}
@@ -32,11 +34,11 @@ public class CollisionSound : MonoBehaviour {
 		tryToPlaySound(collisionInfo.impulse.sqrMagnitude);
 	}
 
-	private void tryToPlaySound (float sqrMagnitude) {
+	void tryToPlaySound (float sqrMagnitude) {
 		if (
 			cooldownTimer <= 0f
 			&& sqrMagnitude > MagThreshold*MagThreshold
-			&& GetComponent<Rigidbody>().velocity.sqrMagnitude > VelocityThreshold*VelocityThreshold
+			&& thisRigidbody.velocity.sqrMagnitude > VelocityThreshold*VelocityThreshold
 		) {
 			playSound();
 			cooldownTimer = Cooldown;

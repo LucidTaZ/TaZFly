@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class GlobalKeyHandler : MonoBehaviour {
 	void Update () {
-		if (Input.GetAxis("Cancel") > .5f) {
+		if (Input.GetButtonDown("Cancel")) {
 			Debug.Log("Player quit via keyboard.");
 			SceneManager.LoadScene("MainMenu");
 		}

@@ -3,9 +3,9 @@
 public class FollowSubject : MonoBehaviour {
 
 	public GameObject Subject;
-	private bool loaded = false;
+	bool loaded;
 
-	private Vector3 offset;
+	Vector3 offset;
 
 	void Awake () {
 		if (Subject != null) {
