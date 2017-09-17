@@ -8,7 +8,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 496066}
-  - component: {fileID: 11434680}
+  - component: {fileID: 114921059268706904}
   - component: {fileID: 11431768}
   - component: {fileID: 11467886}
   - component: {fileID: 114939435770246714}
@@ -59,25 +59,6 @@ MonoBehaviour:
   PlayerSpawnPosition: {x: 0, y: 20, z: 0}
   EnemySpawnPosition: {x: 0, y: 15, z: 0}
   SnapSpawnsToGround: 1
---- !u!114 &11434680
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 187190}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8dc0f72471c50b47964e08fbd456912, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  HeightNoise: {fileID: 1112204090816008}
-  Width: 100
-  Length: 3000
-  MapResolution: 256
-  MinimumHeight: 0
-  MaximumHeight: 20
-  FlatTexture: {fileID: 2800000, guid: f0a8168310b10da4faedc474bb26c20f, type: 3}
-  SteepTexture: {fileID: 2800000, guid: 3787ecf31b318914f908bb48537ebf10, type: 3}
 --- !u!114 &11467886
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -282,6 +263,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FrequencyScale: 175
   Skew: 1
+--- !u!114 &114921059268706904
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 187190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85112489fd881084988ee19c17a0a4c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HeightNoise: {fileID: 1112204090816008}
+  Width: 100
+  Length: 3000
+  MinimumHeight: 0
+  MaximumHeight: 20
+  ResolutionX: 8
+  ResolutionZ: 240
+  GroundMaterial: {fileID: 2100000, guid: 213d7f06bf451db45906f01d356c2c28, type: 2}
 --- !u!114 &114939435770246714
 MonoBehaviour:
   m_ObjectHideFlags: 1
