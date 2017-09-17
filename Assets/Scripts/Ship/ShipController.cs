@@ -7,7 +7,7 @@ public class Boundary {
 
 public class ShipController : MonoBehaviour {
 
-	public ParticleSystem Exhaust;
+	public Exhaust ExhaustComponent;
 
 	public void Load (Boundary boundary) {
 		if (GetComponent<BankByVelocity>()) {
@@ -22,13 +22,7 @@ public class ShipController : MonoBehaviour {
 	void adjustExhaust () {
 		if (GetComponent<Hitpoints>()) {
 			float damage = GetComponent<Hitpoints>().GetDamage(); // 0 to 1
-			ParticleSystem.MinMaxCurve emissionRate = new ParticleSystem.MinMaxCurve(damage * 10);
-			ParticleSystem.EmissionModule em = Exhaust.emission;
-			em.rateOverDistance = emissionRate;
-
-			ParticleSystem.MainModule mainModule = Exhaust.main;
-			mainModule.startLifetime = damage * 4.5f + 0.5f;
-			mainModule.startColor = Color.Lerp(Color.white, Color.black, damage);
+			ExhaustComponent.SetSeverity(damage);
 		} else {
 			Debug.LogWarning("Trying to adjust exhaust without expected component.");
 		}
