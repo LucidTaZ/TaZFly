@@ -31,8 +31,8 @@ public class BankByVelocity : MonoBehaviour {
 
 		// TODO: Compute x and y based on the general direction of movement, instead of depending it on the initial flight direction?
 		targetRotation *= Quaternion.Euler(-velocityInForwardSpace.y * BankElevator, 0.0f, 0.0f);
-		targetRotation *= Quaternion.AngleAxis(velocityInForwardSpace.x * BankAileron, Vector3.up);
-		targetRotation *= Quaternion.AngleAxis(-velocityInForwardSpace.x * BankRudder, Vector3.forward);
+		targetRotation *= Quaternion.AngleAxis(velocityInForwardSpace.x * BankRudder, Vector3.up);
+		targetRotation *= Quaternion.AngleAxis(-velocityInForwardSpace.x * BankAileron, Vector3.forward);
 
 		//transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, BankConvergeSpeed * Time.deltaTime);
 		transform.rotation = targetRotation * flightDirection;

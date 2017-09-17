@@ -278,9 +278,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa9ce11473506bb4da9bc77013dd38ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BankElevator: 5
-  BankAileron: 5
-  BankRudder: 3
+  BankElevator: 1
+  BankAileron: 3
+  BankRudder: 2
   BankConvergeSpeed: 50
 --- !u!198 &19881500
 ParticleSystem:
