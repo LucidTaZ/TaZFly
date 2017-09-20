@@ -6,7 +6,7 @@ public class CollisionExplosion : MonoBehaviour {
 	// Make sure the prefab does not have "Explode on start" enabled. We tweak it a bit before initiating the explosion
 	public GameObject Detonator;
 
-	bool actionPerformed = false;
+	bool actionPerformed;
 
 	void OnCollisionEnter (Collision collision) {
 		if (!actionPerformed) {
@@ -22,7 +22,7 @@ public class CollisionExplosion : MonoBehaviour {
 
 			// Explode the Detonator framework explosion
 			if (Detonator) {
-				GameObject detonatorObject = GameObject.Instantiate(Detonator);
+				GameObject detonatorObject = Instantiate(Detonator);
 				detonatorObject.transform.position = transform.position;
 				waitForDestructionThenCleanup(detonatorObject); // Destroy gameobject when effect is over
 			} else {
