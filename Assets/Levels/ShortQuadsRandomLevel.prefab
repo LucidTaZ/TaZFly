@@ -39,6 +39,7 @@ GameObject:
   - component: {fileID: 114707011672758924}
   - component: {fileID: 114977582250944576}
   - component: {fileID: 114178998987717380}
+  - component: {fileID: 114606171986269330}
   m_Layer: 0
   m_Name: ShortQuadsRandomLevel
   m_TagString: Untagged
@@ -236,6 +237,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FrequencyScale: 175
   Skew: 1
+--- !u!114 &114606171986269330
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1167748083802220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1b2f65a09fccdc4493efdb41766cba8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LevelWidth: 50
+  LevelLength: 200
+  MarkerPrefab: {fileID: 1495533010106024, guid: 307fe9ac12614954f8c3e56f994990d8,
+    type: 2}
+  SpaceBetween: 30
 --- !u!114 &114707011672758924
 MonoBehaviour:
   m_ObjectHideFlags: 1
