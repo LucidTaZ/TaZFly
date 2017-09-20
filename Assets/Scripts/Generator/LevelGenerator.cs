@@ -13,22 +13,12 @@ public class LevelGenerator : MonoBehaviour {
 
 	public float Width = 50f;
 	public float Length = 150f;
-	public float BottomBoundary = -15f;
-	public float TopBoundary = 35f;
 
 	public float SlowHeight = 25f;
 	public float SpeedyHeight = 3f;
 
-	// Boundary vertical placement
-	// The Boundary will range from -Height/2+OffsetHeight to Height/2+OffsetHeight
-	// So for values Height 50 and OffsetHeight 10, the result is -15 to 35.
-	// To make these nicely settable via the editor, we should make it more intuitive first.
-	//const float Height = 50f; // Of the boundary
-	//const float OffsetHeight = 10f; // How high to place the middle of the boundary?
-
 	public int EnemyCount = 1;
 
-	public GameObject BoundaryPrefab;
 	public GameObject FinishPrefab;
 
 	public Vector3 PlayerSpawnPosition = new Vector3(0f, 20f, 0f);
@@ -58,8 +48,8 @@ public class LevelGenerator : MonoBehaviour {
 	 * - Sunlight
 	 */
 	GameObject generateStandards () {
-		float height = TopBoundary - BottomBoundary;
-		float offsetHeight = (TopBoundary + BottomBoundary) / 2;
+		float height = Mathf.Abs(SlowHeight - SpeedyHeight);
+		float offsetHeight = (SlowHeight + SpeedyHeight) / 2;
 
 		GameObject result = new GameObject("Standard");
 
@@ -92,26 +82,15 @@ public class LevelGenerator : MonoBehaviour {
 		GameObject boundary = new GameObject("Boundary");
 		boundary.transform.parent = result.transform;
 
-		GameObject boundaryLeft = Instantiate(BoundaryPrefab);
-		boundaryLeft.transform.position = new Vector3(-Width / 2f, offsetHeight, Length / 2f);
-		boundaryLeft.transform.rotation = Quaternion.Euler(0f, 0f, -90f);
-		boundaryLeft.transform.localScale = new Vector3(height / 10f, 1f, Length / 10f); // Divide by 10 since the Plane has dimensions 10x10 already.
-		fixTextureScale(boundaryLeft);
-		boundaryLeft.transform.parent = boundary.transform;
+		GameObject boundaryLeftMarker = new GameObject("BoundaryLeft");
+		boundaryLeftMarker.tag = "BoundaryLeft";
+		boundaryLeftMarker.transform.position = new Vector3(-Width / 2, SlowHeight, 0f);
+		boundaryLeftMarker.transform.parent = result.transform;
 
-		GameObject boundaryRight = Instantiate(BoundaryPrefab);
-		boundaryRight.transform.position = new Vector3(Width / 2f, offsetHeight, Length / 2f);
-		boundaryRight.transform.rotation = Quaternion.Euler(0f, 0f, 90f);
-		boundaryRight.transform.localScale = new Vector3(height / 10f, 1f, Length / 10f); // Divide by 10 since the Plane has dimensions 10x10 already.
-		fixTextureScale(boundaryRight);
-		boundaryRight.transform.parent = boundary.transform;
-
-		GameObject boundaryTop = Instantiate(BoundaryPrefab);
-		boundaryTop.transform.position = new Vector3(0, TopBoundary, Length / 2f);
-		boundaryTop.transform.rotation = Quaternion.Euler(0f, 0f, 180f);
-		boundaryTop.transform.localScale = new Vector3(Width / 10f, 1f, Length / 10f); // Divide by 10 since the Plane has dimensions 10x10 already.
-		fixTextureScale(boundaryTop);
-		boundaryTop.transform.parent = boundary.transform;
+		GameObject boundaryRightMarker = new GameObject("BoundaryRight");
+		boundaryRightMarker.tag = "BoundaryRight";
+		boundaryRightMarker.transform.position = new Vector3(Width / 2, SlowHeight, 0f);
+		boundaryRightMarker.transform.parent = result.transform;
 
 		GameObject boundaryFinish = Instantiate(FinishPrefab);
 		boundaryFinish.tag = "BoundaryFinish";

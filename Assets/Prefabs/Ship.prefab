@@ -125,6 +125,44 @@ MonoBehaviour:
   MaxSpeed: 25
   SlowHeight: 25
   SpeedyHeight: 3
+  BoundaryLeft: 0
+  BoundaryRight: 0
+  RelativeSpeedByRelativeAltitude:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: -1
+      outSlope: -1
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: -1
+      outSlope: -1
+      tangentMode: 34
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  OutOfBoundaryPenaltyByDeviation:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 30
+      value: 0.75
+      inSlope: 0.050420977
+      outSlope: 0.050420977
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!114 &11437510
 MonoBehaviour:
   m_ObjectHideFlags: 1

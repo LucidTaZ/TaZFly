@@ -139,6 +139,8 @@ public class GameController : MonoBehaviour {
 		ship.transform.position = spawnPoint;
 		ship.GetComponent<AutomaticSpeed>().SlowHeight = GameObject.FindWithTag("SlowHeight").transform.position.y;
 		ship.GetComponent<AutomaticSpeed>().SpeedyHeight = GameObject.FindWithTag("SpeedyHeight").transform.position.y;
+		ship.GetComponent<AutomaticSpeed>().BoundaryLeft = GameObject.FindWithTag("BoundaryLeft").transform.position.x;
+		ship.GetComponent<AutomaticSpeed>().BoundaryRight = GameObject.FindWithTag("BoundaryRight").transform.position.x;
 		return ship;
 	}
 
