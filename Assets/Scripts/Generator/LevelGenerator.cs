@@ -49,7 +49,6 @@ public class LevelGenerator : MonoBehaviour {
 	 */
 	GameObject generateStandards () {
 		float height = Mathf.Abs(SlowHeight - SpeedyHeight);
-		float offsetHeight = (SlowHeight + SpeedyHeight) / 2;
 
 		GameObject result = new GameObject("Standard");
 
@@ -93,11 +92,7 @@ public class LevelGenerator : MonoBehaviour {
 		boundaryRightMarker.transform.parent = result.transform;
 
 		GameObject boundaryFinish = Instantiate(FinishPrefab);
-		boundaryFinish.tag = "BoundaryFinish";
-		boundaryFinish.transform.position = new Vector3(0f, offsetHeight, Length);
-		boundaryFinish.transform.rotation = Quaternion.Euler(-90f, 0f, 0f);
-		boundaryFinish.transform.localScale = new Vector3(Width / 10f, 1f, height / 10f); // Divide by 10 since the Plane has dimensions 10x10 already.
-		fixTextureScale(boundaryFinish);
+		boundaryFinish.transform.position = new Vector3(0f, SpeedyHeight, Length);
 		boundaryFinish.transform.parent = boundary.transform;
 
 		GameObject sunlight = new GameObject("Sunlight");
@@ -109,11 +104,6 @@ public class LevelGenerator : MonoBehaviour {
 		lightSource.color = Color.white;
 		sunlight.transform.parent = result.transform;
 		return result;
-	}
-
-	void fixTextureScale (GameObject subject) {
-		// Make the texture tile well even as we stretch the quad
-		subject.GetComponent<MeshRenderer>().material.mainTextureScale = new Vector2(subject.transform.localScale.x, subject.transform.localScale.z);
 	}
 
 	void snapSpawnToGroundIfNeeded (GameObject spawn, float distanceFromGround) {
