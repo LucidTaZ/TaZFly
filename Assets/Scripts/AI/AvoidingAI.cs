@@ -30,7 +30,8 @@ public class AvoidingAI : BaseAI {
 				if (hitInfo.distance < 0.5f * LookDownAheadDistance) {
 					FlyStraight();
 				} else {
-					// Continue flying in the same direction
+					// Converge slowly to center (to avoid boundary penalty)
+					SteerLocalSpace(-0.05f * Mathf.Clamp(transform.position.x, -5.0f, 5.0f), 0.0f);
 				}
 			} else {
 				FlyLower();

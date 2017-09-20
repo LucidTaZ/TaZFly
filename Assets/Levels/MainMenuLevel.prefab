@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 11431768}
   - component: {fileID: 11467886}
   - component: {fileID: 114939435770246714}
+  - component: {fileID: 114684256002612422}
   m_Layer: 0
   m_Name: MainMenuLevel
   m_TagString: Untagged
@@ -247,6 +248,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FrequencyScale: 175
   Skew: 1
+--- !u!114 &114684256002612422
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 187190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1b2f65a09fccdc4493efdb41766cba8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LevelWidth: 50
+  LevelLength: 3000
+  MarkerPrefab: {fileID: 1495533010106024, guid: 307fe9ac12614954f8c3e56f994990d8,
+    type: 2}
+  SpaceBetween: 50
 --- !u!114 &114854088098818082
 MonoBehaviour:
   m_ObjectHideFlags: 1
