@@ -6,5 +6,5 @@
  * component, we may choose to generate a Mesh and facilitate the same functionality.
  */
 public interface GameTerrain {
-	Vector3 RaycastDownto (Vector2 coordinates);
+	Vector3 RaycastDownto (Vector2 coordinates, out bool hit);
 }

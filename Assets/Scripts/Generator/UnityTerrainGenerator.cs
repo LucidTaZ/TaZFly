@@ -22,17 +22,18 @@ public class UnityTerrainGenerator : TerrainGenerator {
 	public Texture2D FlatTexture;
 	public Texture2D SteepTexture;
 
-	override protected GameObject Generate () {
+	override protected GameObject Generate (Vector3 offset) {
 		TerrainData terrainData = new TerrainData();
 		terrainData.heightmapResolution = MapResolution;
 		terrainData.alphamapResolution = MapResolution;
 		
-		float[,] heightmap = GenerateHeightmap(MapResolution, MapResolution, Width, Length);
+		Vector2 groundOffset = new Vector2(offset.x, offset.z);
+		float[,] heightmap = GenerateHeightmap(MapResolution, MapResolution, Width, Length, groundOffset);
 		terrainData.SetHeights(0, 0, heightmap);
 		terrainData.size = new Vector3(Width, MaximumHeight - MinimumHeight, Length);
 		
 		GameObject result = Terrain.CreateTerrainGameObject(terrainData);
-		result.transform.position = new Vector3(-Width / 2f, MinimumHeight, 0f);
+		result.transform.position = new Vector3(-Width / 2f, MinimumHeight, 0f) + offset;
 		result.GetComponent<Terrain>().Flush();
 
 		// Tie the Unity Terrain into our game-side Terrain logic:

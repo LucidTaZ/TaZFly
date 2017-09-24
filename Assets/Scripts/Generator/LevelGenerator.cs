@@ -48,8 +48,6 @@ public class LevelGenerator : MonoBehaviour {
 	 * - Sunlight
 	 */
 	GameObject generateStandards () {
-		float height = Mathf.Abs(SlowHeight - SpeedyHeight);
-
 		GameObject result = new GameObject("Standard");
 
 		GameObject playerSpawn = new GameObject("Spawn");
@@ -108,8 +106,7 @@ public class LevelGenerator : MonoBehaviour {
 
 	void snapSpawnToGroundIfNeeded (GameObject spawn, float distanceFromGround) {
 		if (SnapSpawnsToGround) {
-			GameTerrain terrain = findTerrain();
-			spawn.transform.position = terrain.RaycastDownto(new Vector2(
+			spawn.transform.position = TerrainRegistry.RaycastDownto(new Vector2(
 				spawn.transform.position.x,
 				spawn.transform.position.z
 			));
@@ -119,15 +116,5 @@ public class LevelGenerator : MonoBehaviour {
 				0
 			);
 		}
-	}
-
-	GameTerrain findTerrain () {
-		GameTerrain terrain;
-		foreach (GameObject obj in FindObjectsOfType<GameObject>()) {
-			if ((terrain = obj.GetComponent<GameTerrain>()) != null) {
-				return terrain;
-			}
-		}
-		throw new MissingComponentException("GameTerrain not found, either have a GameTerrain component somewhere, or generate one using the TerrainGenerator, which has to execute before the ObjectGenerator!");
 	}
 }

@@ -15,10 +15,9 @@ public class ObjectGenerator : MonoBehaviour {
 	public Rect ProtectedZone; // No-spawn zone
 
 	public void Awake () {
-		GameTerrain terrain = findTerrain();
 		Rect boundary = new Rect(new Vector2(-LevelWidth / 2f, 0f), new Vector2(LevelWidth, LevelLength));
 
-		List<GameObject> objects = Generate(terrain, boundary);
+		List<GameObject> objects = Generate(boundary);
 		foreach (GameObject obj in objects) {
 			obj.transform.parent = gameObject.transform;
 		}
@@ -27,7 +26,7 @@ public class ObjectGenerator : MonoBehaviour {
 	/**
 	 * Generate the objects that are present (cannons, barrels etc)
 	 */
-	public List<GameObject> Generate (GameTerrain terrain, Rect boundary) {
+	public List<GameObject> Generate (Rect boundary) {
 		float totalSurfaceArea = boundary.width * boundary.height;
 		float protectedSurfaceArea = ProtectedZone.width * ProtectedZone.height;
 		float usableSurfaceArea = totalSurfaceArea - protectedSurfaceArea;
@@ -36,12 +35,12 @@ public class ObjectGenerator : MonoBehaviour {
 		}
 		int nStructures = (int)Mathf.Round(usableSurfaceArea / StructureDensityInv);
 		int nDynamics = (int)Mathf.Round(usableSurfaceArea / DynamicDensityInv);
-		List<GameObject> objects = generateStructuralObjects(terrain, boundary, nStructures);
-		objects.AddRange(generateDynamicObjects(terrain, boundary, nDynamics));
+		List<GameObject> objects = generateStructuralObjects(boundary, nStructures);
+		objects.AddRange(generateDynamicObjects(boundary, nDynamics));
 		return objects;
 	}
 	
-	GameObject generateObject (IList<GameObject> pool, GameTerrain terrain, Rect boundary) {
+	GameObject generateObject (IList<GameObject> pool, Rect boundary) {
 		GameObject result = Instantiate(pool[Random.Range(0, pool.Count)]);
 		Vector2 sampled;
 		do {
@@ -50,7 +49,7 @@ public class ObjectGenerator : MonoBehaviour {
 				Random.Range(boundary.yMin, boundary.yMax)
 			);
 		} while (isInsideProtectedZone(sampled));
-		result.transform.position = terrain.RaycastDownto(sampled);
+		result.transform.position = TerrainRegistry.RaycastDownto(sampled);
 		return result;
 	}
 	
@@ -59,10 +58,10 @@ public class ObjectGenerator : MonoBehaviour {
 	 * 
 	 * They may be embedded into the ground a bit.
 	 */
-	List<GameObject> generateStructuralObjects (GameTerrain terrain, Rect boundary, int amount) {
+	List<GameObject> generateStructuralObjects (Rect boundary, int amount) {
 		List<GameObject> result = new List<GameObject>();
 		for (int i = 0; i < amount; i++) {
-			GameObject current = generateObject(StructuralObjects, terrain, boundary);
+			GameObject current = generateObject(StructuralObjects, boundary);
 			current.transform.position += new Vector3(0f, -0.1f, 0f);
 			result.Add(current);
 		}
@@ -74,10 +73,10 @@ public class ObjectGenerator : MonoBehaviour {
 	 * 
 	 * They will not be empedded into the ground, but may spawn unnaturally above it.
 	 */
-	List<GameObject> generateDynamicObjects (GameTerrain terrain, Rect boundary, int amount) {
+	List<GameObject> generateDynamicObjects (Rect boundary, int amount) {
 		List<GameObject> result = new List<GameObject>();
 		for (int i = 0; i < amount; i++) {
-			GameObject current = generateObject(DynamicObjects, terrain, boundary);
+			GameObject current = generateObject(DynamicObjects, boundary);
 			current.transform.position += new Vector3(0f, 1f, 0f); // Avoid immediate terrain collision (Placing the object using a sweep does not always work: MeshColliders are not supported.
 			result.Add(current);
 		}
@@ -86,15 +85,5 @@ public class ObjectGenerator : MonoBehaviour {
 
 	bool isInsideProtectedZone (Vector2 coordinate) {
 		return ProtectedZone.Contains(coordinate);
-	}
-
-	GameTerrain findTerrain () {
-		GameTerrain terrain;
-		foreach (GameObject obj in FindObjectsOfType<GameObject>()) {
-			if ((terrain = obj.GetComponent<GameTerrain>()) != null) {
-				return terrain;
-			}
-		}
-		throw new MissingComponentException("GameTerrain not found, either have a GameTerrain component somewhere, or generate one using the TerrainGenerator, which has to execute before the ObjectGenerator!");
 	}
 }

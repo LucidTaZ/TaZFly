@@ -6,6 +6,9 @@ abstract public class TerrainGenerator : MonoBehaviour
 	public GameObject HeightNoise;
 	INoise2D heightNoise;
 
+	public float GenerationUpdateInterval = 1.0f;
+	float lastGenerationUpdateCheck;
+
 	protected IBiome biomeGenerator;
 
 	public void Awake () {
@@ -17,25 +20,41 @@ abstract public class TerrainGenerator : MonoBehaviour
 		biomeGenerator = GetComponent<IBiome>();
 		biomeGenerator.Initialize();
 
-		GameObject terrain = Generate();
+		GameObject terrain = Generate(Vector3.zero);
 		terrain.transform.parent = gameObject.transform;
 	}
 
-	protected abstract GameObject Generate();
+	protected abstract GameObject Generate(Vector3 offset);
+
+	void Update () {
+		if (Time.time > lastGenerationUpdateCheck + GenerationUpdateInterval) {
+			updateGeneration();
+			lastGenerationUpdateCheck = Time.time;
+		}
+	}
+
+	/**
+	 * Spawn new terrain tiles, if needed
+	 */
+	void updateGeneration () {
+		// TODO: Enumerate all areas around the local player.
+		// Then ask the TerrainRegistry if that area already has a terrain.
+		// If not, spawn it.
+	}
 
 	/**
 	 * Generate the raw heightmap data
 	 *
 	 * Each point must lie between 0 and 1.
 	 */
-	protected float[,] GenerateHeightmap (int ResolutionX, int ResolutionZ, float Width, float Length) {
+	protected float[,] GenerateHeightmap (int ResolutionX, int ResolutionZ, float Width, float Length, Vector2 groundOffset) {
 		float[,] heightmap = new float[ResolutionZ, ResolutionX];
 
 		for (int z = 0; z < ResolutionZ; z++) {
-			float zCoordinate = z * Length / ResolutionZ;
+			float zCoordinate = z * Length / (ResolutionZ - 1);
 			for (int x = 0; x < ResolutionX; x++) {
-				float xCoordinate = x * Width / ResolutionX;
-				Vector2 groundCoordinates = new Vector2(xCoordinate, zCoordinate);
+				float xCoordinate = x * Width / (ResolutionX - 1);
+				Vector2 groundCoordinates = new Vector2(xCoordinate, zCoordinate) + groundOffset;
 				float hillyness = biomeGenerator.GetHillyness(groundCoordinates);
 				float detailHeight = heightNoise.Sample(groundCoordinates);
 

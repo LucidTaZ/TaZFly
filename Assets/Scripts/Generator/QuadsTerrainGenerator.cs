@@ -22,8 +22,9 @@ public class QuadsTerrainGenerator : TerrainGenerator {
 
 	public Material GroundMaterial;
 
-	override protected GameObject Generate () {
-		float[,] heightmap = GenerateHeightmap(ResolutionX, ResolutionZ, Width, Length);
+	override protected GameObject Generate (Vector3 offset) {
+		Vector2 groundOffset = new Vector2(offset.x, offset.z);
+		float[,] heightmap = GenerateHeightmap(ResolutionX, ResolutionZ, Width, Length, groundOffset);
 
 		// The space we must fill in between the vertices:
 		int fillSize = (ResolutionZ-1) * (ResolutionX-1);
@@ -82,7 +83,7 @@ public class QuadsTerrainGenerator : TerrainGenerator {
 		terrainMesh.RecalculateNormals();
 
 		GameObject result = new GameObject("Generated Mesh Terrain");
-		result.transform.position = new Vector3(-Width / 2f, MinimumHeight, 0f);
+		result.transform.position = new Vector3(-Width / 2f, MinimumHeight, 0f) + offset;
 
 		MeshFilter meshFilter = result.AddComponent<MeshFilter>();
 		meshFilter.mesh = terrainMesh;
