@@ -10,21 +10,14 @@
  * - a GameTerrain interface component
  */
 public class QuadsTerrainGenerator : TerrainGenerator {
-
-	public float Width = 100f;
-	public float Length = 200f;
-
 	public float MinimumHeight = 0f;
 	public float MaximumHeight = 10f;
-
-	public int ResolutionX = 8;
-	public int ResolutionZ = 16;
 
 	public Material GroundMaterial;
 
 	override protected GameObject Generate (Vector3 offset) {
 		Vector2 groundOffset = new Vector2(offset.x, offset.z);
-		float[,] heightmap = GenerateHeightmap(ResolutionX, ResolutionZ, Width, Length, groundOffset);
+		float[,] heightmap = GenerateHeightmap(groundOffset);
 
 		// The space we must fill in between the vertices:
 		int fillSize = (ResolutionZ-1) * (ResolutionX-1);
@@ -56,7 +49,9 @@ public class QuadsTerrainGenerator : TerrainGenerator {
 				vertices[i3] = new Vector3(x2, y3, z2);
 				vertices[i4] = new Vector3(x1, y4, z2);
 
-				Color groundColor = biomeGenerator.GetGroundColor(new Vector2(x1, z1));
+				Color groundColor = biomeGenerator.GetGroundColor(
+					new Vector2(x1, z1) + groundOffset
+				);
 				colors[i1] = groundColor;
 				colors[i2] = groundColor;
 				colors[i3] = groundColor;
@@ -83,7 +78,7 @@ public class QuadsTerrainGenerator : TerrainGenerator {
 		terrainMesh.RecalculateNormals();
 
 		GameObject result = new GameObject("Generated Mesh Terrain");
-		result.transform.position = new Vector3(-Width / 2f, MinimumHeight, 0f) + offset;
+		result.transform.position = new Vector3(0f, MinimumHeight, 0f) + offset;
 
 		MeshFilter meshFilter = result.AddComponent<MeshFilter>();
 		meshFilter.mesh = terrainMesh;

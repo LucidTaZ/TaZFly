@@ -9,12 +9,6 @@
  * - a GameTerrain interface component
  */
 public class UnityTerrainGenerator : TerrainGenerator {
-
-	public float Width = 100f;
-	public float Length = 200f;
-
-	public int MapResolution = 128;
-
 	public float MinimumHeight = 0f;
 	public float MaximumHeight = 10f;
 
@@ -22,18 +16,25 @@ public class UnityTerrainGenerator : TerrainGenerator {
 	public Texture2D FlatTexture;
 	public Texture2D SteepTexture;
 
+	override protected void Awake () {
+		base.Awake();
+		if (ResolutionX != ResolutionZ) {
+			Debug.LogWarning("Terrain X and Z resolution should be equal.");
+		}
+	}
+
 	override protected GameObject Generate (Vector3 offset) {
 		TerrainData terrainData = new TerrainData();
-		terrainData.heightmapResolution = MapResolution;
-		terrainData.alphamapResolution = MapResolution;
+		terrainData.heightmapResolution = ResolutionX;
+		terrainData.alphamapResolution = ResolutionX;
 		
 		Vector2 groundOffset = new Vector2(offset.x, offset.z);
-		float[,] heightmap = GenerateHeightmap(MapResolution, MapResolution, Width, Length, groundOffset);
+		float[,] heightmap = GenerateHeightmap(groundOffset);
 		terrainData.SetHeights(0, 0, heightmap);
 		terrainData.size = new Vector3(Width, MaximumHeight - MinimumHeight, Length);
 		
 		GameObject result = Terrain.CreateTerrainGameObject(terrainData);
-		result.transform.position = new Vector3(-Width / 2f, MinimumHeight, 0f) + offset;
+		result.transform.position = new Vector3(0f, MinimumHeight, 0f) + offset;
 		result.GetComponent<Terrain>().Flush();
 
 		// Tie the Unity Terrain into our game-side Terrain logic:

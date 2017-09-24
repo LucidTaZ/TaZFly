@@ -3,15 +3,24 @@
 [RequireComponent(typeof(IBiome))]
 abstract public class TerrainGenerator : MonoBehaviour
 {
+	public float Width = 100f;
+	public float Length = 200f;
+
+	public int ResolutionX = 8;
+	public int ResolutionZ = 16;
+
 	public GameObject HeightNoise;
 	INoise2D heightNoise;
 
 	public float GenerationUpdateInterval = 1.0f;
-	float lastGenerationUpdateCheck;
+	float lastGenerationUpdateCheck = -99f;
+	Vector2[] generationUpdateFeelers;
 
 	protected IBiome biomeGenerator;
 
-	public void Awake () {
+	GameController gameController;
+
+	virtual protected void Awake () {
 		heightNoise = HeightNoise.GetComponent<INoise2D>();
 		if (heightNoise == null) {
 			Debug.LogError("Referenced HeightNoise gameobject has no INoise2D component.");
@@ -20,14 +29,30 @@ abstract public class TerrainGenerator : MonoBehaviour
 		biomeGenerator = GetComponent<IBiome>();
 		biomeGenerator.Initialize();
 
-		GameObject terrain = Generate(Vector3.zero);
-		terrain.transform.parent = gameObject.transform;
+		GameObject initialTerrainLeft = Generate(new Vector3(-Width, 0, 0));
+		initialTerrainLeft.transform.parent = gameObject.transform;
+
+		GameObject initialTerrainRight = Generate(new Vector3(0, 0, 0));
+		initialTerrainRight.transform.parent = gameObject.transform;
+
+		generationUpdateFeelers = new []{
+			new Vector2(-Width / 2, Length    ), new Vector2(Width / 2, Length),
+			new Vector2(-Width / 2, Length / 2), new Vector2(Width / 2, Length / 2),
+			new Vector2(-Width,     Length    ), new Vector2(Width,     Length),
+			new Vector2(-Width,     Length / 2), new Vector2(Width,     Length / 2),
+			new Vector2(-2 * Width, Length    ), new Vector2(2 * Width, Length),
+			new Vector2(-2 * Width, Length / 2), new Vector2(2 * Width, Length / 2),
+		};
+	}
+
+	void Start () {
+		gameController = GameController.InstanceIfExists();
 	}
 
 	protected abstract GameObject Generate(Vector3 offset);
 
 	void Update () {
-		if (Time.time > lastGenerationUpdateCheck + GenerationUpdateInterval) {
+		if (gameController != null && Time.time > lastGenerationUpdateCheck + GenerationUpdateInterval) {
 			updateGeneration();
 			lastGenerationUpdateCheck = Time.time;
 		}
@@ -37,9 +62,22 @@ abstract public class TerrainGenerator : MonoBehaviour
 	 * Spawn new terrain tiles, if needed
 	 */
 	void updateGeneration () {
-		// TODO: Enumerate all areas around the local player.
-		// Then ask the TerrainRegistry if that area already has a terrain.
-		// If not, spawn it.
+		Vector3 playerPosition = gameController.PlayerPosition;
+		Vector2 playerGroundPosition = new Vector2(playerPosition.x, playerPosition.z);
+		foreach (Vector2 feeler in generationUpdateFeelers) {
+			Vector2 potentialSpawnPosition = playerGroundPosition + feeler * 1.001f; // Adjust a bit to avoid probing just along a seam
+			if (!TerrainRegistry.HasAt(potentialSpawnPosition)) {
+				int gridX = Mathf.FloorToInt(potentialSpawnPosition.x / Width);
+				int gridY = Mathf.FloorToInt(potentialSpawnPosition.y / Length);
+				Vector3 offset = new Vector3(
+					gridX * Width,
+					0.0f,
+					gridY * Length
+				);
+				GameObject generated = Generate(offset);
+				generated.transform.parent = transform;
+			}
+		}
 	}
 
 	/**
@@ -47,7 +85,7 @@ abstract public class TerrainGenerator : MonoBehaviour
 	 *
 	 * Each point must lie between 0 and 1.
 	 */
-	protected float[,] GenerateHeightmap (int ResolutionX, int ResolutionZ, float Width, float Length, Vector2 groundOffset) {
+	protected float[,] GenerateHeightmap (Vector2 groundOffset) {
 		float[,] heightmap = new float[ResolutionZ, ResolutionX];
 
 		for (int z = 0; z < ResolutionZ; z++) {

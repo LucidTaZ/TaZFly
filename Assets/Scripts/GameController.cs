@@ -15,6 +15,14 @@ public class GameController : MonoBehaviour {
 	bool loadNextLevelFlag; // Flag that steers loading the next level.
 	bool levelUnloaded; // Flag that signals that the loading of a new level can start (Unity needs one game loop cycle to destroy stuff)
 
+	GameObject playerShip;
+
+	public Vector3 PlayerPosition {
+		get {
+			return playerShip.transform.position;
+		}
+	}
+
 	public static GameController InstanceIfExists () {
 		GameObject instanceGameObject = GameObject.FindGameObjectWithTag("GameController");
 		if (instanceGameObject == null) {
@@ -124,8 +132,8 @@ public class GameController : MonoBehaviour {
 	}
 
 	void instantiatePlayerShip (GameObject level, Vector3 spawnPoint) {
-		GameObject instantiatedPlayerShip = instantiateShip(level, spawnPoint);
-		attachPlayer(instantiatedPlayerShip);
+		playerShip = instantiateShip(level, spawnPoint);
+		attachPlayer(playerShip);
 	}
 
 	void instantiateEnemyShip (GameObject level, Vector3 spawnPoint) {
@@ -152,7 +160,6 @@ public class GameController : MonoBehaviour {
 		sc.VerticalMoveRate = 10;
 
 		// Give player reference to cameras, so they know who to follow
-		
 		loadCameras(ship);
 
 		// Give Player collider to Finish, so the Finish knows when to trigger
