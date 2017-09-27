@@ -35,7 +35,9 @@ public class UnityTerrainGenerator : TerrainGenerator {
 		
 		GameObject result = Terrain.CreateTerrainGameObject(terrainData);
 		result.transform.position = new Vector3(0f, MinimumHeight, 0f) + offset;
-		result.GetComponent<Terrain>().Flush();
+		Terrain terrainComponent = result.GetComponent<Terrain>();
+		findAndConnectNeighbors(terrainComponent, offset);
+		terrainComponent.Flush();
 
 		// Tie the Unity Terrain into our game-side Terrain logic:
 		result.AddComponent<UnityGameTerrain>();
@@ -44,7 +46,14 @@ public class UnityTerrainGenerator : TerrainGenerator {
 
 		return result;
 	}
-	
+
+	void findAndConnectNeighbors (Terrain terrain, Vector3 offset) {
+		GridCoordinates coords = Chunk.groundPositionToGridCoordinates(new Vector2(offset.x, offset.z));
+		if (TerrainRegistry.HasAt(coords.North)) {
+			// TODO: Check all four directions and connect terrains together using terrain.SetNeighbors()
+		}
+	}
+
 	void applyTextures (TerrainData terrainData) {
 		SplatPrototype FlatSplat = new SplatPrototype();
 		SplatPrototype SteepSplat = new SplatPrototype();

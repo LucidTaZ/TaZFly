@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class BoundaryMarkerGenerator : MonoBehaviour {
+public class BoundaryMarkerGenerator : MonoBehaviour, IChunkCreationModule {
 	public float LevelWidth = 50f;
 	public float LevelLength = 150f;
 
@@ -9,25 +9,38 @@ public class BoundaryMarkerGenerator : MonoBehaviour {
 
 	public float SpaceBetween = 10.0f;
 
-	void Awake () {
-		Rect boundary = new Rect(new Vector2(-LevelWidth / 2f, 0f), new Vector2(LevelWidth, LevelLength));
+	Rect levelBoundary;
 
-		List<GameObject> objects = Generate(boundary);
-		foreach (GameObject obj in objects) {
-			obj.transform.SetParent(gameObject.transform, false);
-		}
+	void Awake () {
+		levelBoundary = new Rect(new Vector2(-LevelWidth / 2f, 0f), new Vector2(LevelWidth, LevelLength));
 	}
 
-	public List<GameObject> Generate (Rect boundary) {
+	public List<GameObject> Generate (Rect chunkBoundary) {
 		List<GameObject> result = new List<GameObject>();
-		for (float z = boundary.yMin; z < boundary.yMax; z += SpaceBetween) {
-			GameObject left = Instantiate(MarkerPrefab);
-			GameObject right = Instantiate(MarkerPrefab);
-			left.transform.localPosition += TerrainRegistry.RaycastDownto(new Vector2(boundary.xMin, z));
-			right.transform.localPosition += TerrainRegistry.RaycastDownto(new Vector2(boundary.xMax, z));
-			result.Add(left);
-			result.Add(right);
+		for (float z = levelBoundary.yMin; z < levelBoundary.yMax; z += SpaceBetween) {
+			Vector2 leftMarkerGroundPosition = new Vector2(levelBoundary.xMin, z);
+			if (chunkBoundary.Contains(leftMarkerGroundPosition)) {
+				GameObject left = Instantiate(MarkerPrefab);
+				left.transform.localPosition += TerrainRegistry.RaycastDownto(leftMarkerGroundPosition);
+				result.Add(left);
+			}
+
+			Vector2 rightMarkerGroundPosition = new Vector2(levelBoundary.xMax, z);
+			if (chunkBoundary.Contains(rightMarkerGroundPosition)) {
+				GameObject right = Instantiate(MarkerPrefab);
+				right.transform.localPosition += TerrainRegistry.RaycastDownto(rightMarkerGroundPosition);
+				result.Add(right);
+			}
 		}
 		return result;
+	}
+
+	public void AddChunkContents (GameObject chunk, ChunkCreationContext context)
+	{
+		GameObject collection = new GameObject("Boundary markers");
+		foreach (GameObject marker in Generate(context.GroundBoundary)) {
+			marker.transform.parent = collection.transform;
+		}
+		collection.transform.parent = chunk.transform;
 	}
 }

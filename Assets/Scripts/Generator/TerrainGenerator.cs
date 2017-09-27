@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(IBiome))]
-abstract public class TerrainGenerator : MonoBehaviour
+abstract public class TerrainGenerator : MonoBehaviour, IChunkCreationModule
 {
 	// Quads per chunk
 	public int ResolutionX = 8;
@@ -10,13 +9,8 @@ abstract public class TerrainGenerator : MonoBehaviour
 	public GameObject HeightNoise;
 	INoise2D heightNoise;
 
-	public float GenerationUpdateInterval = 1.0f;
-	float lastGenerationUpdateCheck = -99f;
-	Vector2[] generationUpdateFeelers;
-
+	public GameObject BiomeGenerator;
 	protected IBiome biomeGenerator;
-
-	GameController gameController;
 
 	virtual protected void Awake () {
 		heightNoise = HeightNoise.GetComponent<INoise2D>();
@@ -24,61 +18,18 @@ abstract public class TerrainGenerator : MonoBehaviour
 			Debug.LogError("Referenced HeightNoise gameobject has no INoise2D component.");
 		}
 
-		biomeGenerator = GetComponent<IBiome>();
+		biomeGenerator = BiomeGenerator.GetComponent<IBiome>();
+		Debug.Assert(biomeGenerator != null);
 		biomeGenerator.Initialize();
-
-		TerrainRegistry.Clear();
-
-		GameObject initialTerrainLeft = Generate(new Vector3(-Chunk.WIDTH, 0, 0));
-		initialTerrainLeft.transform.parent = gameObject.transform;
-		TerrainRegistry.Register(initialTerrainLeft, new GridCoordinates(-1, 0));
-
-		GameObject initialTerrainRight = Generate(new Vector3(0, 0, 0));
-		initialTerrainRight.transform.parent = gameObject.transform;
-		TerrainRegistry.Register(initialTerrainRight, new GridCoordinates(0, 0));
-
-		generationUpdateFeelers = new []{
-			new Vector2(-Chunk.WIDTH / 2, Chunk.LENGTH    ), new Vector2(Chunk.WIDTH / 2, Chunk.LENGTH),
-			new Vector2(-Chunk.WIDTH / 2, Chunk.LENGTH / 2), new Vector2(Chunk.WIDTH / 2, Chunk.LENGTH / 2),
-			new Vector2(-Chunk.WIDTH,     Chunk.LENGTH    ), new Vector2(Chunk.WIDTH,     Chunk.LENGTH),
-			new Vector2(-Chunk.WIDTH,     Chunk.LENGTH / 2), new Vector2(Chunk.WIDTH,     Chunk.LENGTH / 2),
-			new Vector2(-2 * Chunk.WIDTH, Chunk.LENGTH    ), new Vector2(2 * Chunk.WIDTH, Chunk.LENGTH),
-			new Vector2(-2 * Chunk.WIDTH, Chunk.LENGTH / 2), new Vector2(2 * Chunk.WIDTH, Chunk.LENGTH / 2),
-		};
 	}
 
-	void Start () {
-		gameController = GameController.InstanceIfExists();
+	public void AddChunkContents (GameObject chunk, ChunkCreationContext context)
+	{
+		GameObject terrain = Generate(chunk.transform.position);
+		terrain.transform.parent = chunk.transform;
 	}
 
 	protected abstract GameObject Generate(Vector3 offset);
-
-	void Update () {
-		if (gameController != null && Time.time > lastGenerationUpdateCheck + GenerationUpdateInterval) {
-			updateGeneration();
-			lastGenerationUpdateCheck = Time.time;
-		}
-	}
-
-	/**
-	 * Spawn new terrain tiles, if needed
-	 */
-	void updateGeneration () {
-		Vector3 playerPosition = gameController.PlayerPosition;
-		Vector2 playerGroundPosition = new Vector2(playerPosition.x, playerPosition.z);
-		foreach (Vector2 feeler in generationUpdateFeelers) {
-			Vector2 potentialSpawnPosition = playerGroundPosition + feeler * 1.001f; // Adjust a bit to avoid probing just along a seam
-			GridCoordinates potentialSpawnCoords = Chunk.groundPositionToGridCoordinates(potentialSpawnPosition);
-			if (!TerrainRegistry.HasAt(potentialSpawnCoords)) {
-				Vector3 offset = Chunk.gridCoordinatesToWorldPosition(
-					potentialSpawnCoords
-				);
-				GameObject generated = Generate(offset);
-				generated.transform.parent = transform;
-				TerrainRegistry.Register(generated, potentialSpawnCoords);
-			}
-		}
-	}
 
 	/**
 	 * Generate the raw heightmap data

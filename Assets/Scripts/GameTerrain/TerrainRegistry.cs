@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+// TODO: Rename to ChunkRegistry and make non-static (make available via a GameObject)
 public static class TerrainRegistry {
 	static Dictionary<GridCoordinates, GameObject> terrainObjects = new Dictionary<GridCoordinates, GameObject>();
 
 	public static IEnumerable<GameTerrain> FindAll () {
 		foreach (GameObject obj in terrainObjects.Values) {
-			yield return obj.GetComponent<GameTerrain>();
+			yield return obj.GetComponentInChildren<GameTerrain>();
 		}
 	}
 
@@ -18,13 +19,14 @@ public static class TerrainRegistry {
 	}
 
 	public static GameTerrain findAtUnchecked (GridCoordinates coords) {
-		return terrainObjects[coords].GetComponent<GameTerrain>();
+		return terrainObjects[coords].GetComponentInChildren<GameTerrain>();
 	}
 
 	public static void Register (GameObject terrainObject, GridCoordinates coords) {
 		terrainObjects[coords] = terrainObject;
 	}
 
+	// TODO: Remove once the class is non-static but managed via a GameObject instead
 	public static void Clear () {
 		terrainObjects.Clear();
 	}

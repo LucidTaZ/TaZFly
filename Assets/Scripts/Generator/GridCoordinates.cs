@@ -11,4 +11,28 @@
 	override public string ToString () {
 		return string.Format("({0}, {1})", x, z);
 	}
+
+	public GridCoordinates North {
+		get {
+			return new GridCoordinates(x, z + 1);
+		}
+	}
+
+	public GridCoordinates South {
+		get {
+			return new GridCoordinates(x, z - 1);
+		}
+	}
+
+	public GridCoordinates East {
+		get {
+			return new GridCoordinates(x + 1, z);
+		}
+	}
+
+	public GridCoordinates West {
+		get {
+			return new GridCoordinates(x - 1, z);
+		}
+	}
 }
