@@ -31,7 +31,7 @@ public class UnityTerrainGenerator : TerrainGenerator {
 		Vector2 groundOffset = new Vector2(offset.x, offset.z);
 		float[,] heightmap = GenerateHeightmap(groundOffset);
 		terrainData.SetHeights(0, 0, heightmap);
-		terrainData.size = new Vector3(Width, MaximumHeight - MinimumHeight, Length);
+		terrainData.size = new Vector3(Chunk.WIDTH, MaximumHeight - MinimumHeight, Chunk.LENGTH);
 		
 		GameObject result = Terrain.CreateTerrainGameObject(terrainData);
 		result.transform.position = new Vector3(0f, MinimumHeight, 0f) + offset;

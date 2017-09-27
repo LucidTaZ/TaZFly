@@ -28,11 +28,11 @@ public class QuadsTerrainGenerator : TerrainGenerator {
 
 		int iTri = 0;
 		for (int z = 0; z < ResolutionZ - 1; z++) {
-			float z1 = z * Length / (ResolutionZ-1);
-			float z2 = (z+1) * Length / (ResolutionZ-1);
+			float z1 = z * Chunk.LENGTH / (ResolutionZ-1);
+			float z2 = (z+1) * Chunk.LENGTH / (ResolutionZ-1);
 			for (int x = 0; x < ResolutionX - 1; x++) {
-				float x1 = x * Width / (ResolutionX-1);
-				float x2 = (x+1) * Width / (ResolutionX-1);
+				float x1 = x * Chunk.WIDTH / (ResolutionX-1);
+				float x2 = (x+1) * Chunk.WIDTH / (ResolutionX-1);
 
 				float y1 = Mathf.Lerp(MinimumHeight, MaximumHeight, heightmap[z, x]);
 				float y2 = Mathf.Lerp(MinimumHeight, MaximumHeight, heightmap[z, (x+1)]);

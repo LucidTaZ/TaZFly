@@ -3,11 +3,9 @@
 [RequireComponent(typeof(IBiome))]
 abstract public class TerrainGenerator : MonoBehaviour
 {
-	public float Width = 100f;
-	public float Length = 200f;
-
+	// Quads per chunk
 	public int ResolutionX = 8;
-	public int ResolutionZ = 16;
+	public int ResolutionZ = 8;
 
 	public GameObject HeightNoise;
 	INoise2D heightNoise;
@@ -29,19 +27,23 @@ abstract public class TerrainGenerator : MonoBehaviour
 		biomeGenerator = GetComponent<IBiome>();
 		biomeGenerator.Initialize();
 
-		GameObject initialTerrainLeft = Generate(new Vector3(-Width, 0, 0));
+		TerrainRegistry.Clear();
+
+		GameObject initialTerrainLeft = Generate(new Vector3(-Chunk.WIDTH, 0, 0));
 		initialTerrainLeft.transform.parent = gameObject.transform;
+		TerrainRegistry.Register(initialTerrainLeft, new GridCoordinates(-1, 0));
 
 		GameObject initialTerrainRight = Generate(new Vector3(0, 0, 0));
 		initialTerrainRight.transform.parent = gameObject.transform;
+		TerrainRegistry.Register(initialTerrainRight, new GridCoordinates(0, 0));
 
 		generationUpdateFeelers = new []{
-			new Vector2(-Width / 2, Length    ), new Vector2(Width / 2, Length),
-			new Vector2(-Width / 2, Length / 2), new Vector2(Width / 2, Length / 2),
-			new Vector2(-Width,     Length    ), new Vector2(Width,     Length),
-			new Vector2(-Width,     Length / 2), new Vector2(Width,     Length / 2),
-			new Vector2(-2 * Width, Length    ), new Vector2(2 * Width, Length),
-			new Vector2(-2 * Width, Length / 2), new Vector2(2 * Width, Length / 2),
+			new Vector2(-Chunk.WIDTH / 2, Chunk.LENGTH    ), new Vector2(Chunk.WIDTH / 2, Chunk.LENGTH),
+			new Vector2(-Chunk.WIDTH / 2, Chunk.LENGTH / 2), new Vector2(Chunk.WIDTH / 2, Chunk.LENGTH / 2),
+			new Vector2(-Chunk.WIDTH,     Chunk.LENGTH    ), new Vector2(Chunk.WIDTH,     Chunk.LENGTH),
+			new Vector2(-Chunk.WIDTH,     Chunk.LENGTH / 2), new Vector2(Chunk.WIDTH,     Chunk.LENGTH / 2),
+			new Vector2(-2 * Chunk.WIDTH, Chunk.LENGTH    ), new Vector2(2 * Chunk.WIDTH, Chunk.LENGTH),
+			new Vector2(-2 * Chunk.WIDTH, Chunk.LENGTH / 2), new Vector2(2 * Chunk.WIDTH, Chunk.LENGTH / 2),
 		};
 	}
 
@@ -66,16 +68,14 @@ abstract public class TerrainGenerator : MonoBehaviour
 		Vector2 playerGroundPosition = new Vector2(playerPosition.x, playerPosition.z);
 		foreach (Vector2 feeler in generationUpdateFeelers) {
 			Vector2 potentialSpawnPosition = playerGroundPosition + feeler * 1.001f; // Adjust a bit to avoid probing just along a seam
-			if (!TerrainRegistry.HasAt(potentialSpawnPosition)) {
-				int gridX = Mathf.FloorToInt(potentialSpawnPosition.x / Width);
-				int gridY = Mathf.FloorToInt(potentialSpawnPosition.y / Length);
-				Vector3 offset = new Vector3(
-					gridX * Width,
-					0.0f,
-					gridY * Length
+			GridCoordinates potentialSpawnCoords = Chunk.groundPositionToGridCoordinates(potentialSpawnPosition);
+			if (!TerrainRegistry.HasAt(potentialSpawnCoords)) {
+				Vector3 offset = Chunk.gridCoordinatesToWorldPosition(
+					potentialSpawnCoords
 				);
 				GameObject generated = Generate(offset);
 				generated.transform.parent = transform;
+				TerrainRegistry.Register(generated, potentialSpawnCoords);
 			}
 		}
 	}
@@ -89,9 +89,9 @@ abstract public class TerrainGenerator : MonoBehaviour
 		float[,] heightmap = new float[ResolutionZ, ResolutionX];
 
 		for (int z = 0; z < ResolutionZ; z++) {
-			float zCoordinate = z * Length / (ResolutionZ - 1);
+			float zCoordinate = z * Chunk.LENGTH / (ResolutionZ - 1);
 			for (int x = 0; x < ResolutionX; x++) {
-				float xCoordinate = x * Width / (ResolutionX - 1);
+				float xCoordinate = x * Chunk.WIDTH / (ResolutionX - 1);
 				Vector2 groundCoordinates = new Vector2(xCoordinate, zCoordinate) + groundOffset;
 				float hillyness = biomeGenerator.GetHillyness(groundCoordinates);
 				float detailHeight = heightNoise.Sample(groundCoordinates);
