@@ -49,7 +49,7 @@ public class UnityTerrainGenerator : TerrainGenerator {
 
 	void findAndConnectNeighbors (Terrain terrain, Vector3 offset) {
 		GridCoordinates coords = Chunk.groundPositionToGridCoordinates(new Vector2(offset.x, offset.z));
-		if (TerrainRegistry.HasAt(coords.North)) {
+		if (chunkRegistry.HasAt(coords.North)) {
 			// TODO: Check all four directions and connect terrains together using terrain.SetNeighbors()
 		}
 	}

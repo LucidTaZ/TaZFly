@@ -12,6 +12,8 @@ abstract public class TerrainGenerator : MonoBehaviour, IChunkCreationModule
 	public GameObject BiomeGenerator;
 	protected IBiome biomeGenerator;
 
+	protected ChunkRegistry chunkRegistry;
+
 	virtual protected void Awake () {
 		heightNoise = HeightNoise.GetComponent<INoise2D>();
 		if (heightNoise == null) {
@@ -54,5 +56,9 @@ abstract public class TerrainGenerator : MonoBehaviour, IChunkCreationModule
 		}
 
 		return heightmap;
+	}
+
+	public void SetChunkRegistry (ChunkRegistry registry) {
+		chunkRegistry = registry;
 	}
 }

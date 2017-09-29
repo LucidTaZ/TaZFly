@@ -9,6 +9,8 @@ public class BoundaryMarkerGenerator : MonoBehaviour, IChunkCreationModule {
 
 	public float SpaceBetween = 10.0f;
 
+	ChunkRegistry chunkRegistry;
+
 	Rect levelBoundary;
 
 	void Awake () {
@@ -21,14 +23,14 @@ public class BoundaryMarkerGenerator : MonoBehaviour, IChunkCreationModule {
 			Vector2 leftMarkerGroundPosition = new Vector2(levelBoundary.xMin, z);
 			if (chunkBoundary.Contains(leftMarkerGroundPosition)) {
 				GameObject left = Instantiate(MarkerPrefab);
-				left.transform.localPosition += TerrainRegistry.RaycastDownto(leftMarkerGroundPosition);
+				left.transform.localPosition += chunkRegistry.RaycastDownto(leftMarkerGroundPosition);
 				result.Add(left);
 			}
 
 			Vector2 rightMarkerGroundPosition = new Vector2(levelBoundary.xMax, z);
 			if (chunkBoundary.Contains(rightMarkerGroundPosition)) {
 				GameObject right = Instantiate(MarkerPrefab);
-				right.transform.localPosition += TerrainRegistry.RaycastDownto(rightMarkerGroundPosition);
+				right.transform.localPosition += chunkRegistry.RaycastDownto(rightMarkerGroundPosition);
 				result.Add(right);
 			}
 		}
@@ -42,5 +44,9 @@ public class BoundaryMarkerGenerator : MonoBehaviour, IChunkCreationModule {
 			marker.transform.parent = collection.transform;
 		}
 		collection.transform.parent = chunk.transform;
+	}
+
+	public void SetChunkRegistry (ChunkRegistry registry) {
+		chunkRegistry = registry;
 	}
 }

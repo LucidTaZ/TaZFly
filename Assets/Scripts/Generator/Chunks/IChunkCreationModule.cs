@@ -9,4 +9,5 @@ using UnityEngine;
 public interface IChunkCreationModule
 {
 	void AddChunkContents (GameObject chunk, ChunkCreationContext context);
+	void SetChunkRegistry (ChunkRegistry registry);
 }

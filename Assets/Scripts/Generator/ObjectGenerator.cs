@@ -10,6 +10,8 @@ public class ObjectGenerator : MonoBehaviour, IChunkCreationModule {
 
 	public Rect ProtectedZone; // No-spawn zone
 
+	ChunkRegistry chunkRegistry;
+
 	public void AddChunkContents (GameObject chunk, ChunkCreationContext context)
 	{
 		GameObject collection = new GameObject("Generated objects");
@@ -45,7 +47,7 @@ public class ObjectGenerator : MonoBehaviour, IChunkCreationModule {
 				Random.Range(chunkBboundary.yMin, chunkBboundary.yMax)
 			);
 		} while (isInsideProtectedZone(sampled));
-		result.transform.position = TerrainRegistry.RaycastDownto(sampled);
+		result.transform.position = chunkRegistry.RaycastDownto(sampled);
 		return result;
 	}
 	
@@ -81,5 +83,9 @@ public class ObjectGenerator : MonoBehaviour, IChunkCreationModule {
 
 	bool isInsideProtectedZone (Vector2 coordinate) {
 		return ProtectedZone.Contains(coordinate);
+	}
+
+	public void SetChunkRegistry (ChunkRegistry registry) {
+		chunkRegistry = registry;
 	}
 }
