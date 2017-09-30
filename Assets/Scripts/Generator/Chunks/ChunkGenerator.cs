@@ -10,7 +10,8 @@ public class ChunkGenerator : MonoBehaviour {
 	float lastGenerationUpdateCheck = -99f;
 	GridCoordinates[] chunkPresenceOffsets; // Tells where we want to have chunks, relative to current coordinates
 
-	GameController gameController;
+	[Tooltip("Optional player ship, will be taken from GameController if it is not set.")]
+	public GameObject ShipToFollow;
 
 	ChunkRegistry chunkRegistry;
 
@@ -33,7 +34,12 @@ public class ChunkGenerator : MonoBehaviour {
 	}
 
 	void Start () {
-		gameController = GameController.InstanceIfExists();
+		GameController gameController = GameController.InstanceIfExists();
+		if (gameController != null) {
+			// ShipToFollow can be set via the editor (is the case for MainMenu) or automatically (is the case for
+			// spawned player ships in regular levels)
+			ShipToFollow = gameController.PlayerShip;
+		}
 
 		// Generate initial chunks
 		generate(new GridCoordinates(-1, 0));
@@ -41,7 +47,7 @@ public class ChunkGenerator : MonoBehaviour {
 	}
 
 	void Update () {
-		if (gameController != null && Time.time > lastGenerationUpdateCheck + GenerationUpdateInterval) {
+		if (Time.time > lastGenerationUpdateCheck + GenerationUpdateInterval) {
 			updateGeneration();
 			lastGenerationUpdateCheck = Time.time;
 		}
@@ -52,8 +58,7 @@ public class ChunkGenerator : MonoBehaviour {
 	 * Despawn old chunks, if needed
 	 */
 	void updateGeneration () {
-		// TODO: Find a way to make this work in the main menu, where we have no GameController
-		Vector3 playerPosition = gameController.PlayerPosition;
+		Vector3 playerPosition = ShipToFollow.transform.position;
 		Vector2 playerGroundPosition = new Vector2(playerPosition.x, playerPosition.z);
 		GridCoordinates playerGridPosition = Chunk.groundPositionToGridCoordinates(playerGroundPosition);
 

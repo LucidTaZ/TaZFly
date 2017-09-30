@@ -16,10 +16,9 @@ public class GameController : MonoBehaviour {
 	bool levelUnloaded; // Flag that signals that the loading of a new level can start (Unity needs one game loop cycle to destroy stuff)
 
 	GameObject playerShip;
-
-	public Vector3 PlayerPosition {
+	public GameObject PlayerShip {
 		get {
-			return playerShip.transform.position;
+			return playerShip;
 		}
 	}
 
