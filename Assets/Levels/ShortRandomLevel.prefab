@@ -352,6 +352,7 @@ MonoBehaviour:
   - {fileID: 1366241126355178}
   - {fileID: 1393304388880302}
   GenerationUpdateInterval: 1
+  ShipToFollow: {fileID: 0}
 --- !u!114 &114631937014548868
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -403,8 +404,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8dc0f72471c50b47964e08fbd456912, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ResolutionX: 64
-  ResolutionZ: 64
+  ResolutionX: 65
+  ResolutionZ: 65
   HeightNoise: {fileID: 1387377613652294}
   BiomeGenerator: {fileID: 1069250804379700}
   MinimumHeight: 0
