@@ -35,4 +35,8 @@
 			return new GridCoordinates(x - 1, z);
 		}
 	}
+
+	public static GridCoordinates operator + (GridCoordinates a, GridCoordinates b) {
+		return new GridCoordinates(a.x + b.x, a.z + b.z);
+	}
 }

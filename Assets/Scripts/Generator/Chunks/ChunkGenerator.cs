@@ -8,7 +8,7 @@ public class ChunkGenerator : MonoBehaviour {
 
 	public float GenerationUpdateInterval = 1.0f;
 	float lastGenerationUpdateCheck = -99f;
-	Vector2[] generationUpdateFeelers;
+	GridCoordinates[] chunkPresenceOffsets; // Tells where we want to have chunks, relative to current coordinates
 
 	GameController gameController;
 
@@ -25,13 +25,10 @@ public class ChunkGenerator : MonoBehaviour {
 
 		assignChunkRegistryToCreationModules();
 
-		generationUpdateFeelers = new []{
-			new Vector2(-Chunk.WIDTH / 2, Chunk.LENGTH    ), new Vector2(Chunk.WIDTH / 2, Chunk.LENGTH),
-			new Vector2(-Chunk.WIDTH / 2, Chunk.LENGTH / 2), new Vector2(Chunk.WIDTH / 2, Chunk.LENGTH / 2),
-			new Vector2(-Chunk.WIDTH,     Chunk.LENGTH    ), new Vector2(Chunk.WIDTH,     Chunk.LENGTH),
-			new Vector2(-Chunk.WIDTH,     Chunk.LENGTH / 2), new Vector2(Chunk.WIDTH,     Chunk.LENGTH / 2),
-			new Vector2(-2 * Chunk.WIDTH, Chunk.LENGTH    ), new Vector2(2 * Chunk.WIDTH, Chunk.LENGTH),
-			new Vector2(-2 * Chunk.WIDTH, Chunk.LENGTH / 2), new Vector2(2 * Chunk.WIDTH, Chunk.LENGTH / 2),
+		chunkPresenceOffsets = new []{
+			new GridCoordinates(-1, 2), new GridCoordinates(0, 2), new GridCoordinates(1, 2),
+			new GridCoordinates(-1, 1), new GridCoordinates(0, 1), new GridCoordinates(1, 1),
+			new GridCoordinates(-1, 0), new GridCoordinates(0, 0), new GridCoordinates(1, 0),
 		};
 	}
 
@@ -52,17 +49,26 @@ public class ChunkGenerator : MonoBehaviour {
 
 	/**
 	 * Spawn new chunks, if needed
+	 * Despawn old chunks, if needed
 	 */
 	void updateGeneration () {
 		// TODO: Find a way to make this work in the main menu, where we have no GameController
 		Vector3 playerPosition = gameController.PlayerPosition;
 		Vector2 playerGroundPosition = new Vector2(playerPosition.x, playerPosition.z);
-		foreach (Vector2 feeler in generationUpdateFeelers) {
-			Vector2 potentialSpawnPosition = playerGroundPosition + feeler * 1.001f; // Adjust a bit to avoid probing just along a seam
-			GridCoordinates potentialSpawnCoords = Chunk.groundPositionToGridCoordinates(potentialSpawnPosition);
-			if (!chunkRegistry.HasAt(potentialSpawnCoords)) {
-				generate(potentialSpawnCoords);
+		GridCoordinates playerGridPosition = Chunk.groundPositionToGridCoordinates(playerGroundPosition);
+
+		List<GridCoordinates> spawnArea = new List<GridCoordinates>();
+
+		foreach (GridCoordinates spawnOffset in chunkPresenceOffsets) {
+			GridCoordinates spawnCoordinates = playerGridPosition + spawnOffset;
+			spawnArea.Add(spawnCoordinates);
+			if (!chunkRegistry.HasAt(spawnCoordinates)) {
+				generate(spawnCoordinates);
 			}
+		}
+
+		foreach (GridCoordinates coords in chunkRegistry.GetAllOutside(spawnArea)) {
+			despawn(coords);
 		}
 	}
 
@@ -77,6 +83,12 @@ public class ChunkGenerator : MonoBehaviour {
 		chunkRegistry.Register(result, coords);
 		applyCreationModules(result, context);
 		return result;
+	}
+
+	void despawn (GridCoordinates coords) {
+		GameObject chunk = chunkRegistry.GetChunk(coords);
+		Destroy(chunk);
+		chunkRegistry.ForgetAt(coords);
 	}
 
 	void assignChunkRegistryToCreationModules () {

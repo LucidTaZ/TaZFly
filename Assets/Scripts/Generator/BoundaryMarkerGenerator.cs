@@ -19,7 +19,13 @@ public class BoundaryMarkerGenerator : MonoBehaviour, IChunkCreationModule {
 
 	public List<GameObject> Generate (Rect chunkBoundary) {
 		List<GameObject> result = new List<GameObject>();
-		for (float z = levelBoundary.yMin; z < levelBoundary.yMax; z += SpaceBetween) {
+		if (!chunkBoundary.Overlaps(levelBoundary)) {
+			return result;
+		}
+
+		float earliestZ = Mathf.Ceil(chunkBoundary.yMin / SpaceBetween) * SpaceBetween;
+		float latestZ = Mathf.Floor(chunkBoundary.yMax / SpaceBetween) * SpaceBetween;
+		for (float z = earliestZ; z <= latestZ; z += SpaceBetween) {
 			Vector2 leftMarkerGroundPosition = new Vector2(levelBoundary.xMin, z);
 			if (chunkBoundary.Contains(leftMarkerGroundPosition)) {
 				GameObject left = Instantiate(MarkerPrefab);

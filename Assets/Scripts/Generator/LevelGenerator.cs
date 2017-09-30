@@ -78,9 +78,11 @@ public class LevelGenerator : MonoBehaviour {
 		boundaryRightMarker.transform.position = new Vector3(Width / 2, SlowHeight, 0f);
 		boundaryRightMarker.transform.parent = result.transform;
 
-		GameObject boundaryFinish = Instantiate(FinishPrefab);
-		boundaryFinish.transform.position = new Vector3(0f, SpeedyHeight, Length);
-		boundaryFinish.transform.parent = boundary.transform;
+		if (Length < Mathf.Infinity) {
+			GameObject boundaryFinish = Instantiate(FinishPrefab);
+			boundaryFinish.transform.position = new Vector3(0f, SpeedyHeight, Length);
+			boundaryFinish.transform.parent = boundary.transform;
+		}
 
 		GameObject sunlight = new GameObject("Sunlight");
 		sunlight.transform.rotation = Quaternion.Euler(60f, 30f, 0f);
