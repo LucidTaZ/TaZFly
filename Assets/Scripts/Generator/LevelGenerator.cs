@@ -1,14 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
 
-/**
- * Script to generate random levels
- * 
- * Usage
- * 
- * Have a GameObject in the scene with this script attached and with the "LevelGenerator" tag. When the GameController
- * runs out of levels, it will generate new ones using this script.
- */
 public class LevelGenerator : MonoBehaviour {
 
 	public float Width = 50f;
@@ -53,7 +44,6 @@ public class LevelGenerator : MonoBehaviour {
 		GameObject playerSpawn = new GameObject("Spawn");
 		playerSpawn.tag = "Spawn";
 		playerSpawn.transform.position = PlayerSpawnPosition;
-		snapSpawnToGroundIfNeeded(playerSpawn, 10);
 		playerSpawn.transform.parent = result.transform;
 
 		for (int i = 1; i <= EnemyCount; i++) {
@@ -62,7 +52,6 @@ public class LevelGenerator : MonoBehaviour {
 			const float enemySpacing = 4f;
 			float enemyOffset = -EnemyCount/2 + i;
 			enemySpawn.transform.position = EnemySpawnPosition + new Vector3(enemySpacing * enemyOffset, 0, 0);
-			snapSpawnToGroundIfNeeded(enemySpawn, 5);
 			enemySpawn.transform.parent = result.transform;
 		}
 
@@ -89,9 +78,11 @@ public class LevelGenerator : MonoBehaviour {
 		boundaryRightMarker.transform.position = new Vector3(Width / 2, SlowHeight, 0f);
 		boundaryRightMarker.transform.parent = result.transform;
 
-		GameObject boundaryFinish = Instantiate(FinishPrefab);
-		boundaryFinish.transform.position = new Vector3(0f, SpeedyHeight, Length);
-		boundaryFinish.transform.parent = boundary.transform;
+		if (Length < Mathf.Infinity) {
+			GameObject boundaryFinish = Instantiate(FinishPrefab);
+			boundaryFinish.transform.position = new Vector3(0f, SpeedyHeight, Length);
+			boundaryFinish.transform.parent = boundary.transform;
+		}
 
 		GameObject sunlight = new GameObject("Sunlight");
 		sunlight.transform.rotation = Quaternion.Euler(60f, 30f, 0f);
@@ -102,19 +93,5 @@ public class LevelGenerator : MonoBehaviour {
 		lightSource.color = Color.white;
 		sunlight.transform.parent = result.transform;
 		return result;
-	}
-
-	void snapSpawnToGroundIfNeeded (GameObject spawn, float distanceFromGround) {
-		if (SnapSpawnsToGround) {
-			spawn.transform.position = TerrainRegistry.RaycastDownto(new Vector2(
-				spawn.transform.position.x,
-				spawn.transform.position.z
-			));
-			spawn.transform.position += new Vector3(
-				0,
-				distanceFromGround,
-				0
-			);
-		}
 	}
 }

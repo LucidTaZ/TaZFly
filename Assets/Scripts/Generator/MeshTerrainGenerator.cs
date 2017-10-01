@@ -26,9 +26,9 @@ public class MeshTerrainGenerator : TerrainGenerator {
 		int[] triangles = new int[6 * fillSize];
 
 		for (int z = 0; z < ResolutionZ; z++) {
-			float zCoordinate = z * Length / (ResolutionZ-1);
+			float zCoordinate = z * Chunk.LENGTH / (ResolutionZ-1);
 			for (int x = 0; x < ResolutionX; x++) {
-				float xCoordinate = x * Width / (ResolutionX-1);
+				float xCoordinate = x * Chunk.WIDTH / (ResolutionX-1);
 				float yCoordinate = Mathf.Lerp(MinimumHeight, MaximumHeight, heightmap[z, x]);
 
 				vertices[z * ResolutionX + x] = new Vector3(xCoordinate, yCoordinate, zCoordinate);

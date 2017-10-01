@@ -16,10 +16,9 @@ public class GameController : MonoBehaviour {
 	bool levelUnloaded; // Flag that signals that the loading of a new level can start (Unity needs one game loop cycle to destroy stuff)
 
 	GameObject playerShip;
-
-	public Vector3 PlayerPosition {
+	public GameObject PlayerShip {
 		get {
-			return playerShip.transform.position;
+			return playerShip;
 		}
 	}
 
@@ -104,18 +103,12 @@ public class GameController : MonoBehaviour {
 		
 		// Have finish
 		if (GameObject.FindGameObjectsWithTag("BoundaryFinish").Length != 1) {
-			throw new UnityException("Level must have 1 gameobject with tag BoundaryFinish.");
+			Debug.LogWarning("Level must have 1 gameobject with tag BoundaryFinish.");
 		}
 
 		// Have SlowHeight and SpeedyHeight markers
 		if (GameObject.FindGameObjectsWithTag("SlowHeight").Length != 1 || GameObject.FindGameObjectsWithTag("SpeedyHeight").Length != 1) {
 			throw new UnityException("Level must have two gameobjects with tags SlowHeight and SpeedyHeight, respectively.");
-		}
-
-		// Play in Z direction
-		Vector3 playfield = GameObject.FindGameObjectWithTag("BoundaryFinish").transform.position - GameObject.FindGameObjectWithTag("Spawn").transform.position;
-		if (playfield.z < playfield.x || playfield.z < playfield.y) {
-			throw new UnityException("Please model the level as a box with the long side aligned with the Z axis.");
 		}
 
 		// Load Ship
@@ -166,7 +159,10 @@ public class GameController : MonoBehaviour {
 		// Idea: we can let the finishcontroller figure this out in Awake(), but only if we first revise the lifetime of
 		// it, so that the player will be present at that time. One way to do that, I think, is to play every level in
 		// its own scene.
-		GameObject.FindGameObjectWithTag("BoundaryFinish").GetComponent<FinishController>().Load(ship);
+		GameObject finish = GameObject.FindGameObjectWithTag("BoundaryFinish");
+		if (finish != null) {
+			finish.GetComponent<FinishController>().Load(ship);
+		}
 	}
 
 	void attachAI (GameObject ship) {

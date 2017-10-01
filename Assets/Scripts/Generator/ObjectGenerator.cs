@@ -1,11 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class ObjectGenerator : MonoBehaviour {
-
-	public float LevelWidth = 50f;
-	public float LevelLength = 150f;
-
+public class ObjectGenerator : MonoBehaviour, IChunkCreationModule {
 	public List<GameObject> StructuralObjects;
 	public List<GameObject> DynamicObjects;
 
@@ -14,20 +10,26 @@ public class ObjectGenerator : MonoBehaviour {
 
 	public Rect ProtectedZone; // No-spawn zone
 
-	public void Awake () {
-		Rect boundary = new Rect(new Vector2(-LevelWidth / 2f, 0f), new Vector2(LevelWidth, LevelLength));
+	ChunkRegistry chunkRegistry;
 
-		List<GameObject> objects = Generate(boundary);
-		foreach (GameObject obj in objects) {
-			obj.transform.parent = gameObject.transform;
+	public void AddChunkContents (GameObject chunk, ChunkCreationContext context) {
+		StartCoroutine(addChunkContents(chunk, context));
+	}
+
+	public System.Collections.IEnumerator addChunkContents (GameObject chunk, ChunkCreationContext context) {
+		GameObject collection = new GameObject("Generated objects");
+		collection.transform.parent = chunk.transform;
+		foreach (GameObject generated in Generate(context.GroundBoundary)) {
+			generated.transform.parent = collection.transform;
+			yield return null;
 		}
 	}
 
 	/**
 	 * Generate the objects that are present (cannons, barrels etc)
 	 */
-	public List<GameObject> Generate (Rect boundary) {
-		float totalSurfaceArea = boundary.width * boundary.height;
+	public IEnumerable<GameObject> Generate (Rect chunkBboundary) {
+		float totalSurfaceArea = chunkBboundary.width * chunkBboundary.height;
 		float protectedSurfaceArea = ProtectedZone.width * ProtectedZone.height;
 		float usableSurfaceArea = totalSurfaceArea - protectedSurfaceArea;
 		if (usableSurfaceArea < 0f) {
@@ -35,21 +37,24 @@ public class ObjectGenerator : MonoBehaviour {
 		}
 		int nStructures = (int)Mathf.Round(usableSurfaceArea / StructureDensityInv);
 		int nDynamics = (int)Mathf.Round(usableSurfaceArea / DynamicDensityInv);
-		List<GameObject> objects = generateStructuralObjects(boundary, nStructures);
-		objects.AddRange(generateDynamicObjects(boundary, nDynamics));
-		return objects;
+		foreach (GameObject generated in generateStructuralObjects(chunkBboundary, nStructures)) {
+			yield return generated;
+		}
+		foreach (GameObject generated in generateDynamicObjects(chunkBboundary, nDynamics)) {
+			yield return generated;
+		}
 	}
 	
-	GameObject generateObject (IList<GameObject> pool, Rect boundary) {
+	GameObject generateObject (IList<GameObject> pool, Rect chunkBboundary) {
 		GameObject result = Instantiate(pool[Random.Range(0, pool.Count)]);
 		Vector2 sampled;
 		do {
 			sampled = new Vector2(
-				Random.Range(boundary.xMin, boundary.xMax),
-				Random.Range(boundary.yMin, boundary.yMax)
+				Random.Range(chunkBboundary.xMin, chunkBboundary.xMax),
+				Random.Range(chunkBboundary.yMin, chunkBboundary.yMax)
 			);
 		} while (isInsideProtectedZone(sampled));
-		result.transform.position = TerrainRegistry.RaycastDownto(sampled);
+		result.transform.position = chunkRegistry.RaycastDownto(sampled);
 		return result;
 	}
 	
@@ -58,14 +63,12 @@ public class ObjectGenerator : MonoBehaviour {
 	 * 
 	 * They may be embedded into the ground a bit.
 	 */
-	List<GameObject> generateStructuralObjects (Rect boundary, int amount) {
-		List<GameObject> result = new List<GameObject>();
+	IEnumerable<GameObject> generateStructuralObjects (Rect chunkBboundary, int amount) {
 		for (int i = 0; i < amount; i++) {
-			GameObject current = generateObject(StructuralObjects, boundary);
+			GameObject current = generateObject(StructuralObjects, chunkBboundary);
 			current.transform.position += new Vector3(0f, -0.1f, 0f);
-			result.Add(current);
+			yield return current;
 		}
-		return result;
 	}
 	
 	/**
@@ -73,17 +76,19 @@ public class ObjectGenerator : MonoBehaviour {
 	 * 
 	 * They will not be empedded into the ground, but may spawn unnaturally above it.
 	 */
-	List<GameObject> generateDynamicObjects (Rect boundary, int amount) {
-		List<GameObject> result = new List<GameObject>();
+	IEnumerable<GameObject> generateDynamicObjects (Rect chunkBboundary, int amount) {
 		for (int i = 0; i < amount; i++) {
-			GameObject current = generateObject(DynamicObjects, boundary);
+			GameObject current = generateObject(DynamicObjects, chunkBboundary);
 			current.transform.position += new Vector3(0f, 1f, 0f); // Avoid immediate terrain collision (Placing the object using a sweep does not always work: MeshColliders are not supported.
-			result.Add(current);
+			yield return current;
 		}
-		return result;
 	}
 
 	bool isInsideProtectedZone (Vector2 coordinate) {
 		return ProtectedZone.Contains(coordinate);
+	}
+
+	public void SetChunkRegistry (ChunkRegistry registry) {
+		chunkRegistry = registry;
 	}
 }

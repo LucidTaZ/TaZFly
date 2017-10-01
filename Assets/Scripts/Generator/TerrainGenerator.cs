@@ -1,24 +1,18 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(IBiome))]
-abstract public class TerrainGenerator : MonoBehaviour
+abstract public class TerrainGenerator : MonoBehaviour, IChunkCreationModule
 {
-	public float Width = 100f;
-	public float Length = 200f;
-
+	// Quads per chunk
 	public int ResolutionX = 8;
-	public int ResolutionZ = 16;
+	public int ResolutionZ = 8;
 
 	public GameObject HeightNoise;
 	INoise2D heightNoise;
 
-	public float GenerationUpdateInterval = 1.0f;
-	float lastGenerationUpdateCheck = -99f;
-	Vector2[] generationUpdateFeelers;
-
+	public GameObject BiomeGenerator;
 	protected IBiome biomeGenerator;
 
-	GameController gameController;
+	protected ChunkRegistry chunkRegistry;
 
 	virtual protected void Awake () {
 		heightNoise = HeightNoise.GetComponent<INoise2D>();
@@ -26,59 +20,18 @@ abstract public class TerrainGenerator : MonoBehaviour
 			Debug.LogError("Referenced HeightNoise gameobject has no INoise2D component.");
 		}
 
-		biomeGenerator = GetComponent<IBiome>();
+		biomeGenerator = BiomeGenerator.GetComponent<IBiome>();
+		Debug.Assert(biomeGenerator != null);
 		biomeGenerator.Initialize();
-
-		GameObject initialTerrainLeft = Generate(new Vector3(-Width, 0, 0));
-		initialTerrainLeft.transform.parent = gameObject.transform;
-
-		GameObject initialTerrainRight = Generate(new Vector3(0, 0, 0));
-		initialTerrainRight.transform.parent = gameObject.transform;
-
-		generationUpdateFeelers = new []{
-			new Vector2(-Width / 2, Length    ), new Vector2(Width / 2, Length),
-			new Vector2(-Width / 2, Length / 2), new Vector2(Width / 2, Length / 2),
-			new Vector2(-Width,     Length    ), new Vector2(Width,     Length),
-			new Vector2(-Width,     Length / 2), new Vector2(Width,     Length / 2),
-			new Vector2(-2 * Width, Length    ), new Vector2(2 * Width, Length),
-			new Vector2(-2 * Width, Length / 2), new Vector2(2 * Width, Length / 2),
-		};
 	}
 
-	void Start () {
-		gameController = GameController.InstanceIfExists();
+	public void AddChunkContents (GameObject chunk, ChunkCreationContext context)
+	{
+		GameObject terrain = Generate(chunk.transform.position);
+		terrain.transform.parent = chunk.transform;
 	}
 
 	protected abstract GameObject Generate(Vector3 offset);
-
-	void Update () {
-		if (gameController != null && Time.time > lastGenerationUpdateCheck + GenerationUpdateInterval) {
-			updateGeneration();
-			lastGenerationUpdateCheck = Time.time;
-		}
-	}
-
-	/**
-	 * Spawn new terrain tiles, if needed
-	 */
-	void updateGeneration () {
-		Vector3 playerPosition = gameController.PlayerPosition;
-		Vector2 playerGroundPosition = new Vector2(playerPosition.x, playerPosition.z);
-		foreach (Vector2 feeler in generationUpdateFeelers) {
-			Vector2 potentialSpawnPosition = playerGroundPosition + feeler * 1.001f; // Adjust a bit to avoid probing just along a seam
-			if (!TerrainRegistry.HasAt(potentialSpawnPosition)) {
-				int gridX = Mathf.FloorToInt(potentialSpawnPosition.x / Width);
-				int gridY = Mathf.FloorToInt(potentialSpawnPosition.y / Length);
-				Vector3 offset = new Vector3(
-					gridX * Width,
-					0.0f,
-					gridY * Length
-				);
-				GameObject generated = Generate(offset);
-				generated.transform.parent = transform;
-			}
-		}
-	}
 
 	/**
 	 * Generate the raw heightmap data
@@ -89,9 +42,9 @@ abstract public class TerrainGenerator : MonoBehaviour
 		float[,] heightmap = new float[ResolutionZ, ResolutionX];
 
 		for (int z = 0; z < ResolutionZ; z++) {
-			float zCoordinate = z * Length / (ResolutionZ - 1);
+			float zCoordinate = z * Chunk.LENGTH / (ResolutionZ - 1);
 			for (int x = 0; x < ResolutionX; x++) {
-				float xCoordinate = x * Width / (ResolutionX - 1);
+				float xCoordinate = x * Chunk.WIDTH / (ResolutionX - 1);
 				Vector2 groundCoordinates = new Vector2(xCoordinate, zCoordinate) + groundOffset;
 				float hillyness = biomeGenerator.GetHillyness(groundCoordinates);
 				float detailHeight = heightNoise.Sample(groundCoordinates);
@@ -103,5 +56,9 @@ abstract public class TerrainGenerator : MonoBehaviour
 		}
 
 		return heightmap;
+	}
+
+	public void SetChunkRegistry (ChunkRegistry registry) {
+		chunkRegistry = registry;
 	}
 }
