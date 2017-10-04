@@ -11,11 +11,13 @@ public class UnityGameTerrain : MonoBehaviour, GameTerrain {
 		terrain = GetComponent<Terrain>();
 	}
 
-	public Vector3 RaycastDownto (Vector2 coordinates, out bool hit) {
+	public Vector3 RaycastDownto (Vector2 groundCoordinates, out bool hit) {
+		Vector3 coordinates = new Vector3(groundCoordinates.x, 0.0f, groundCoordinates.y);
 		float y = terrain.SampleHeight(coordinates);
+		coordinates.y = y;
 		// TODO: How can hit become false..?
 
 		hit = true;
-		return new Vector3(coordinates.x, y, coordinates.y);
+		return coordinates;
 	}
 }
