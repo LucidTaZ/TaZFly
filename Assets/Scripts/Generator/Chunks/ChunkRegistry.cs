@@ -41,7 +41,7 @@ public class ChunkRegistry : MonoBehaviour {
 		return terrainObjects[coords];
 	}
 
-	public IEnumerable<GridCoordinates> GetAllOutside (ICollection<GridCoordinates> area) {
+	public IEnumerable<GridCoordinates> GetAllOutside (GridMask area) {
 		// Copy list of present coordinates, because the caller will despawn chunks and therefore alter the data structure
 		GridCoordinates[] presentCoordinates = new GridCoordinates[terrainObjects.Count];
 		terrainObjects.Keys.CopyTo(presentCoordinates, 0);

@@ -8,8 +8,8 @@ public class ChunkGenerator : MonoBehaviour {
 
 	public float GenerationUpdateInterval = 1.0f;
 	float lastGenerationUpdateCheck = -99f;
-	ICollection<GridCoordinates> chunkSpawnMask; // Tells where we want to have chunks, relative to current coordinates
-	ICollection<GridCoordinates> chunkDespawnMask; // Any chunks outside this area are up for a despawn
+	GridMask chunkSpawnMask; // Tells where we want to have chunks, relative to current coordinates
+	GridMask chunkDespawnMask; // Any chunks outside this area are up for a despawn
 
 	[Tooltip("Optional player ship, will be taken from GameController if it is not set.")]
 	public GameObject ShipToFollow;
@@ -27,49 +27,10 @@ public class ChunkGenerator : MonoBehaviour {
 
 		assignChunkRegistryToCreationModules();
 
-		chunkSpawnMask = new []{
-			new GridCoordinates(-1, 2), new GridCoordinates(0, 2), new GridCoordinates(1, 2),
-			new GridCoordinates(-1, 1), new GridCoordinates(0, 1), new GridCoordinates(1, 1),
-			new GridCoordinates(-1, 0), new GridCoordinates(0, 0), new GridCoordinates(1, 0),
-		};
-		chunkDespawnMask = dilateMask(chunkSpawnMask, 1);
+		chunkSpawnMask = GridMask.CreateSquare(1).Translate(new GridCoordinates(0, 1));
+		chunkDespawnMask = chunkSpawnMask.Dilate(1);
 	}
 
-	List<GridCoordinates> dilateMask (ICollection<GridCoordinates> mask, int radius) {
-		int minX = int.MaxValue;
-		int maxX = int.MinValue;
-		int minZ = int.MaxValue;
-		int maxZ = int.MinValue;
-		foreach (GridCoordinates coords in mask) {
-			minX = Mathf.Min(minX, coords.x);
-			maxX = Mathf.Max(maxX, coords.x);
-			minZ = Mathf.Min(minZ, coords.z);
-			maxZ = Mathf.Max(maxZ, coords.z);
-		}
-
-		List<GridCoordinates> result = new List<GridCoordinates>();
-		for (int x = minX - radius; x <= maxX + radius; x++) {
-			for (int z = minZ - radius; z <= maxZ + radius; z++) {
-				GridCoordinates coords = new GridCoordinates(x, z);
-				if (maskContainsWithinRadius(mask, coords, radius)) {
-					result.Add(coords);
-				}
-			}
-		}
-		return result;
-	}
-
-	bool maskContainsWithinRadius (ICollection<GridCoordinates> mask, GridCoordinates coords, int radius) {
-		for (int dx = -radius; dx <= radius; dx++) {
-			for (int dz = -radius; dz <= radius; dz++) {
-				GridCoordinates neighbor = coords + new GridCoordinates(dx, dz);
-				if (mask.Contains(neighbor)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
 
 	void Start () {
 		GameController gameController = GameController.InstanceIfExists();
@@ -107,10 +68,7 @@ public class ChunkGenerator : MonoBehaviour {
 			}
 		}
 
-		ICollection<GridCoordinates> chunkDespawnArea = new List<GridCoordinates>();
-		foreach (GridCoordinates offset in chunkDespawnMask) {
-			chunkDespawnArea.Add(playerGridPosition + offset);
-		}
+		GridMask chunkDespawnArea = chunkDespawnMask.Translate(playerGridPosition);
 		foreach (GridCoordinates coords in chunkRegistry.GetAllOutside(chunkDespawnArea)) {
 			despawn(coords);
 		}
