@@ -9,6 +9,10 @@ abstract public class TerrainGenerator : MonoBehaviour, IChunkCreationModule
 	public GameObject HeightNoise;
 	INoise2D heightNoise;
 
+	[Tooltip("0 = only HeightNoise, 1 = only Biome Elevation")]
+	[Range(0.0f, 1.0f)]
+	public float HeightElevationBlendFactor = 0.3f;
+
 	public GameObject BiomeGenerator;
 	protected IBiome biomeGenerator;
 
@@ -46,12 +50,12 @@ abstract public class TerrainGenerator : MonoBehaviour, IChunkCreationModule
 			for (int x = 0; x < ResolutionX; x++) {
 				float xCoordinate = x * Chunk.WIDTH / (ResolutionX - 1);
 				Vector2 groundCoordinates = new Vector2(xCoordinate, zCoordinate) + groundOffset;
-				float hillyness = biomeGenerator.GetHillyness(groundCoordinates);
+				float elevation = biomeGenerator.GetElevation(groundCoordinates);
 				float detailHeight = heightNoise.Sample(groundCoordinates);
 
 				// Hillyness makes the terrain higher in general and also more varying in terms of smaller hills
 				// In what strength the hillyness has a flat influence to the general height, is the meaning of the blend factor
-				heightmap[z, x] = Mathf.Lerp(detailHeight * hillyness, hillyness, 0.2f);
+				heightmap[z, x] = Mathf.Lerp(detailHeight, elevation, HeightElevationBlendFactor);
 			}
 		}
 

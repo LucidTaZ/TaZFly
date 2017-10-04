@@ -14,7 +14,8 @@ public class LevelGenerator : MonoBehaviour {
 
 	public Vector3 PlayerSpawnPosition = new Vector3(0f, 20f, 0f);
 	public Vector3 EnemySpawnPosition = new Vector3(0f, 15f, 0f);
-	public bool SnapSpawnsToGround = true;
+
+	public GameObject SunPrefab;
 
 	public void Awake () {
 		GameObject level = Generate();
@@ -84,14 +85,9 @@ public class LevelGenerator : MonoBehaviour {
 			boundaryFinish.transform.parent = boundary.transform;
 		}
 
-		GameObject sunlight = new GameObject("Sunlight");
-		sunlight.transform.rotation = Quaternion.Euler(60f, 30f, 0f);
-		Light lightSource = sunlight.AddComponent<Light>();
-		lightSource.type = LightType.Directional;
-		lightSource.shadows = LightShadows.Soft;
-		lightSource.intensity = 1.58f;
-		lightSource.color = Color.white;
+		GameObject sunlight = Instantiate(SunPrefab);
 		sunlight.transform.parent = result.transform;
+
 		return result;
 	}
 }

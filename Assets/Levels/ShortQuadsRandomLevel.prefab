@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 4943069342570712}
   - component: {fileID: 114460490866702032}
   m_Layer: 0
-  m_Name: Hillyness Noise
+  m_Name: Elevation Noise
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -293,12 +293,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a91c7eaea5b1e704781d7a4ed34a6810, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ChunkRegistryHolder: {fileID: 114618191146376226}
   ChunkCreationModules:
   - {fileID: 1922807443515080}
   - {fileID: 1412429254473646}
   - {fileID: 1532712943688512}
   GenerationUpdateInterval: 1
+  ShipToFollow: {fileID: 0}
 --- !u!114 &114269565553005952
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -326,7 +326,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HumidityNoise: {fileID: 1139003415964476}
   TemperatureNoise: {fileID: 1321306547697170}
-  HillynessNoise: {fileID: 1699084936380526}
+  ElevationNoise: {fileID: 1699084936380526}
+  ElevationInfluenceOnHumidity: 0.5
+  ElevationInfluenceOnTemperature: 0.5
   GroundColorMap: {fileID: 2800000, guid: 019cba1782464634eae71dce8d8d7064, type: 3}
 --- !u!114 &114460490866702032
 MonoBehaviour:
@@ -370,6 +372,7 @@ MonoBehaviour:
   ResolutionX: 16
   ResolutionZ: 16
   HeightNoise: {fileID: 1469381800899640}
+  HeightElevationBlendFactor: 0.3
   BiomeGenerator: {fileID: 1409899251862628}
   MinimumHeight: 0
   MaximumHeight: 40
@@ -429,7 +432,7 @@ MonoBehaviour:
   FinishPrefab: {fileID: 154870, guid: 00d9120d0ceb1144789ceebcf971fc8f, type: 2}
   PlayerSpawnPosition: {x: 0, y: 20, z: 0}
   EnemySpawnPosition: {x: 0, y: 15, z: 0}
-  SnapSpawnsToGround: 1
+  SunPrefab: {fileID: 1180449650571016, guid: 72aa24998f60cbd45a58fb499e61ef6b, type: 2}
 --- !u!114 &114713472494841662
 MonoBehaviour:
   m_ObjectHideFlags: 1
