@@ -5,7 +5,7 @@ public class FollowSubject : MonoBehaviour, CameraAttachmentInterface {
 	public GameObject Subject;
 	bool loaded;
 
-	Vector3 offset;
+	public Vector3 Offset;
 
 	void Awake () {
 		if (Subject != null) {
@@ -25,15 +25,15 @@ public class FollowSubject : MonoBehaviour, CameraAttachmentInterface {
 	void Start () {
 		// Take over the relative settings modeled in the editor.
 		if (loaded) {
-			offset = transform.position - Subject.transform.position;
+			Offset = transform.position - Subject.transform.position;
 		} else {
-			offset = transform.position;
+			Offset = transform.position;
 		}
 	}
 	
 	void LateUpdate () {
 		if (loaded && Subject) {
-			transform.position = Subject.transform.position + offset;
+			transform.position = Subject.transform.position + Offset;
 		}
 	}
 }

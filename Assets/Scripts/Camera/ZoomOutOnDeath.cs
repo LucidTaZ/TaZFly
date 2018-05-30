@@ -46,6 +46,10 @@ public class ZoomOutOnDeath : MonoBehaviour, CameraAttachmentInterface {
 		if (GetComponent<SwoonWithSubject>()) {
 			GetComponent<SwoonWithSubject>().enabled = false;
 		}
+		if (GetComponent<ToggleFirstPersonView>()) {
+			GetComponent<ToggleFirstPersonView>().SwitchToThirdPerson();
+			GetComponent<ToggleFirstPersonView>().enabled = false;
+		}
 	}
 
 	IEnumerator DoZoomOut () {
