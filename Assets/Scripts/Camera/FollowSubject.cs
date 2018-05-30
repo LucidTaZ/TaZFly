@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class FollowSubject : MonoBehaviour {
+public class FollowSubject : MonoBehaviour, CameraAttachmentInterface {
 
 	public GameObject Subject;
 	bool loaded;

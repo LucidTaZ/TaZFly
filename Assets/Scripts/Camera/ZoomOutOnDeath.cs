@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ZoomOutOnDeath : MonoBehaviour {
+public class ZoomOutOnDeath : MonoBehaviour, CameraAttachmentInterface {
 
 	public GameObject Subject;
 	private bool loaded = false;

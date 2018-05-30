@@ -637,7 +637,9 @@ MonoBehaviour:
   Gui: {fileID: 1015826480}
   ShipTemplate: {fileID: 100000, guid: 1b755fba83643734da848502acd2ab31, type: 2}
   Levels:
-  - {fileID: 1508201247928720, guid: 40a271b9c761d3d41948e7c92aabe7a5, type: 2}
+  - {fileID: 100040, guid: 042ca49f20818d0448ff1e604723b52f, type: 2}
+  - {fileID: 100060, guid: 636c43ffe57b4884a9593482c461e28a, type: 2}
+  - {fileID: 100058, guid: 00782b6d4a41f104cb82bab38141c871, type: 2}
 --- !u!114 &1906712390
 MonoBehaviour:
   m_ObjectHideFlags: 0

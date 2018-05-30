@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class SwoonWithSubject : MonoBehaviour {
+public class SwoonWithSubject : MonoBehaviour, CameraAttachmentInterface {
 
 	public float MaxDeviation = 0.2f;
 	public float ConvergeSpeed = 0.6f;
