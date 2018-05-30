@@ -404,6 +404,7 @@ GameObject:
   - component: {fileID: 957013702}
   - component: {fileID: 957013701}
   - component: {fileID: 957013706}
+  - component: {fileID: 957013707}
   m_Layer: 0
   m_Name: Player Camera
   m_TagString: MainCamera
@@ -495,6 +496,72 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DefaultPosInfluence: {x: 0.15, y: 0.15, z: 0.15}
   DefaultRotInfluence: {x: 1, y: 1, z: 1}
+--- !u!114 &957013707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 957013700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a39eb75547be1bb44ae5195ea5fada36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Subject: {fileID: 0}
+  FrequencyBySpeed:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0.010544481
+      outSlope: 0.010544481
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 16.443157
+      value: 5.1540284
+      inSlope: 1.1165532
+      outSlope: 1.1165532
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 20.016798
+      value: 80.10912
+      inSlope: 16.930002
+      outSlope: 16.930002
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  MagnitudeBySpeed:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: -0.0000010952353
+      value: 0.0005524555
+      inSlope: 0.00027245333
+      outSlope: 0.00027245333
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 13.660804
+      value: 0.0099066775
+      inSlope: 0.0029799142
+      outSlope: 0.0029799142
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 17.543888
+      value: 0.025983874
+      inSlope: 0.007624387
+      outSlope: 0.007624387
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 20.00885
+      value: 0.30203676
+      inSlope: 0.25799644
+      outSlope: 0.25799644
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!1 &1015826478
 GameObject:
   m_ObjectHideFlags: 0
@@ -637,9 +704,7 @@ MonoBehaviour:
   Gui: {fileID: 1015826480}
   ShipTemplate: {fileID: 100000, guid: 1b755fba83643734da848502acd2ab31, type: 2}
   Levels:
-  - {fileID: 100040, guid: 042ca49f20818d0448ff1e604723b52f, type: 2}
-  - {fileID: 100060, guid: 636c43ffe57b4884a9593482c461e28a, type: 2}
-  - {fileID: 100058, guid: 00782b6d4a41f104cb82bab38141c871, type: 2}
+  - {fileID: 1508201247928720, guid: 40a271b9c761d3d41948e7c92aabe7a5, type: 2}
 --- !u!114 &1906712390
 MonoBehaviour:
   m_ObjectHideFlags: 0

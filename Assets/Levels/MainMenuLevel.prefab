@@ -449,8 +449,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 652785566d3215744ab6e6be9d11daba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StructuralObjects:
-  - {fileID: 100000, guid: 54459e60436a99e4eb2ca9d57f1eefab, type: 2}
+  StructuralObjects: []
   DynamicObjects:
   - {fileID: 159596, guid: 7b3f80297d7f6154c83972934acf2d8d, type: 2}
   StructureDensityInv: 2500

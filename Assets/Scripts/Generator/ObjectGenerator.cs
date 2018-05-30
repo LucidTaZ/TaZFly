@@ -37,6 +37,12 @@ public class ObjectGenerator : MonoBehaviour, IChunkCreationModule {
 		}
 		int nStructures = (int)Mathf.Round(usableSurfaceArea / StructureDensityInv);
 		int nDynamics = (int)Mathf.Round(usableSurfaceArea / DynamicDensityInv);
+		if (StructuralObjects.Count == 0) {
+			nStructures = 0;
+		}
+		if (DynamicObjects.Count == 0) {
+			nDynamics = 0;
+		}
 		foreach (GameObject generated in generateStructuralObjects(chunkBboundary, nStructures)) {
 			yield return generated;
 		}

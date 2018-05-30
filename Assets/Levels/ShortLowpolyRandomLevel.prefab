@@ -384,7 +384,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StructuralObjects:
   - {fileID: 145798, guid: 937c5449d1a58b04397bdf8aec813363, type: 2}
-  - {fileID: 100000, guid: 54459e60436a99e4eb2ca9d57f1eefab, type: 2}
   DynamicObjects:
   - {fileID: 159596, guid: 7b3f80297d7f6154c83972934acf2d8d, type: 2}
   - {fileID: 100000, guid: a32d1918824c42a42be32d77238dd884, type: 2}
